@@ -1,0 +1,148 @@
+/**
+ * Tournament Table Styles
+ * Mein Turnierplan WP Plugin
+ */
+
+/* Main tournament table styles */
+.mtp-tournament-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mtp-tournament-table.width100 {
+    max-width: 100%;
+}
+
+.mtp-tournament-table.centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Table header styles */
+.mtp-tournament-table thead {
+    background-color: #eeeeff;
+}
+
+.mtp-tournament-table th {
+    padding: 8px 12px;
+    border: 1px solid #bbbbbb;
+    text-align: center;
+    font-weight: bold;
+    background-color: #eeeeff;
+    color: #173f75;
+}
+
+/* Table body styles */
+.mtp-tournament-table tbody tr:nth-child(even) {
+    background-color: rgba(240, 248, 255, 0.69); /* #f0f8ffb0 */
+}
+
+.mtp-tournament-table tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.69); /* #ffffffb0 */
+}
+
+.mtp-tournament-table tbody tr:hover {
+    background-color: rgba(238, 238, 255, 0.69); /* #eeeeffb0 */
+}
+
+.mtp-tournament-table td {
+    padding: 6px 8px;
+    border: 1px solid #bbbbbb;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Specific cell styles matching the original markup */
+.mtp-tournament-table .tdRank {
+    font-weight: bold;
+    width: 30px;
+}
+
+.mtp-tournament-table .tdRankTeamName {
+    text-align: left;
+    min-width: 120px;
+}
+
+.mtp-tournament-table .tdRankTeamName div {
+    padding: 2px;
+}
+
+.mtp-tournament-table .tdNumGames,
+.mtp-tournament-table .tdNumWins,
+.mtp-tournament-table .tdNumEquals,
+.mtp-tournament-table .tdNumLosts,
+.mtp-tournament-table .tdGoals,
+.mtp-tournament-table .tdGoalDiff,
+.mtp-tournament-table .tdPoints {
+    width: 35px;
+    font-weight: normal;
+}
+
+.mtp-tournament-table .tdPoints {
+    font-weight: bold;
+    color: #173f75;
+}
+
+/* Widget specific styles */
+.mtp-table-widget .mtp-tournament-table {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+/* Block editor styles */
+.mtp-tournament-table-block {
+    margin: 10px 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .mtp-tournament-table {
+        font-size: 12px;
+    }
+    
+    .mtp-tournament-table th,
+    .mtp-tournament-table td {
+        padding: 4px 6px;
+    }
+    
+    .mtp-tournament-table .tdRankTeamName {
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mtp-tournament-table {
+        font-size: 10px;
+    }
+    
+    .mtp-tournament-table th,
+    .mtp-tournament-table td {
+        padding: 2px 4px;
+    }
+    
+    .mtp-tournament-table .tdRank,
+    .mtp-tournament-table .tdNumGames,
+    .mtp-tournament-table .tdNumWins,
+    .mtp-tournament-table .tdNumEquals,
+    .mtp-tournament-table .tdNumLosts,
+    .mtp-tournament-table .tdGoals,
+    .mtp-tournament-table .tdGoalDiff,
+    .mtp-tournament-table .tdPoints {
+        width: 25px;
+    }
+    
+    .mtp-tournament-table .tdRankTeamName {
+        min-width: 60px;
+    }
+}
+
+/* Admin preview styles */
+#mtp-table-preview {
+    overflow-x: auto;
+}
+
+#mtp-table-preview .mtp-tournament-table {
+    margin: 10px 0;
+}
