@@ -152,6 +152,10 @@ class MeinTurnierplanWP {
     if (empty($font_size)) {
       $font_size = '9'; // Default font size
     }
+    $header_font_size = get_post_meta($post->ID, '_mtp_header_font_size', true);
+    if (empty($header_font_size)) {
+      $header_font_size = '10'; // Default header font size
+    }
     
     // Output the form
     echo '<table class="form-table">';
@@ -176,22 +180,30 @@ class MeinTurnierplanWP {
     echo '<p class="description">' . __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan-wp') . '</p>';
     echo '</td>';
     echo '</tr>';
+    echo '<tr>';
+    echo '<th scope="row"><label for="mtp_header_font_size">' . __('Header Font Size (pt)', 'meinturnierplan-wp') . '</label></th>';
+    echo '<td>';
+    echo '<input type="number" id="mtp_header_font_size" name="mtp_header_font_size" value="' . esc_attr($header_font_size) . '" min="6" max="24" step="1" />';
+    echo '<p class="description">' . __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan-wp') . '</p>';
+    echo '</td>';
+    echo '</tr>';
     echo '</table>';
     
     // Preview section
     echo '<h3>' . __('Preview', 'meinturnierplan-wp') . '</h3>';
     echo '<div id="mtp-table-preview" style="border: 1px solid #ddd; padding: 10px; background: #f9f9f9;">';
     // Always show a table - either with data (if ID provided) or empty (if no ID)
-    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size));
+    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size, 's-sizeheader' => $header_font_size));
     echo '</div>';
     
     // Add JavaScript for live preview
     echo '<script>
     jQuery(document).ready(function($) {
-      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size").on("input", function() {
+      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size").on("input", function() {
         var tournamentId = $("#mtp_tournament_id").val();
         var width = $("#mtp_table_width").val();
         var fontSize = $("#mtp_font_size").val();
+        var headerFontSize = $("#mtp_header_font_size").val();
         var preview = $("#mtp-table-preview");
         
         // Always update preview - either with data or empty table
@@ -202,6 +214,7 @@ class MeinTurnierplanWP {
           tournament_id: tournamentId,
           width: width,
           font_size: fontSize,
+          header_font_size: headerFontSize,
           nonce: "' . wp_create_nonce('mtp_preview_nonce') . '"
         }, function(response) {
           if (response.success) {
@@ -227,6 +240,10 @@ class MeinTurnierplanWP {
     if (empty($font_size)) {
       $font_size = '9'; // Default font size
     }
+    $header_font_size = get_post_meta($post->ID, '_mtp_header_font_size', true);
+    if (empty($header_font_size)) {
+      $header_font_size = '10'; // Default header font size
+    }
     
     // Use empty string if no tournament ID, but still generate shortcode
     if (empty($tournament_id)) {
@@ -234,7 +251,7 @@ class MeinTurnierplanWP {
     }
     
     // Generate the shortcode
-    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="10" s-color="000000" s-maincolor="173f75" s-padding="2" s-innerpadding="5" s-bgcolor="00000000" s-logosize="20" s-bcolor="bbbbbb" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbcolor="bbbbbb" s-bbsize="2" s-bgeven="f0f8ffb0" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
+    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="' . esc_attr($header_font_size) . '" s-color="000000" s-maincolor="173f75" s-padding="2" s-innerpadding="5" s-bgcolor="00000000" s-logosize="20" s-bcolor="bbbbbb" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbcolor="bbbbbb" s-bbsize="2" s-bgeven="f0f8ffb0" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
     
     echo '<div style="margin-bottom: 15px;">';
     echo '<label for="mtp_shortcode_field" style="display: block; margin-bottom: 5px; font-weight: bold;">' . __('Generated Shortcode:', 'meinturnierplan-wp') . '</label>';
@@ -271,14 +288,15 @@ class MeinTurnierplanWP {
       });
       
       // Update shortcode when tournament ID or width changes
-      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size").on("input", function() {
+      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size").on("input", function() {
         var tournamentId = $("#mtp_tournament_id").val();
         var width = $("#mtp_table_width").val();
         var fontSize = $("#mtp_font_size").val();
+        var headerFontSize = $("#mtp_header_font_size").val();
         var postId = ' . intval($post->ID) . ';
         
         // Always generate shortcode, even with empty tournament ID
-        var newShortcode = "[mtp-table id=\"" + tournamentId + "\" post_id=\"" + postId + "\" lang=\"en\" s-size=\"" + fontSize + "\" s-sizeheader=\"10\" s-color=\"000000\" s-maincolor=\"173f75\" s-padding=\"2\" s-innerpadding=\"5\" s-bgcolor=\"00000000\" s-logosize=\"20\" s-bcolor=\"bbbbbb\" s-bsizeh=\"1\" s-bsizev=\"1\" s-bsizeoh=\"1\" s-bsizeov=\"1\" s-bbcolor=\"bbbbbb\" s-bbsize=\"2\" s-bgeven=\"f0f8ffb0\" s-bgodd=\"ffffffb0\" s-bgover=\"eeeeffb0\" s-bghead=\"eeeeffff\" width=\"" + width + "\" height=\"152\"]";
+        var newShortcode = "[mtp-table id=\"" + tournamentId + "\" post_id=\"" + postId + "\" lang=\"en\" s-size=\"" + fontSize + "\" s-sizeheader=\"" + headerFontSize + "\" s-color=\"000000\" s-maincolor=\"173f75\" s-padding=\"2\" s-innerpadding=\"5\" s-bgcolor=\"00000000\" s-logosize=\"20\" s-bcolor=\"bbbbbb\" s-bsizeh=\"1\" s-bsizev=\"1\" s-bsizeoh=\"1\" s-bsizeov=\"1\" s-bbcolor=\"bbbbbb\" s-bbsize=\"2\" s-bgeven=\"f0f8ffb0\" s-bgodd=\"ffffffb0\" s-bgover=\"eeeeffb0\" s-bghead=\"eeeeffff\" width=\"" + width + "\" height=\"152\"]"; 
         $("#mtp_shortcode_field").val(newShortcode);
       });
     });
@@ -326,6 +344,12 @@ class MeinTurnierplanWP {
     if (isset($_POST['mtp_font_size'])) {
       $font_size = sanitize_text_field($_POST['mtp_font_size']);
       update_post_meta($post_id, '_mtp_font_size', $font_size);
+    }
+    
+    // Save header font size
+    if (isset($_POST['mtp_header_font_size'])) {
+      $header_font_size = sanitize_text_field($_POST['mtp_header_font_size']);
+      update_post_meta($post_id, '_mtp_header_font_size', $header_font_size);
     }
   }
   
@@ -405,12 +429,14 @@ class MeinTurnierplanWP {
     $tournament_id = sanitize_text_field($_POST['tournament_id']);
     $width = sanitize_text_field($_POST['width']);
     $font_size = sanitize_text_field($_POST['font_size']);
+    $header_font_size = sanitize_text_field($_POST['header_font_size']);
     
     // Create attributes for rendering
     $atts = array(
       'id' => $tournament_id,
       'width' => $width ? $width : '300',
-      's-size' => $font_size ? $font_size : '9'
+      's-size' => $font_size ? $font_size : '9',
+      's-sizeheader' => $header_font_size ? $header_font_size : '10'
     );
     
     $html = $this->render_table_html($post_id, $atts);
@@ -447,6 +473,12 @@ class MeinTurnierplanWP {
       $font_size = '9'; // Default font size
     }
     
+    // Get header font size from shortcode attribute or post meta
+    $header_font_size = !empty($atts['s-sizeheader']) ? $atts['s-sizeheader'] : get_post_meta($table_id, '_mtp_header_font_size', true);
+    if (empty($header_font_size)) {
+      $header_font_size = '10'; // Default header font size
+    }
+    
     // Get height
     $height = !empty($atts['height']) ? $atts['height'] : '152';
     
@@ -478,6 +510,11 @@ class MeinTurnierplanWP {
     // Ensure font size is always set, either from attributes or our retrieved value
     if (empty($params['s[size]'])) {
       $params['s[size]'] = $font_size;
+    }
+    
+    // Ensure header font size is always set, either from attributes or our retrieved value
+    if (empty($params['s[sizeheader]'])) {
+      $params['s[sizeheader]'] = $header_font_size;
     }
     
     // Add wrap=false parameter
