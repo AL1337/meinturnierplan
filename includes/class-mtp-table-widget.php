@@ -35,12 +35,14 @@ class MTP_Table_Widget extends WP_Widget {
             $header_font_size = !empty($instance['header_font_size']) ? $instance['header_font_size'] : '10';
             $table_padding = !empty($instance['table_padding']) ? $instance['table_padding'] : '2';
             $inner_padding = !empty($instance['inner_padding']) ? $instance['inner_padding'] : '5';
+            $text_color = !empty($instance['text_color']) ? $instance['text_color'] : '000000';
             $attributes = array(
                 'width' => $width, 
                 's-size' => $font_size,
                 's-sizeheader' => $header_font_size,
                 's-padding' => $table_padding,
-                's-innerpadding' => $inner_padding
+                's-innerpadding' => $inner_padding,
+                's-color' => $text_color
             );
             
             // Get the main plugin instance to render table
@@ -53,12 +55,14 @@ class MTP_Table_Widget extends WP_Widget {
             $header_font_size = !empty($instance['header_font_size']) ? $instance['header_font_size'] : '10';
             $table_padding = !empty($instance['table_padding']) ? $instance['table_padding'] : '2';
             $inner_padding = !empty($instance['inner_padding']) ? $instance['inner_padding'] : '5';
+            $text_color = !empty($instance['text_color']) ? $instance['text_color'] : '000000';
             $attributes = array(
                 'width' => $width, 
                 's-size' => $font_size,
                 's-sizeheader' => $header_font_size,
                 's-padding' => $table_padding,
-                's-innerpadding' => $inner_padding
+                's-innerpadding' => $inner_padding,
+                's-color' => $text_color
             );
             
             $mtp_plugin = new MeinTurnierplanWP();
@@ -79,6 +83,7 @@ class MTP_Table_Widget extends WP_Widget {
         $header_font_size = !empty($instance['header_font_size']) ? $instance['header_font_size'] : '';
         $table_padding = !empty($instance['table_padding']) ? $instance['table_padding'] : '';
         $inner_padding = !empty($instance['inner_padding']) ? $instance['inner_padding'] : '';
+        $text_color = !empty($instance['text_color']) ? $instance['text_color'] : '';
         
         // Get all tournament tables
         $tables = get_posts(array(
@@ -133,6 +138,12 @@ class MTP_Table_Widget extends WP_Widget {
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('inner_padding')); ?>" name="<?php echo esc_attr($this->get_field_name('inner_padding')); ?>" type="number" value="<?php echo esc_attr($inner_padding); ?>" min="0" max="20" step="1">
             <small><?php _e('Leave empty to use table default inner padding. 5px is the default value.', 'meinturnierplan-wp'); ?></small>
         </p>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('text_color')); ?>"><?php _e('Text Color:', 'meinturnierplan-wp'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('text_color')); ?>" name="<?php echo esc_attr($this->get_field_name('text_color')); ?>" type="text" value="<?php echo esc_attr($text_color); ?>" placeholder="000000">
+            <small><?php _e('Leave empty to use table default text color. Enter hex color without # (e.g., 000000 for black).', 'meinturnierplan-wp'); ?></small>
+        </p>
         <?php
     }
     
@@ -148,6 +159,7 @@ class MTP_Table_Widget extends WP_Widget {
         $instance['header_font_size'] = (!empty($new_instance['header_font_size'])) ? sanitize_text_field($new_instance['header_font_size']) : '';
         $instance['table_padding'] = (!empty($new_instance['table_padding'])) ? sanitize_text_field($new_instance['table_padding']) : '';
         $instance['inner_padding'] = (!empty($new_instance['inner_padding'])) ? sanitize_text_field($new_instance['inner_padding']) : '';
+        $instance['text_color'] = (!empty($new_instance['text_color'])) ? sanitize_text_field($new_instance['text_color']) : '';
         
         return $instance;
     }

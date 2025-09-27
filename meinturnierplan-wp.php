@@ -164,6 +164,10 @@ class MeinTurnierplanWP {
     if (empty($inner_padding)) {
       $inner_padding = '5'; // Default inner padding (cell padding)
     }
+    $text_color = get_post_meta($post->ID, '_mtp_text_color', true);
+    if (empty($text_color)) {
+      $text_color = '000000'; // Default text color (black)
+    }
     
     // Output the form
     echo '<table class="form-table">';
@@ -209,25 +213,41 @@ class MeinTurnierplanWP {
     echo '<p class="description">' . __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan-wp') . '</p>';
     echo '</td>';
     echo '</tr>';
+    echo '<tr>';
+    echo '<th scope="row"><label for="mtp_text_color">' . __('Text Color', 'meinturnierplan-wp') . '</label></th>';
+    echo '<td>';
+    echo '<input type="text" id="mtp_text_color" name="mtp_text_color" value="#' . esc_attr($text_color) . '" class="mtp-color-picker" />';
+    echo '<p class="description">' . __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan-wp') . '</p>';
+    echo '</td>';
+    echo '</tr>';
     echo '</table>';
     
     // Preview section
     echo '<h3>' . __('Preview', 'meinturnierplan-wp') . '</h3>';
     echo '<div id="mtp-table-preview" style="border: 1px solid #ddd; padding: 10px; background: #f9f9f9;">';
     // Always show a table - either with data (if ID provided) or empty (if no ID)
-    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size, 's-sizeheader' => $header_font_size, 's-padding' => $table_padding, 's-innerpadding' => $inner_padding));
+    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size, 's-sizeheader' => $header_font_size, 's-padding' => $table_padding, 's-innerpadding' => $inner_padding, 's-color' => $text_color));
     echo '</div>';
     
     // Add JavaScript for live preview
     echo '<script>
     jQuery(document).ready(function($) {
-      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size, #mtp_table_padding, #mtp_inner_padding").on("input", function() {
+      // Initialize color picker
+      $(".mtp-color-picker").wpColorPicker({
+        change: function(event, ui) {
+          // Trigger preview update when color changes
+          $("#mtp_tournament_id").trigger("input");
+        }
+      });
+      
+      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size, #mtp_table_padding, #mtp_inner_padding, #mtp_text_color").on("input", function() {
         var tournamentId = $("#mtp_tournament_id").val();
         var width = $("#mtp_table_width").val();
         var fontSize = $("#mtp_font_size").val();
         var headerFontSize = $("#mtp_header_font_size").val();
         var tablePadding = $("#mtp_table_padding").val();
         var innerPadding = $("#mtp_inner_padding").val();
+        var textColor = $("#mtp_text_color").val().replace("#", "");
         var preview = $("#mtp-table-preview");
         
         // Always update preview - either with data or empty table
@@ -241,6 +261,7 @@ class MeinTurnierplanWP {
           header_font_size: headerFontSize,
           table_padding: tablePadding,
           inner_padding: innerPadding,
+          text_color: textColor,
           nonce: "' . wp_create_nonce('mtp_preview_nonce') . '"
         }, function(response) {
           if (response.success) {
@@ -278,6 +299,10 @@ class MeinTurnierplanWP {
     if (empty($inner_padding)) {
       $inner_padding = '5'; // Default inner padding
     }
+    $text_color = get_post_meta($post->ID, '_mtp_text_color', true);
+    if (empty($text_color)) {
+      $text_color = '000000'; // Default text color
+    }
     
     // Use empty string if no tournament ID, but still generate shortcode
     if (empty($tournament_id)) {
@@ -285,7 +310,7 @@ class MeinTurnierplanWP {
     }
     
     // Generate the shortcode
-    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="' . esc_attr($header_font_size) . '" s-color="000000" s-maincolor="173f75" s-padding="' . esc_attr($table_padding) . '" s-innerpadding="' . esc_attr($inner_padding) . '" s-bgcolor="00000000" s-logosize="20" s-bcolor="bbbbbb" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbcolor="bbbbbb" s-bbsize="2" s-bgeven="f0f8ffb0" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
+    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="' . esc_attr($header_font_size) . '" s-color="' . esc_attr($text_color) . '" s-maincolor="173f75" s-padding="' . esc_attr($table_padding) . '" s-innerpadding="' . esc_attr($inner_padding) . '" s-bgcolor="00000000" s-logosize="20" s-bcolor="bbbbbb" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbcolor="bbbbbb" s-bbsize="2" s-bgeven="f0f8ffb0" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
     
     echo '<div style="margin-bottom: 15px;">';
     echo '<label for="mtp_shortcode_field" style="display: block; margin-bottom: 5px; font-weight: bold;">' . __('Generated Shortcode:', 'meinturnierplan-wp') . '</label>';
@@ -322,17 +347,18 @@ class MeinTurnierplanWP {
       });
       
       // Update shortcode when tournament ID or width changes
-      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size, #mtp_table_padding, #mtp_inner_padding").on("input", function() {
+      $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size, #mtp_table_padding, #mtp_inner_padding, #mtp_text_color").on("input", function() {
         var tournamentId = $("#mtp_tournament_id").val();
         var width = $("#mtp_table_width").val();
         var fontSize = $("#mtp_font_size").val();
         var headerFontSize = $("#mtp_header_font_size").val();
         var tablePadding = $("#mtp_table_padding").val();
         var innerPadding = $("#mtp_inner_padding").val();
+        var textColor = $("#mtp_text_color").val().replace("#", "");
         var postId = ' . intval($post->ID) . ';
         
         // Always generate shortcode, even with empty tournament ID
-        var newShortcode = "[mtp-table id=\"" + tournamentId + "\" post_id=\"" + postId + "\" lang=\"en\" s-size=\"" + fontSize + "\" s-sizeheader=\"" + headerFontSize + "\" s-color=\"000000\" s-maincolor=\"173f75\" s-padding=\"" + tablePadding + "\" s-innerpadding=\"" + innerPadding + "\" s-bgcolor=\"00000000\" s-logosize=\"20\" s-bcolor=\"bbbbbb\" s-bsizeh=\"1\" s-bsizev=\"1\" s-bsizeoh=\"1\" s-bsizeov=\"1\" s-bbcolor=\"bbbbbb\" s-bbsize=\"2\" s-bgeven=\"f0f8ffb0\" s-bgodd=\"ffffffb0\" s-bgover=\"eeeeffb0\" s-bghead=\"eeeeffff\" width=\"" + width + "\" height=\"152\"]"; 
+        var newShortcode = "[mtp-table id=\"" + tournamentId + "\" post_id=\"" + postId + "\" lang=\"en\" s-size=\"" + fontSize + "\" s-sizeheader=\"" + headerFontSize + "\" s-color=\"" + textColor + "\" s-maincolor=\"173f75\" s-padding=\"" + tablePadding + "\" s-innerpadding=\"" + innerPadding + "\" s-bgcolor=\"00000000\" s-logosize=\"20\" s-bcolor=\"bbbbbb\" s-bsizeh=\"1\" s-bsizev=\"1\" s-bsizeoh=\"1\" s-bsizeov=\"1\" s-bbcolor=\"bbbbbb\" s-bbsize=\"2\" s-bgeven=\"f0f8ffb0\" s-bgodd=\"ffffffb0\" s-bgover=\"eeeeffb0\" s-bghead=\"eeeeffff\" width=\"" + width + "\" height=\"152\"]"; 
         $("#mtp_shortcode_field").val(newShortcode);
       });
     });
@@ -398,6 +424,16 @@ class MeinTurnierplanWP {
     if (isset($_POST['mtp_inner_padding'])) {
       $inner_padding = sanitize_text_field($_POST['mtp_inner_padding']);
       update_post_meta($post_id, '_mtp_inner_padding', $inner_padding);
+    }
+    
+    // Save text color
+    if (isset($_POST['mtp_text_color'])) {
+      $text_color = sanitize_hex_color($_POST['mtp_text_color']);
+      if ($text_color) {
+        // Remove # from color value for storage
+        $text_color = ltrim($text_color, '#');
+        update_post_meta($post_id, '_mtp_text_color', $text_color);
+      }
     }
   }
   
@@ -480,6 +516,7 @@ class MeinTurnierplanWP {
     $header_font_size = sanitize_text_field($_POST['header_font_size']);
     $table_padding = sanitize_text_field($_POST['table_padding']);
     $inner_padding = sanitize_text_field($_POST['inner_padding']);
+    $text_color = sanitize_text_field($_POST['text_color']);
     
     // Create attributes for rendering
     $atts = array(
@@ -488,7 +525,8 @@ class MeinTurnierplanWP {
       's-size' => $font_size ? $font_size : '9',
       's-sizeheader' => $header_font_size ? $header_font_size : '10',
       's-padding' => $table_padding ? $table_padding : '2',
-      's-innerpadding' => $inner_padding ? $inner_padding : '5'
+      's-innerpadding' => $inner_padding ? $inner_padding : '5',
+      's-color' => $text_color ? $text_color : '000000'
     );
     
     $html = $this->render_table_html($post_id, $atts);
@@ -543,6 +581,12 @@ class MeinTurnierplanWP {
       $inner_padding = '5'; // Default inner padding
     }
     
+    // Get text color from shortcode attribute or post meta
+    $text_color = !empty($atts['s-color']) ? $atts['s-color'] : get_post_meta($table_id, '_mtp_text_color', true);
+    if (empty($text_color)) {
+      $text_color = '000000'; // Default text color (black)
+    }
+    
     // Get height
     $height = !empty($atts['height']) ? $atts['height'] : '152';
     
@@ -589,6 +633,11 @@ class MeinTurnierplanWP {
     // Ensure inner padding is always set, either from attributes or our retrieved value
     if (empty($params['s[innerpadding]'])) {
       $params['s[innerpadding]'] = $inner_padding;
+    }
+    
+    // Ensure text color is always set, either from attributes or our retrieved value
+    if (empty($params['s[color]'])) {
+      $params['s[color]'] = $text_color;
     }
     
     // Add wrap=false parameter
@@ -815,6 +864,8 @@ class MeinTurnierplanWP {
       global $post;
       if ($post && $post->post_type == 'mtp_table') {
         wp_enqueue_script('jquery');
+        wp_enqueue_script('wp-color-picker');
+        wp_enqueue_style('wp-color-picker');
       }
     }
   }
