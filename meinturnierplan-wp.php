@@ -52,7 +52,6 @@ class MeinTurnierplanWP {
     // Initialize components
     $this->init_shortcode();
     $this->init_widget();
-    $this->init_block();
     
     // Add meta boxes
     add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
@@ -60,7 +59,6 @@ class MeinTurnierplanWP {
     
     // Add AJAX handlers
     add_action('wp_ajax_mtp_preview_table', array($this, 'ajax_preview_table'));
-    add_action('wp_ajax_mtp_block_preview', array($this, 'ajax_block_preview'));
   }
   
   /**
@@ -364,104 +362,11 @@ class MeinTurnierplanWP {
     require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-widget.php';
   }
   
-  /**
-   * Initialize Gutenberg block
-   */
-  public function init_block() {
-    add_action('init', function() {
-      if (function_exists('register_block_type')) {
-        wp_register_script(
-          'mtp-table-block',
-          MTP_PLUGIN_URL . 'assets/js/block.js',
-          array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-data'),
-          MTP_PLUGIN_VERSION
-        );
-        
-        // Localize script with tournament tables data
-        $tables = get_posts(array(
-          'post_type' => 'mtp_table',
-          'post_status' => 'publish',
-          'numberposts' => -1
-        ));
-        
-        $table_data = array();
-        foreach ($tables as $table) {
-          $table_data[] = array(
-            'id' => $table->ID,
-            'title' => $table->post_title
-          );
-        }
-        
-        wp_localize_script('mtp-table-block', 'mtpBlockData', array(
-          'tables' => $table_data,
-          'ajaxUrl' => admin_url('admin-ajax.php'),
-          'nonce' => wp_create_nonce('mtp_block_preview_nonce')
-        ));
-        
-        register_block_type('meinturnierplan/table', array(
-          'editor_script' => 'mtp-table-block',
-          'render_callback' => array($this, 'block_render_callback')
-        ));
-      }
-    });
-  }
+
   
-  /**
-   * Block render callback
-   */
-  public function block_render_callback($attributes) {
-    $table_id = $attributes['tableId'] ?? '';
-    if (empty($table_id)) {
-      return '<p>' . __('No tournament table specified.', 'meinturnierplan-wp') . '</p>';
-    }
-    
-    // Get tournament ID from post meta
-    $tournament_id = get_post_meta($table_id, '_mtp_tournament_id', true);
-    if (empty($tournament_id)) {
-      return '<p>' . __('Tournament ID not configured for this table.', 'meinturnierplan-wp') . '</p>';
-    }
-    
-    // Create attributes array with tournament ID
-    $atts = array_merge($attributes, array('id' => $tournament_id));
-    
-    return $this->render_table_html($table_id, $atts);
-  }
+
   
-  /**
-   * AJAX handler for block preview
-   */
-  public function ajax_block_preview() {
-    // Check nonce
-    if (!wp_verify_nonce($_POST['nonce'], 'mtp_block_preview_nonce')) {
-      wp_die('Security check failed');
-    }
-    
-    $table_id = sanitize_text_field($_POST['table_id']);
-    $width = sanitize_text_field($_POST['width']);
-    
-    if (empty($table_id)) {
-      wp_send_json_error('No table selected');
-      return;
-    }
-    
-    // Get tournament ID from post meta
-    $tournament_id = get_post_meta($table_id, '_mtp_tournament_id', true);
-    
-    if (empty($tournament_id)) {
-      wp_send_json_error('Tournament ID not configured for this table');
-      return;
-    }
-    
-    // Create attributes for rendering
-    $atts = array(
-      'id' => $tournament_id,
-      'width' => $width ? $width : '300'
-    );
-    
-    $html = $this->render_table_html($table_id, $atts);
-    
-    wp_send_json_success($html);
-  }
+
   
   /**
    * AJAX handler for table preview (existing one for admin)

@@ -5,10 +5,9 @@ A WordPress plugin to display tournament tables using custom post types, support
 ## Features
 
 - **Custom Post Type**: Create and manage tournament tables (`mtp_table`)
-- **Three Display Methods**:
+- **Two Display Methods**:
   - **Shortcodes**: `[mtp-table id="123" width="300"]`
   - **Widgets**: Add tournament tables to widget areas
-  - **Gutenberg Blocks**: Use in the block editor
 - **Customizable Width**: Set table width in pixels
 - **Responsive Design**: Mobile-friendly styling
 - **Admin Preview**: See changes in real-time while editing
@@ -50,13 +49,9 @@ A WordPress plugin to display tournament tables using custom post types, support
 4. Optionally set a custom width
 5. Save the widget
 
-#### Using Gutenberg Blocks
+4. Save the widget
 
-1. In the block editor, click the **+** button
-2. Search for "Tournament Table"
-3. Select your table from the dropdown in the block settings
-4. Optionally set a custom width
-5. The table will render on the frontend
+## Usage
 
 ## File Structure
 
@@ -66,10 +61,8 @@ meinturnierplan-wp/
 ├── includes/
 │   └── class-mtp-table-widget.php  # Widget class
 ├── assets/
-│   ├── css/
-│   │   └── style.css               # Frontend styles
-│   └── js/
-│       └── block.js                # Gutenberg block
+│   └── css/
+│       └── style.css               # Frontend styles
 └── README.md                       # This file
 ```
 
