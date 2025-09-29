@@ -189,6 +189,15 @@ class MeinTurnierplanWP {
       $head_bottom_border_color = 'bbbbbb'; // Default head bottom border color
     }
     
+    $even_bg_color = get_post_meta($post->ID, '_mtp_even_bg_color', true);
+    if (empty($even_bg_color)) {
+      $even_bg_color = 'f0f8ff'; // Default even rows background color
+    }
+    $even_bg_opacity = get_post_meta($post->ID, '_mtp_even_bg_opacity', true);
+    if (empty($even_bg_opacity) && $even_bg_opacity !== '0') {
+      $even_bg_opacity = '69'; // Default opacity (69%)
+    }
+    
     // Output the form
     echo '<table class="form-table">';
     echo '<tr>';
@@ -275,12 +284,37 @@ class MeinTurnierplanWP {
     echo '<p class="description">' . __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan-wp') . '</p>';
     echo '</td>';
     echo '</tr>';
+    echo '<tr>';
+    echo '<th scope="row"><label for="mtp_even_bg_color">' . __('Even Rows Background Color', 'meinturnierplan-wp') . '</label></th>';
+    echo '<td>';
+    echo '<div style="display: flex; align-items: center; gap: 15px;">';
+    echo '<input type="text" id="mtp_even_bg_color" name="mtp_even_bg_color" value="#' . esc_attr($even_bg_color) . '" class="mtp-color-picker" style="width: 120px;" />';
+    echo '<div style="display: flex; align-items: center; gap: 8px;">';
+    echo '<label for="mtp_even_bg_opacity" style="margin: 0; font-weight: normal;">' . __('Opacity:', 'meinturnierplan-wp') . '</label>';
+    echo '<input type="range" id="mtp_even_bg_opacity" name="mtp_even_bg_opacity" value="' . esc_attr($even_bg_opacity) . '" min="0" max="100" step="1" style="width: 100px;" />';
+    echo '<span id="mtp_even_bg_opacity_value" style="min-width: 35px; font-size: 12px; color: #666;">' . esc_attr($even_bg_opacity) . '%</span>';
+    echo '</div>';
+    echo '</div>';
+    echo '<p class="description">' . __('Set the background color and opacity for even-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan-wp') . '</p>';
+    echo '</td>';
+    echo '</tr>';
     echo '</table>';
     
     // Preview section
     echo '<h3>' . __('Preview', 'meinturnierplan-wp') . '</h3>';
     echo '<div id="mtp-table-preview" style="border: 1px solid #ddd; padding: 10px; background: #f9f9f9;">';
     // Always show a table - either with data (if ID provided) or empty (if no ID)
+    
+    // Get even rows background color and opacity for preview
+    $even_bg_color = get_post_meta($post->ID, '_mtp_even_bg_color', true);
+    if (empty($even_bg_color)) {
+      $even_bg_color = 'f0f8ff'; // Default even rows background color
+    }
+    $even_bg_opacity = get_post_meta($post->ID, '_mtp_even_bg_opacity', true);
+    if (empty($even_bg_opacity) && $even_bg_opacity !== '0') {
+      $even_bg_opacity = '69'; // Default opacity (69%)
+    }
+    
     // Combine background color and opacity for preview
     $combined_bg_color = $bg_color;
     if ($bg_opacity !== '' && $bg_opacity !== null) {
@@ -288,7 +322,14 @@ class MeinTurnierplanWP {
       $combined_bg_color = $bg_color . $opacity_hex;
     }
     
-    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size, 's-sizeheader' => $header_font_size, 's-padding' => $table_padding, 's-innerpadding' => $inner_padding, 's-color' => $text_color, 's-maincolor' => $main_color, 's-bgcolor' => $combined_bg_color, 's-bcolor' => $border_color, 's-bbcolor' => $head_bottom_border_color));
+    // Combine even rows background color and opacity for preview
+    $combined_even_bg_color = $even_bg_color;
+    if ($even_bg_opacity !== '' && $even_bg_opacity !== null) {
+      $opacity_hex = str_pad(dechex(round(($even_bg_opacity / 100) * 255)), 2, '0', STR_PAD_LEFT);
+      $combined_even_bg_color = $even_bg_color . $opacity_hex;
+    }
+    
+    echo $this->render_table_html($post->ID, array('id' => $tournament_id, 'width' => $width, 's-size' => $font_size, 's-sizeheader' => $header_font_size, 's-padding' => $table_padding, 's-innerpadding' => $inner_padding, 's-color' => $text_color, 's-maincolor' => $main_color, 's-bgcolor' => $combined_bg_color, 's-bcolor' => $border_color, 's-bbcolor' => $head_bottom_border_color, 's-bgeven' => $combined_even_bg_color));
     echo '</div>';
     
     // Add JavaScript for live preview
@@ -313,6 +354,13 @@ class MeinTurnierplanWP {
         $("#mtp_tournament_id").trigger("input");
       });
       
+      // Handle opacity slider for even rows background color
+      $("#mtp_even_bg_opacity").on("input", function() {
+        var opacity = $(this).val();
+        $("#mtp_even_bg_opacity_value").text(opacity + "%");
+        $("#mtp_tournament_id").trigger("input");
+      });
+      
       $("#mtp_tournament_id, #mtp_table_width, #mtp_font_size, #mtp_header_font_size, #mtp_table_padding, #mtp_inner_padding, #mtp_text_color, #mtp_main_color, #mtp_bg_color, #mtp_bg_opacity, #mtp_border_color, #mtp_head_bottom_border_color").on("input", function() {
         var tournamentId = $("#mtp_tournament_id").val();
         var width = $("#mtp_table_width").val();
@@ -326,10 +374,16 @@ class MeinTurnierplanWP {
         var bgOpacity = $("#mtp_bg_opacity").val();
         var borderColor = $("#mtp_border_color").val().replace("#", "");
         var headBottomBorderColor = $("#mtp_head_bottom_border_color").val().replace("#", "");
+        var evenBgColor = $("#mtp_even_bg_color").val().replace("#", "");
+        var evenBgOpacity = $("#mtp_even_bg_opacity").val();
         
         // Convert opacity percentage to hex (0-100% to 00-FF)
         var opacityHex = Math.round((bgOpacity / 100) * 255).toString(16).padStart(2, "0");
         var bgColorWithOpacity = bgColor + opacityHex;
+        
+        // Convert even rows opacity percentage to hex
+        var evenOpacityHex = Math.round((evenBgOpacity / 100) * 255).toString(16).padStart(2, "0");
+        var evenBgColorWithOpacity = evenBgColor + evenOpacityHex;
         
         var preview = $("#mtp-table-preview");
         
@@ -349,6 +403,7 @@ class MeinTurnierplanWP {
           bg_color: bgColorWithOpacity,
           border_color: borderColor,
           head_bottom_border_color: headBottomBorderColor,
+          even_bg_color: evenBgColorWithOpacity,
           nonce: "' . wp_create_nonce('mtp_preview_nonce') . '"
         }, function(response) {
           if (response.success) {
@@ -425,8 +480,24 @@ class MeinTurnierplanWP {
       $head_bottom_border_color = 'bbbbbb'; // Default head bottom border color
     }
     
+    $even_bg_color = get_post_meta($post->ID, '_mtp_even_bg_color', true);
+    if (empty($even_bg_color)) {
+      $even_bg_color = 'f0f8ff'; // Default even rows background color
+    }
+    $even_bg_opacity = get_post_meta($post->ID, '_mtp_even_bg_opacity', true);
+    if (empty($even_bg_opacity) && $even_bg_opacity !== '0') {
+      $even_bg_opacity = '69'; // Default opacity (69%)
+    }
+    
+    // Combine even rows background color and opacity
+    $combined_even_bg_color = $even_bg_color;
+    if ($even_bg_opacity !== '' && $even_bg_opacity !== null) {
+      $opacity_hex = str_pad(dechex(round(($even_bg_opacity / 100) * 255)), 2, '0', STR_PAD_LEFT);
+      $combined_even_bg_color = $even_bg_color . $opacity_hex;
+    }
+    
     // Generate the shortcode
-    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="' . esc_attr($header_font_size) . '" s-color="' . esc_attr($text_color) . '" s-maincolor="' . esc_attr($main_color) . '" s-padding="' . esc_attr($table_padding) . '" s-innerpadding="' . esc_attr($inner_padding) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($border_color) . '" s-bbcolor="' . esc_attr($head_bottom_border_color) . '" s-logosize="20" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbsize="2" s-bgeven="f0f8ffb0" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
+    $shortcode = '[mtp-table id="' . esc_attr($tournament_id) . '" post_id="' . $post->ID . '" lang="en" s-size="' . esc_attr($font_size) . '" s-sizeheader="' . esc_attr($header_font_size) . '" s-color="' . esc_attr($text_color) . '" s-maincolor="' . esc_attr($main_color) . '" s-padding="' . esc_attr($table_padding) . '" s-innerpadding="' . esc_attr($inner_padding) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($border_color) . '" s-bbcolor="' . esc_attr($head_bottom_border_color) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="20" s-bsizeh="1" s-bsizev="1" s-bsizeoh="1" s-bsizeov="1" s-bbsize="2" s-bgodd="ffffffb0" s-bgover="eeeeffb0" s-bghead="eeeeffff" width="' . esc_attr($width) . '" height="152"]';
     
     echo '<div style="margin-bottom: 15px;">';
     echo '<label for="mtp_shortcode_field" style="display: block; margin-bottom: 5px; font-weight: bold;">' . __('Generated Shortcode:', 'meinturnierplan-wp') . '</label>';
@@ -608,6 +679,23 @@ class MeinTurnierplanWP {
         update_post_meta($post_id, '_mtp_head_bottom_border_color', $head_bottom_border_color);
       }
     }
+    
+    // Save even rows background color and opacity
+    if (isset($_POST['mtp_even_bg_color'])) {
+      $even_bg_color = sanitize_hex_color($_POST['mtp_even_bg_color']);
+      if ($even_bg_color) {
+        // Remove # from color value for storage
+        $even_bg_color = ltrim($even_bg_color, '#');
+        update_post_meta($post_id, '_mtp_even_bg_color', $even_bg_color);
+      }
+    }
+    
+    if (isset($_POST['mtp_even_bg_opacity'])) {
+      $even_bg_opacity = intval($_POST['mtp_even_bg_opacity']);
+      if ($even_bg_opacity >= 0 && $even_bg_opacity <= 100) {
+        update_post_meta($post_id, '_mtp_even_bg_opacity', $even_bg_opacity);
+      }
+    }
   }
   
   /**
@@ -694,6 +782,7 @@ class MeinTurnierplanWP {
     $bg_color = sanitize_text_field($_POST['bg_color']);
     $border_color = isset($_POST['border_color']) ? sanitize_text_field($_POST['border_color']) : 'bbbbbb';
     $head_bottom_border_color = isset($_POST['head_bottom_border_color']) ? sanitize_text_field($_POST['head_bottom_border_color']) : 'bbbbbb';
+    $even_bg_color = isset($_POST['even_bg_color']) ? sanitize_text_field($_POST['even_bg_color']) : 'f0f8ffb0';
     
     // Create attributes for rendering
     $atts = array(
@@ -708,6 +797,7 @@ class MeinTurnierplanWP {
       's-bgcolor' => $bg_color ? $bg_color : '00000000',
       's-bcolor' => $border_color ? $border_color : 'bbbbbb',
       's-bbcolor' => $head_bottom_border_color ? $head_bottom_border_color : 'bbbbbb',
+      's-bgeven' => $even_bg_color ? $even_bg_color : 'f0f8ffb0',
     );
     
     $html = $this->render_table_html($post_id, $atts);
