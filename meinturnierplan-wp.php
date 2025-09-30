@@ -764,7 +764,7 @@ class MeinTurnierplanWP {
     if (empty($tournament_id)) {
       echo '<div style="margin-top: 10px; padding: 8px; background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; border-radius: 3px;">';
       echo '<strong>' . __('Note:', 'meinturnierplan-wp') . '</strong> ';
-      echo __('Enter a Tournament ID above to display live tournament data. Without an ID, an empty table will be shown.', 'meinturnierplan-wp');
+      echo __('Enter a Tournament ID above to display live tournament data. Without an ID, a placeholder will be shown.', 'meinturnierplan-wp');
       echo '</div>';
     }
     
@@ -1506,153 +1506,12 @@ class MeinTurnierplanWP {
   private function render_empty_table($atts = array()) {
     // Get width from shortcode attributes
     $width = !empty($atts['width']) ? $atts['width'] : '300';
-    $height = !empty($atts['height']) ? $atts['height'] : '152';
     
-    // Parse styling parameters with defaults
-    $size = !empty($atts['s-size']) ? $atts['s-size'] : '9';
-    $sizeheader = !empty($atts['s-sizeheader']) ? $atts['s-sizeheader'] : '10';
-    $color = !empty($atts['s-color']) ? '#' . ltrim($atts['s-color'], '#') : '#000000';
-    $maincolor = !empty($atts['s-maincolor']) ? '#' . ltrim($atts['s-maincolor'], '#') : '#173f75';
-    $padding = !empty($atts['s-padding']) ? $atts['s-padding'] : '2';
-    $innerpadding = !empty($atts['s-innerpadding']) ? $atts['s-innerpadding'] : '5';
-    $bgcolor = !empty($atts['s-bgcolor']) ? $this->hex_to_rgba($atts['s-bgcolor']) : 'transparent';
-    $bcolor = !empty($atts['s-bcolor']) ? '#' . ltrim($atts['s-bcolor'], '#') : '#bbbbbb';
-    $bsizeh = !empty($atts['s-bsizeh']) ? $atts['s-bsizeh'] : '1';
-    $bsizev = !empty($atts['s-bsizev']) ? $atts['s-bsizev'] : '1';
-    $bsizeoh = !empty($atts['s-bsizeoh']) ? $atts['s-bsizeoh'] : '1';
-    $bsizeov = !empty($atts['s-bsizeov']) ? $atts['s-bsizeov'] : '1';
-    $bbcolor = !empty($atts['s-bbcolor']) ? '#' . ltrim($atts['s-bbcolor'], '#') : '#bbbbbb';
-    $bbsize = !empty($atts['s-bbsize']) ? $atts['s-bbsize'] : '2';
-    $bgeven = !empty($atts['s-bgeven']) ? $this->hex_to_rgba($atts['s-bgeven']) : 'rgba(240, 248, 255, 0.69)';
-    $bgodd = !empty($atts['s-bgodd']) ? $this->hex_to_rgba($atts['s-bgodd']) : 'rgba(255, 255, 255, 0.69)';
-    $bgover = !empty($atts['s-bgover']) ? $this->hex_to_rgba($atts['s-bgover']) : 'rgba(238, 238, 255, 0.69)';
-    $bghead = !empty($atts['s-bghead']) ? $this->hex_to_rgba($atts['s-bghead']) : 'rgba(238, 238, 255, 1)';
-    $logo_size = !empty($atts['s-logosize']) ? $atts['s-logosize'] : '20';
-    
-    // Generate unique ID for this table instance
-    $table_id_unique = 'mtp-table-empty-' . substr(md5(serialize($atts)), 0, 8);
-    
-    // Build inline styles
-    $table_style = sprintf(
-      'width: %spx !important; height: %spx; font-size: %spt; color: %s; padding: %spx; background-color: %s; border: %spx solid %s;',
-      esc_attr($width),
-      esc_attr($height),
-      esc_attr($size),
-      esc_attr($color),
-      esc_attr($padding),
-      esc_attr($bgcolor),
-      esc_attr($bbsize),
-      esc_attr($bbcolor),
-      esc_attr($bgeven),
-      esc_attr($bgodd),
-      esc_attr($bgover),
-      esc_attr($bghead),
-      esc_attr($logo_size),
-      esc_attr($bsizeh),
-      esc_attr($bsizev),
-      esc_attr($bsizeoh),
-      esc_attr($bsizeov)
-    );
-    
-    // Generate CSS for this specific table
-    $css = sprintf('
-    <style>
-    #%s {
-      width: %spx !important;
-      max-width: %spx !important;
-    }
-    #%s th {
-      font-size: %spt !important;
-      color: %s !important;
-      background-color: %s !important;
-      border: %spx solid %s !important;
-      border-top: %spx solid %s !important;
-      border-bottom: %spx solid %s !important;
-      padding: %spx !important;
-    }
-    #%s tbody tr:nth-child(even) {
-      background-color: %s !important;
-    }
-    #%s tbody tr:nth-child(odd) {
-      background-color: %s !important;
-    }
-    #%s tbody tr:hover {
-      background-color: %s !important;
-    }
-    #%s td {
-      border: %spx solid %s !important;
-      border-left: %spx solid %s !important;
-      border-right: %spx solid %s !important;
-      padding: %spx !important;
-      color: %s !important;
-    }
-    </style>',
-      esc_attr($table_id_unique),
-      esc_attr($width),
-      esc_attr($width),
-      esc_attr($table_id_unique),
-      esc_attr($sizeheader),
-      esc_attr($maincolor),
-      esc_attr($bghead),
-      esc_attr($bsizeh),
-      esc_attr($bcolor),
-      esc_attr($bsizeh),
-      esc_attr($bcolor),
-      esc_attr($bsizeh),
-      esc_attr($bcolor),
-      esc_attr($innerpadding),
-      esc_attr($table_id_unique),
-      esc_attr($bgeven),
-      esc_attr($table_id_unique),
-      esc_attr($bgodd),
-      esc_attr($table_id_unique),
-      esc_attr($bgover),
-      esc_attr($table_id_unique),
-      esc_attr($bsizev),
-      esc_attr($bcolor),
-      esc_attr($bsizev),
-      esc_attr($bcolor),
-      esc_attr($bsizev),
-      esc_attr($bcolor),
-      esc_attr($innerpadding),
-      esc_attr($color)
-    );
-    
-    // Generate the empty tournament table HTML
-    $html = $css;
-    $html .= '<table id="' . esc_attr($table_id_unique) . '" class="width100 centered mtp-tournament-table" name="RankTable" style="' . esc_attr($table_style) . '">';
-    $html .= '<thead>';
-    $html .= '<tr>';
-    $html .= '<th title="' . __('Rank in Group', 'meinturnierplan-wp') . '">' . __('Pl', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th>' . __('Participant', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Matches', 'meinturnierplan-wp') . '">' . __('M', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Wins', 'meinturnierplan-wp') . '">' . __('W', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Draws', 'meinturnierplan-wp') . '">' . __('D', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Loss', 'meinturnierplan-wp') . '">' . __('L', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Goals', 'meinturnierplan-wp') . '">' . __('G', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Goal Difference', 'meinturnierplan-wp') . '">' . __('GD', 'meinturnierplan-wp') . '</th>';
-    $html .= '<th title="' . __('Points', 'meinturnierplan-wp') . '">' . __('Pts', 'meinturnierplan-wp') . '</th>';
-    $html .= '</tr>';
-    $html .= '</thead>';
-    $html .= '<tbody>';
-    
-    // Generate 5 empty rows
-    for ($i = 0; $i < 5; $i++) {
-      $html .= '<tr>';
-      $html .= '<td class="tdRank">&nbsp;</td>';
-      $html .= '<td class="tdRankTeamName"><div></div></td>';
-      $html .= '<td class="tdNumGames">&nbsp;</td>';
-      $html .= '<td class="tdNumWins">&nbsp;</td>';
-      $html .= '<td class="tdNumEquals">&nbsp;</td>';
-      $html .= '<td class="tdNumLosts">&nbsp;</td>';
-      $html .= '<td class="tdGoals">&nbsp;</td>';
-      $html .= '<td class="tdGoalDiff">&nbsp;</td>';
-      $html .= '<td class="tdPoints">&nbsp;</td>';
-      $html .= '</tr>';
-    }
-    
-    $html .= '</tbody>';
-    $html .= '</table>';
+    // Simple placeholder message
+    $html = '<div style="width: ' . esc_attr($width) . 'px; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; text-align: center; color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">';
+    $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan-wp') . '</strong><br>';
+    $html .= __('Enter a Tournament ID above to display live tournament data.', 'meinturnierplan-wp');
+    $html .= '</div>';
     
     return $html;
   }
