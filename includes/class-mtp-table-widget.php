@@ -49,6 +49,7 @@ class MTP_Table_Widget extends WP_Widget {
             $bsizev = !empty($instance['bsizev']) ? $instance['bsizev'] : '1';
             $bsizeoh = !empty($instance['bsizeoh']) ? $instance['bsizeoh'] : '1';
             $bsizeov = !empty($instance['bsizeov']) ? $instance['bsizeov'] : '1';
+            $bbsize = !empty($instance['bbsize']) ? $instance['bbsize'] : '2';
             $attributes = array(
                 'width' => $width,
                 's-size' => $font_size,
@@ -69,6 +70,7 @@ class MTP_Table_Widget extends WP_Widget {
                 's-bsizev' => $bsizev,
                 's-bsizeoh' => $bsizeoh,
                 's-bsizeov' => $bsizeov,
+                's-bbsize' => $bbsize,
             );
             
             // Get the main plugin instance to render table
@@ -95,6 +97,7 @@ class MTP_Table_Widget extends WP_Widget {
             $bsizev = !empty($instance['bsizev']) ? $instance['bsizev'] : '1';
             $bsizeoh = !empty($instance['bsizeoh']) ? $instance['bsizeoh'] : '1';
             $bsizeov = !empty($instance['bsizeov']) ? $instance['bsizeov'] : '1';
+            $bbsize = !empty($instance['bbsize']) ? $instance['bbsize'] : '2';
             $attributes = array(
                 'width' => $width, 
                 's-size' => $font_size,
@@ -115,6 +118,7 @@ class MTP_Table_Widget extends WP_Widget {
                 's-bsizev' => $bsizev,
                 's-bsizeoh' => $bsizeoh,
                 's-bsizeov' => $bsizeov,
+                's-bbsize' => $bbsize,
             );
             
             $mtp_plugin = new MeinTurnierplanWP();
@@ -148,6 +152,7 @@ class MTP_Table_Widget extends WP_Widget {
         $bsizev = !empty($instance['bsizev']) ? $instance['bsizev'] : '1';
         $bsizeoh = !empty($instance['bsizeoh']) ? $instance['bsizeoh'] : '1';
         $bsizeov = !empty($instance['bsizeov']) ? $instance['bsizeov'] : '1';
+        $bbsize = !empty($instance['bbsize']) ? $instance['bbsize'] : '2';
 
         // Get all tournament tables
         $tables = get_posts(array(
@@ -280,6 +285,12 @@ class MTP_Table_Widget extends WP_Widget {
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('bsizeov')); ?>" name="<?php echo esc_attr($this->get_field_name('bsizeov')); ?>" type="number" value="<?php echo esc_attr($bsizeov); ?>" min="1" max="80" step="1">
             <small><?php _e('Leave empty to use table default inline border size. 1px is the default value.', 'meinturnierplan-wp'); ?></small>
         </p>
+
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('bbsize')); ?>"><?php _e('Table Head Border Bottom Size (px):', 'meinturnierplan-wp'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('bbsize')); ?>" name="<?php echo esc_attr($this->get_field_name('bbsize')); ?>" type="number" value="<?php echo esc_attr($bbsize); ?>" min="1" max="80" step="1">
+            <small><?php _e('Leave empty to use table header default border bottom border size. 2px is the default value.', 'meinturnierplan-wp'); ?></small>
+        </p>
         <?php
     }
     
@@ -308,6 +319,7 @@ class MTP_Table_Widget extends WP_Widget {
         $instance['bsizev'] = (!empty($new_instance['bsizev'])) ? sanitize_text_field($new_instance['bsizev']) : '';
         $instance['bsizeoh'] = (!empty($new_instance['bsizeoh'])) ? sanitize_text_field($new_instance['bsizeoh']) : '';
         $instance['bsizeov'] = (!empty($new_instance['bsizeov'])) ? sanitize_text_field($new_instance['bsizeov']) : '';
+        $instance['bbsize'] = (!empty($new_instance['bbsize'])) ? sanitize_text_field($new_instance['bbsize']) : '';
 
         return $instance;
     }
