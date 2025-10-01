@@ -122,6 +122,18 @@ class MTP_Table_Renderer {
       $params['sl'] = '1';
     }
     
+    // Add sn parameter if suppress_num_matches is enabled
+    $suppress_num_matches = '';
+    if (!empty($atts['sn'])) {
+      $suppress_num_matches = $atts['sn'];
+    } elseif ($table_id) {
+      $suppress_num_matches = get_post_meta($table_id, '_mtp_suppress_num_matches', true);
+    }
+    
+    if (!empty($suppress_num_matches) && $suppress_num_matches === '1') {
+      $params['sn'] = '1';
+    }
+    
     return $params;
   }
   
