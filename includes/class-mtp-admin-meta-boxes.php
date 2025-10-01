@@ -465,18 +465,74 @@ class MTP_Admin_Meta_Boxes {
       });
       
       // Update shortcode when fields change
-      $("input[id^='mtp_']").on("input", function() {
-        // Get all values and regenerate shortcode
-        var postId = <?php echo intval(get_the_ID()); ?>;
-        var tournamentId = $("#mtp_tournament_id").val();
-        var width = $("#mtp_width").val();
-        var height = $("#mtp_height").val();
-        // ... other fields
-        
-        // Build new shortcode (simplified version - could be expanded)
-        var newShortcode = "[mtp-table id=\"" + tournamentId + "\" post_id=\"" + postId + "\" width=\"" + width + "\" height=\"" + height + "\"]";
-        $("#mtp_shortcode_field").val(newShortcode);
+      $("input[id^='mtp_'], .mtp-color-picker").on("input change", function() {
+        updateShortcode();
       });
+      
+      // Opacity sliders
+      $("input[type='range'][id^='mtp_']").on("input", function() {
+        updateShortcode();
+      });
+      
+      function updateShortcode() {
+        var postId = <?php echo intval(get_the_ID()); ?>;
+        var tournamentId = $("#mtp_tournament_id").val() || "";
+        var width = $("#mtp_width").val() || "300";
+        var height = $("#mtp_height").val() || "152";
+        var fontSize = $("#mtp_font_size").val() || "9";
+        var headerFontSize = $("#mtp_header_font_size").val() || "10";
+        var textColor = $("#mtp_text_color").val().replace("#", "") || "000000";
+        var mainColor = $("#mtp_main_color").val().replace("#", "") || "173f75";
+        var tablePadding = $("#mtp_table_padding").val() || "2";
+        var innerPadding = $("#mtp_inner_padding").val() || "5";
+        var logoSize = $("#mtp_logo_size").val() || "20";
+        var borderColor = $("#mtp_border_color").val().replace("#", "") || "bbbbbb";
+        var headBottomBorderColor = $("#mtp_head_bottom_border_color").val().replace("#", "") || "bbbbbb";
+        var bsizeh = $("#mtp_bsizeh").val() || "1";
+        var bsizev = $("#mtp_bsizev").val() || "1";
+        var bsizeoh = $("#mtp_bsizeoh").val() || "1";
+        var bsizeov = $("#mtp_bsizeov").val() || "1";
+        var bbsize = $("#mtp_bbsize").val() || "2";
+        
+        // Combine colors with opacity (convert opacity percentage to hex)
+        var bgColor = $("#mtp_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_bg_opacity").val() / 100) * 255));
+        var evenBgColor = $("#mtp_even_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_even_bg_opacity").val() / 100) * 255));
+        var oddBgColor = $("#mtp_odd_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_odd_bg_opacity").val() / 100) * 255));
+        var hoverBgColor = $("#mtp_hover_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_hover_bg_opacity").val() / 100) * 255));
+        var headBgColor = $("#mtp_head_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_head_bg_opacity").val() / 100) * 255));
+        
+        // Build complete shortcode
+        var newShortcode = '[mtp-table id="' + tournamentId + '" post_id="' + postId + '" lang="en"' +
+                          ' s-size="' + fontSize + '"' +
+                          ' s-sizeheader="' + headerFontSize + '"' +
+                          ' s-color="' + textColor + '"' +
+                          ' s-maincolor="' + mainColor + '"' +
+                          ' s-padding="' + tablePadding + '"' +
+                          ' s-innerpadding="' + innerPadding + '"' +
+                          ' s-bgcolor="' + bgColor + '"' +
+                          ' s-bcolor="' + borderColor + '"' +
+                          ' s-bbcolor="' + headBottomBorderColor + '"' +
+                          ' s-bgeven="' + evenBgColor + '"' +
+                          ' s-logosize="' + logoSize + '"' +
+                          ' s-bsizeh="' + bsizeh + '"' +
+                          ' s-bsizev="' + bsizev + '"' +
+                          ' s-bsizeoh="' + bsizeoh + '"' +
+                          ' s-bsizeov="' + bsizeov + '"' +
+                          ' s-bbsize="' + bbsize + '"' +
+                          ' s-bgodd="' + oddBgColor + '"' +
+                          ' s-bgover="' + hoverBgColor + '"' +
+                          ' s-bghead="' + headBgColor + '"' +
+                          ' width="' + width + '"' +
+                          ' height="' + height + '"]';
+        
+        $("#mtp_shortcode_field").val(newShortcode);
+      }
+      
+      // Convert decimal opacity to hex (match PHP behavior)
+      function opacityToHex(opacity) {
+        var hex = Math.round(opacity).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      }
     });
     </script>
     <?php
