@@ -74,6 +74,11 @@ class MTP_Ajax_Handler {
       's-bbsize' => $data['bbsize'] ? $data['bbsize'] : '2'
     );
     
+    // Add sw parameter if suppress_wins is enabled
+    if (!empty($data['suppress_wins']) && $data['suppress_wins'] === '1') {
+      $atts['sw'] = '1';
+    }
+    
     $html = $this->table_renderer->render_table_html($post_id, $atts);
     
     wp_send_json_success($html);
@@ -106,6 +111,7 @@ class MTP_Ajax_Handler {
       'hover_bg_color' => isset($data['hover_bg_color']) ? sanitize_text_field($data['hover_bg_color']) : 'eeeeffb0',
       'head_bg_color' => isset($data['head_bg_color']) ? sanitize_text_field($data['head_bg_color']) : 'eeeeffff',
       'logo_size' => sanitize_text_field($data['logo_size']),
+      'suppress_wins' => isset($data['suppress_wins']) ? sanitize_text_field($data['suppress_wins']) : '0',
     );
   }
 }

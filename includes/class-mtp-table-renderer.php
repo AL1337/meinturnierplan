@@ -98,6 +98,18 @@ class MTP_Table_Renderer {
     // Add wrap=false parameter
     $params['s[wrap]'] = 'false';
     
+    // Add sw parameter if suppress_wins is enabled
+    $suppress_wins = '';
+    if (!empty($atts['sw'])) {
+      $suppress_wins = $atts['sw'];
+    } elseif ($table_id) {
+      $suppress_wins = get_post_meta($table_id, '_mtp_suppress_wins', true);
+    }
+    
+    if (!empty($suppress_wins) && $suppress_wins === '1') {
+      $params['sw'] = '1';
+    }
+    
     return $params;
   }
   

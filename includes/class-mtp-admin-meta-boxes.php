@@ -124,6 +124,7 @@ class MTP_Admin_Meta_Boxes {
       'bsizeoh' => '1',
       'bsizeov' => '1',
       'bbsize' => '2',
+      'suppress_wins' => '0',
     );
     
     $meta_values = array();
@@ -183,6 +184,9 @@ class MTP_Admin_Meta_Boxes {
     $this->render_color_opacity_field('odd_bg_color', 'odd_bg_opacity', __('Odd Rows Background Color', 'meinturnierplan-wp'), $meta_values['odd_bg_color'], $meta_values['odd_bg_opacity'], __('Set the background color and opacity for odd-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
     $this->render_color_opacity_field('hover_bg_color', 'hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan-wp'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
     $this->render_color_opacity_field('head_bg_color', 'head_bg_opacity', __('Head Background Color', 'meinturnierplan-wp'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
+    
+    // Display options
+    $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan-wp'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan-wp'));
     
     echo '</table>';
   }
@@ -258,6 +262,21 @@ class MTP_Admin_Meta_Boxes {
   }
   
   /**
+   * Render checkbox field
+   */
+  private function render_checkbox_field($field_name, $label, $value, $description = '') {
+    echo '<tr>';
+    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
+    echo '<td>';
+    echo '<input type="checkbox" id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" value="1"' . checked(1, $value, false) . ' />';
+    if ($description) {
+      echo '<p class="description">' . esc_html($description) . '</p>';
+    }
+    echo '</td>';
+    echo '</tr>';
+  }
+  
+  /**
    * Render preview section
    */
   private function render_preview_section($post, $meta_values) {
@@ -282,7 +301,7 @@ class MTP_Admin_Meta_Boxes {
     $combined_hover_bg_color = $this->combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = $this->combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
     
-    return array(
+    $atts_array = array(
       'id' => $meta_values['tournament_id'],
       'width' => $meta_values['width'],
       'height' => $meta_values['height'],
@@ -306,6 +325,13 @@ class MTP_Admin_Meta_Boxes {
       's-bsizeov' => $meta_values['bsizeov'],
       's-bbsize' => $meta_values['bbsize']
     );
+    
+    // Add sw parameter if suppress_wins is enabled
+    if (!empty($meta_values['suppress_wins']) && $meta_values['suppress_wins'] === '1') {
+      $atts_array['sw'] = '1';
+    }
+    
+    return $atts_array;
   }
   
   /**
@@ -330,7 +356,7 @@ class MTP_Admin_Meta_Boxes {
       'mtp_bg_color', 'mtp_logo_size', 'mtp_bg_opacity', 'mtp_border_color',
       'mtp_head_bottom_border_color', 'mtp_even_bg_color', 'mtp_even_bg_opacity',
       'mtp_odd_bg_color', 'mtp_odd_bg_opacity', 'mtp_hover_bg_color', 'mtp_hover_bg_opacity',
-      'mtp_head_bg_color', 'mtp_head_bg_opacity'
+      'mtp_head_bg_color', 'mtp_head_bg_opacity', 'mtp_suppress_wins'
     );
     ?>
     <script>
@@ -350,6 +376,11 @@ class MTP_Admin_Meta_Boxes {
         var fieldId = $(this).attr('id');
         var opacity = $(this).val();
         $("#" + fieldId + "_value").text(opacity + "%");
+        $("#mtp_tournament_id").trigger("input");
+      });
+      
+      // Handle checkbox changes
+      $("input[type='checkbox'][id^='mtp_']").on("change", function() {
         $("#mtp_tournament_id").trigger("input");
       });
       
@@ -384,6 +415,7 @@ class MTP_Admin_Meta_Boxes {
           hover_bg_opacity: $("#mtp_hover_bg_opacity").val(),
           head_bg_color: $("#mtp_head_bg_color").val().replace("#", ""),
           head_bg_opacity: $("#mtp_head_bg_opacity").val(),
+          suppress_wins: $("#mtp_suppress_wins").is(":checked") ? "1" : "0",
           action: "mtp_preview_table",
           nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
         };
@@ -427,7 +459,16 @@ class MTP_Admin_Meta_Boxes {
     $combined_hover_bg_color = $this->combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = $this->combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
     
-    return '[mtp-table id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="en" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="' . esc_attr($meta_values['logo_size']) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"]';
+    $shortcode = '[mtp-table id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="en" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="' . esc_attr($meta_values['logo_size']) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"';
+    
+    // Add sw parameter if suppress_wins is enabled
+    if (!empty($meta_values['suppress_wins']) && $meta_values['suppress_wins'] === '1') {
+      $shortcode .= ' sw="1"';
+    }
+    
+    $shortcode .= ']';
+    
+    return $shortcode;
   }
   
   /**
@@ -535,7 +576,14 @@ class MTP_Admin_Meta_Boxes {
                           ' s-bgover="' + hoverBgColor + '"' +
                           ' s-bghead="' + headBgColor + '"' +
                           ' width="' + width + '"' +
-                          ' height="' + height + '"]';
+                          ' height="' + height + '"';
+        
+        // Add sw parameter if suppress_wins checkbox is checked
+        if ($("#mtp_suppress_wins").is(":checked")) {
+          newShortcode += ' sw="1"';
+        }
+        
+        newShortcode += ']';
         
         $("#mtp_shortcode_field").val(newShortcode);
       }
@@ -582,14 +630,18 @@ class MTP_Admin_Meta_Boxes {
       'inner_padding', 'text_color', 'main_color', 'bg_color', 'bg_opacity',
       'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
       'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
-      'head_bg_color', 'head_bg_opacity', 'logo_size'
+      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins'
     );
     
     foreach ($meta_fields as $field) {
       $post_field = 'mtp_' . $field;
       $meta_key = '_mtp_' . $field;
       
-      if (isset($_POST[$post_field])) {
+      if ($field === 'suppress_wins') {
+        // Handle checkbox: if not checked, it won't be in $_POST
+        $value = isset($_POST[$post_field]) ? '1' : '0';
+        update_post_meta($post_id, $meta_key, $value);
+      } elseif (isset($_POST[$post_field])) {
         $value = $this->sanitize_meta_value($field, $_POST[$post_field]);
         update_post_meta($post_id, $meta_key, $value);
       }
@@ -600,6 +652,11 @@ class MTP_Admin_Meta_Boxes {
    * Sanitize meta value based on field type
    */
   private function sanitize_meta_value($field, $value) {
+    // Checkbox fields
+    if ($field === 'suppress_wins') {
+      return $value === '1' ? '1' : '0';
+    }
+    
     // Color fields
     if (in_array($field, array('text_color', 'main_color', 'bg_color', 'border_color', 'head_bottom_border_color', 'even_bg_color', 'odd_bg_color', 'hover_bg_color', 'head_bg_color'))) {
       $color = sanitize_hex_color($value);
