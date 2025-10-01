@@ -152,13 +152,11 @@ class MTP_Admin_Meta_Boxes {
     $this->render_text_field('tournament_id', __('Tournament ID', 'meinturnierplan-wp'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan-wp'));
     
     // Dimensions Group
-    $this->render_group_divider();
     $this->render_group_header(__('Dimensions', 'meinturnierplan-wp'));
     $this->render_number_field('width', __('Table Width (px)', 'meinturnierplan-wp'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan-wp'), 100, 2000);
     $this->render_number_field('height', __('Table Height (px)', 'meinturnierplan-wp'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan-wp'), 100, 2000);
 
     // Display Options Group
-    $this->render_group_divider();
     $this->render_group_header(__('Display Options', 'meinturnierplan-wp'));
     $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan-wp'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan-wp'));
     $this->render_checkbox_field('suppress_logos', __('Suppress Logos', 'meinturnierplan-wp'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan-wp'));
@@ -167,20 +165,17 @@ class MTP_Admin_Meta_Boxes {
     $this->render_checkbox_field('navigation_for_groups', __('Navigation for Groups', 'meinturnierplan-wp'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan-wp'));
     
     // Typography Group
-    $this->render_group_divider();
     $this->render_group_header(__('Typography', 'meinturnierplan-wp'));
     $this->render_number_field('font_size', __('Content Font Size (pt)', 'meinturnierplan-wp'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan-wp'), 6, 24);
     $this->render_number_field('header_font_size', __('Header Font Size (pt)', 'meinturnierplan-wp'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan-wp'), 6, 24);
     $this->render_number_field('logo_size', __('Logo Size (pt)', 'meinturnierplan-wp'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan-wp'), 6, 24);
     
     // Spacing & Layout Group
-    $this->render_group_divider();
     $this->render_group_header(__('Spacing & Layout', 'meinturnierplan-wp'));
     $this->render_number_field('table_padding', __('Table Padding (px)', 'meinturnierplan-wp'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan-wp'), 0, 50);
     $this->render_number_field('inner_padding', __('Inner Padding (px)', 'meinturnierplan-wp'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan-wp'), 0, 20);
     
     // Border Settings Group
-    $this->render_group_divider();
     $this->render_group_header(__('Border Settings', 'meinturnierplan-wp'));
     $this->render_number_field('bsizeh', __('Border Vertical Size (px)', 'meinturnierplan-wp'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
     $this->render_number_field('bsizev', __('Border Horizontal Size (px)', 'meinturnierplan-wp'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
@@ -189,7 +184,6 @@ class MTP_Admin_Meta_Boxes {
     $this->render_number_field('bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan-wp'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan-wp'), 1, 10);
     
     // Colors Group
-    $this->render_group_divider();
     $this->render_group_header(__('Colors', 'meinturnierplan-wp'));
     $this->render_color_field('text_color', __('Text Color', 'meinturnierplan-wp'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan-wp'));
     $this->render_color_field('main_color', __('Main Color', 'meinturnierplan-wp'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan-wp'));
@@ -197,7 +191,6 @@ class MTP_Admin_Meta_Boxes {
     $this->render_color_field('head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan-wp'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan-wp'));
     
     // Background Colors Group
-    $this->render_group_divider();
     $this->render_group_header(__('Background Colors', 'meinturnierplan-wp'));
     $this->render_color_opacity_field('bg_color', 'bg_opacity', __('Background Color', 'meinturnierplan-wp'), $meta_values['bg_color'], $meta_values['bg_opacity'], __('Set the background color and opacity of the tournament table. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
     $this->render_color_opacity_field('head_bg_color', 'head_bg_opacity', __('Head Background Color', 'meinturnierplan-wp'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
@@ -214,18 +207,7 @@ class MTP_Admin_Meta_Boxes {
   private function render_group_header($title) {
     echo '<tr>';
     echo '<td colspan="2" style="padding: 0;">';
-    echo '<h4 style="margin: 20px 0 10px 0; padding: 8px 12px; background: #f1f1f1; border-left: 4px solid #0073aa; font-size: 14px; font-weight: 600; color: #23282d;">' . esc_html($title) . '</h4>';
-    echo '</td>';
-    echo '</tr>';
-  }
-  
-  /**
-   * Render group divider
-   */
-  private function render_group_divider() {
-    echo '<tr>';
-    echo '<td colspan="2" style="padding: 0;">';
-    echo '<div style="height: 1px; background: #ddd; margin: 15px 0;"></div>';
+    echo '<h4 style="margin: 20px 0 10px 0; padding: 8px 0; font-size: 14px; font-weight: 600; color: #23282d; border-bottom: 1px solid #ddd;">' . esc_html($title) . '</h4>';
     echo '</td>';
     echo '</tr>';
   }
