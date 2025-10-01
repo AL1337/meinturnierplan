@@ -65,7 +65,8 @@ class MTP_Shortcode {
       's-bghead' => 'eeeeffff',
       'width' => '',
       'height' => '',
-      'sw' => '0' // Suppress wins, losses, etc.
+      'sw' => '0', // Suppress wins, losses, etc.
+      'sl' => '0'  // Suppress logos
     ), $atts, 'mtp-table');
     
     // Use post_id if provided for getting width from meta, otherwise use null

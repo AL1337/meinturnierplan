@@ -125,6 +125,7 @@ class MTP_Admin_Meta_Boxes {
       'bsizeov' => '1',
       'bbsize' => '2',
       'suppress_wins' => '0',
+      'suppress_logos' => '0',
     );
     
     $meta_values = array();
@@ -187,6 +188,7 @@ class MTP_Admin_Meta_Boxes {
     
     // Display options
     $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan-wp'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan-wp'));
+    $this->render_checkbox_field('suppress_logos', __('Suppress Logos', 'meinturnierplan-wp'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan-wp'));
     
     echo '</table>';
   }
@@ -331,6 +333,11 @@ class MTP_Admin_Meta_Boxes {
       $atts_array['sw'] = '1';
     }
     
+    // Add sl parameter if suppress_logos is enabled
+    if (!empty($meta_values['suppress_logos']) && $meta_values['suppress_logos'] === '1') {
+      $atts_array['sl'] = '1';
+    }
+    
     return $atts_array;
   }
   
@@ -356,7 +363,7 @@ class MTP_Admin_Meta_Boxes {
       'mtp_bg_color', 'mtp_logo_size', 'mtp_bg_opacity', 'mtp_border_color',
       'mtp_head_bottom_border_color', 'mtp_even_bg_color', 'mtp_even_bg_opacity',
       'mtp_odd_bg_color', 'mtp_odd_bg_opacity', 'mtp_hover_bg_color', 'mtp_hover_bg_opacity',
-      'mtp_head_bg_color', 'mtp_head_bg_opacity', 'mtp_suppress_wins'
+      'mtp_head_bg_color', 'mtp_head_bg_opacity', 'mtp_suppress_wins', 'mtp_suppress_logos'
     );
     ?>
     <script>
@@ -416,6 +423,7 @@ class MTP_Admin_Meta_Boxes {
           head_bg_color: $("#mtp_head_bg_color").val().replace("#", ""),
           head_bg_opacity: $("#mtp_head_bg_opacity").val(),
           suppress_wins: $("#mtp_suppress_wins").is(":checked") ? "1" : "0",
+          suppress_logos: $("#mtp_suppress_logos").is(":checked") ? "1" : "0",
           action: "mtp_preview_table",
           nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
         };
@@ -464,6 +472,11 @@ class MTP_Admin_Meta_Boxes {
     // Add sw parameter if suppress_wins is enabled
     if (!empty($meta_values['suppress_wins']) && $meta_values['suppress_wins'] === '1') {
       $shortcode .= ' sw="1"';
+    }
+    
+    // Add sl parameter if suppress_logos is enabled
+    if (!empty($meta_values['suppress_logos']) && $meta_values['suppress_logos'] === '1') {
+      $shortcode .= ' sl="1"';
     }
     
     $shortcode .= ']';
@@ -583,6 +596,11 @@ class MTP_Admin_Meta_Boxes {
           newShortcode += ' sw="1"';
         }
         
+        // Add sl parameter if suppress_logos checkbox is checked
+        if ($("#mtp_suppress_logos").is(":checked")) {
+          newShortcode += ' sl="1"';
+        }
+        
         newShortcode += ']';
         
         $("#mtp_shortcode_field").val(newShortcode);
@@ -630,14 +648,14 @@ class MTP_Admin_Meta_Boxes {
       'inner_padding', 'text_color', 'main_color', 'bg_color', 'bg_opacity',
       'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
       'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
-      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins'
+      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins', 'suppress_logos'
     );
     
     foreach ($meta_fields as $field) {
       $post_field = 'mtp_' . $field;
       $meta_key = '_mtp_' . $field;
       
-      if ($field === 'suppress_wins') {
+      if (in_array($field, array('suppress_wins', 'suppress_logos'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);
@@ -653,7 +671,7 @@ class MTP_Admin_Meta_Boxes {
    */
   private function sanitize_meta_value($field, $value) {
     // Checkbox fields
-    if ($field === 'suppress_wins') {
+    if (in_array($field, array('suppress_wins', 'suppress_logos'))) {
       return $value === '1' ? '1' : '0';
     }
     

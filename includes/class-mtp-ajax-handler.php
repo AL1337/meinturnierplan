@@ -79,6 +79,11 @@ class MTP_Ajax_Handler {
       $atts['sw'] = '1';
     }
     
+    // Add sl parameter if suppress_logos is enabled
+    if (!empty($data['suppress_logos']) && $data['suppress_logos'] === '1') {
+      $atts['sl'] = '1';
+    }
+    
     $html = $this->table_renderer->render_table_html($post_id, $atts);
     
     wp_send_json_success($html);
@@ -112,6 +117,7 @@ class MTP_Ajax_Handler {
       'head_bg_color' => isset($data['head_bg_color']) ? sanitize_text_field($data['head_bg_color']) : 'eeeeffff',
       'logo_size' => sanitize_text_field($data['logo_size']),
       'suppress_wins' => isset($data['suppress_wins']) ? sanitize_text_field($data['suppress_wins']) : '0',
+      'suppress_logos' => isset($data['suppress_logos']) ? sanitize_text_field($data['suppress_logos']) : '0',
     );
   }
 }

@@ -110,6 +110,18 @@ class MTP_Table_Renderer {
       $params['sw'] = '1';
     }
     
+    // Add sl parameter if suppress_logos is enabled
+    $suppress_logos = '';
+    if (!empty($atts['sl'])) {
+      $suppress_logos = $atts['sl'];
+    } elseif ($table_id) {
+      $suppress_logos = get_post_meta($table_id, '_mtp_suppress_logos', true);
+    }
+    
+    if (!empty($suppress_logos) && $suppress_logos === '1') {
+      $params['sl'] = '1';
+    }
+    
     return $params;
   }
   
