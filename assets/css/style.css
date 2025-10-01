@@ -146,3 +146,93 @@
 #mtp-table-preview .mtp-tournament-table {
     margin: 10px 0;
 }
+
+/* Admin two-column layout */
+.mtp-admin-two-column-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding-block: 8px;
+}
+
+.mtp-admin-column {
+    flex: 1;
+    min-width: 0; /* Allows flex items to shrink below their content width */
+}
+
+.mtp-admin-column-left {
+    flex: 1.1; /* Settings take slightly more space */
+}
+
+.mtp-admin-column-right {
+    position: sticky;
+    top: 0;
+    flex: 0.9; /* Preview takes slightly less space */
+}
+
+.mtp-admin-column h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.mtp-admin-clear {
+    clear: both;
+}
+
+/* Responsive design for admin layout */
+@media (max-width: 1200px) {
+    .mtp-admin-two-column-layout {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .mtp-admin-column-left,
+    .mtp-admin-column-right {
+        flex: none;
+        width: 100%;
+    }
+}
+
+/* Ensure form table in settings column is responsive */
+.mtp-admin-column-left .form-table {
+    width: 100%;
+    max-width: none;
+}
+
+.mtp-admin-column-left .form-table th {
+    width: 35%;
+    padding-right: 10px;
+}
+
+.mtp-admin-column-left .form-table td {
+    width: 65%;
+}
+
+/* Preview section styling */
+.mtp-admin-column-right #mtp-table-preview {
+    border: 1px solid #ddd;
+    padding: 15px;
+    background: #f9f9fa;
+    border-radius: 4px;
+    min-height: 200px;
+}
+
+/* Adjust preview for smaller screens within the column */
+@media (max-width: 1400px) {
+    .mtp-admin-column-right #mtp-table-preview {
+        overflow-x: auto;
+    }
+    
+    .mtp-admin-column-right .mtp-tournament-table {
+        font-size: 11px;
+    }
+    
+    .mtp-admin-column-right .mtp-tournament-table th,
+    .mtp-admin-column-right .mtp-tournament-table td {
+        padding: 3px 5px;
+    }
+}

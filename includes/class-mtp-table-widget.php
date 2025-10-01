@@ -75,9 +75,9 @@ class MTP_Table_Widget extends WP_Widget {
                 's-bbsize' => $bbsize,
             );
             
-            // Get the main plugin instance to render table
-            $mtp_plugin = new MeinTurnierplanWP();
-            echo $mtp_plugin->render_table_html($instance['table_id'], $attributes);
+            // Get the table renderer instance to render table
+            $mtp_plugin = MTP_Plugin::instance();
+            echo $mtp_plugin->table_renderer->render_table_html($instance['table_id'], $attributes);
         } else {
             // Show empty table when no table selected
             $width = !empty($instance['width']) ? $instance['width'] : '';
@@ -125,8 +125,8 @@ class MTP_Table_Widget extends WP_Widget {
                 's-bbsize' => $bbsize,
             );
             
-            $mtp_plugin = new MeinTurnierplanWP();
-            echo $mtp_plugin->render_table_html(null, $attributes);
+            $mtp_plugin = MTP_Plugin::instance();
+            echo $mtp_plugin->table_renderer->render_table_html(null, $attributes);
         }
         
         echo $args['after_widget'];
