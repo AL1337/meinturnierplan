@@ -43,7 +43,7 @@ class MTP_Admin_Meta_Boxes {
   public function add_meta_boxes() {
     add_meta_box(
       'mtp_table_settings',
-      __('Table Settings', 'meinturnierplan-wp'),
+      __('Table Settings & Preview', 'meinturnierplan-wp'),
       array($this, 'meta_box_callback'),
       'mtp_table',
       'normal',
@@ -70,11 +70,23 @@ class MTP_Admin_Meta_Boxes {
     // Get current values with defaults
     $meta_values = $this->get_meta_values($post->ID);
     
-    // Output the form
-    $this->render_settings_form($meta_values);
+    // Start two-column layout
+    echo '<div class="mtp-admin-two-column-layout">';
     
-    // Preview section
+    // Left column - Table Settings
+    echo '<div class="mtp-admin-column mtp-admin-column-left">';
+    echo '<h3>' . __('Table Settings', 'meinturnierplan-wp') . '</h3>';
+    $this->render_settings_form($meta_values);
+    echo '</div>';
+    
+    // Right column - Preview
+    echo '<div class="mtp-admin-column mtp-admin-column-right">';
     $this->render_preview_section($post, $meta_values);
+    echo '</div>';
+    
+    // Clear floats
+    echo '<div class="mtp-admin-clear"></div>';
+    echo '</div>';
     
     // Add JavaScript for live preview
     $this->add_preview_javascript($post->ID);

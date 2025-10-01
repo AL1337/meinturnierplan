@@ -55,6 +55,14 @@ class MTP_Assets {
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
         
+        // Enqueue main plugin styles for admin
+        wp_enqueue_style(
+          'mtp-admin-styles',
+          MTP_PLUGIN_URL . 'assets/css/style.css',
+          array('wp-color-picker'),
+          MTP_PLUGIN_VERSION
+        );
+        
         // Enqueue jQuery (already available in admin)
         wp_enqueue_script('jquery');
         
