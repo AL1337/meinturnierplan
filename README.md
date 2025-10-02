@@ -1,4 +1,4 @@
-# Mein Turnierplan WP
+# Mein Turnierplan
 
 A WordPress plugin to display tournament tables using custom post types, supporting widgets, blocks, and shortcodes.
 
