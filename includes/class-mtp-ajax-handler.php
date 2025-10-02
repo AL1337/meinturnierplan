@@ -125,14 +125,14 @@ class MTP_Ajax_Handler {
     $force_refresh = isset($_POST['force_refresh']) ? (bool)$_POST['force_refresh'] : false;
     
     if (empty($tournament_id)) {
-      wp_send_json_success(array('groups' => array()));
+      wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
       return;
     }
     
     // Fetch groups from external API (with caching)
-    $groups = $this->fetch_tournament_groups($tournament_id, $force_refresh);
+    $groups_data = $this->fetch_tournament_groups($tournament_id, $force_refresh);
     
-    wp_send_json_success(array('groups' => $groups));
+    wp_send_json_success($groups_data);
   }
   
   /**
@@ -147,14 +147,16 @@ class MTP_Ajax_Handler {
     $tournament_id = sanitize_text_field($_POST['tournament_id']);
     
     if (empty($tournament_id)) {
-      wp_send_json_success(array('groups' => array()));
+      wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
       return;
     }
     
     // Force refresh groups from external API
-    $groups = $this->fetch_tournament_groups($tournament_id, true);
+    $groups_data = $this->fetch_tournament_groups($tournament_id, true);
     
-    wp_send_json_success(array('groups' => $groups, 'refreshed' => true));
+    // Add refreshed flag to the response
+    $groups_data['refreshed'] = true;
+    wp_send_json_success($groups_data);
   }
   
   /**
@@ -170,9 +172,17 @@ class MTP_Ajax_Handler {
     
     // Try to get cached data first (unless force refresh is requested)
     if (!$force_refresh) {
-      $cached_groups = get_transient($cache_key);
-      if ($cached_groups !== false) {
-        return $cached_groups;
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        // Handle backwards compatibility - if cached data is old format (just array of groups)
+        if (is_array($cached_data) && !isset($cached_data['groups'])) {
+          // Old format - convert to new format
+          return array(
+            'groups' => $cached_data,
+            'hasFinalRound' => false
+          );
+        }
+        return $cached_data;
       }
     }
     
@@ -186,27 +196,44 @@ class MTP_Ajax_Handler {
     // Check for errors
     if (is_wp_error($response)) {
       // Return cached data if available, even if expired
-      $cached_groups = get_transient($cache_key);
-      if ($cached_groups !== false) {
-        return $cached_groups;
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        // Handle backwards compatibility
+        if (is_array($cached_data) && !isset($cached_data['groups'])) {
+          return array(
+            'groups' => $cached_data,
+            'hasFinalRound' => false
+          );
+        }
+        return $cached_data;
       }
-      return array();
+      return array('groups' => array(), 'hasFinalRound' => false);
     }
     
     $body = wp_remote_retrieve_body($response);
     $data = json_decode($body, true);
     
     $groups = array();
+    $has_final_round = false;
     
     // Check if groups exist and are not empty
     if (isset($data['groups']) && is_array($data['groups']) && !empty($data['groups'])) {
       $groups = $data['groups'];
     }
     
-    // Cache the result (even if empty)
-    set_transient($cache_key, $groups, $cache_expiry);
+    // Check if finalRankTable exists and is not empty
+    if (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && !empty($data['finalRankTable'])) {
+      $has_final_round = true;
+    }
     
-    return $groups;
+    // Cache the result (even if empty)
+    $result = array(
+      'groups' => $groups,
+      'hasFinalRound' => $has_final_round
+    );
+    set_transient($cache_key, $result, $cache_expiry);
+    
+    return $result;
   }
   
   /**

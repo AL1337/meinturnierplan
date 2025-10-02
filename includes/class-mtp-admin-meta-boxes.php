@@ -388,10 +388,13 @@ class MTP_Admin_Meta_Boxes {
     $tournament_id = $meta_values['tournament_id'];
     $saved_group = $meta_values['group'];
     $groups = array();
+    $has_final_round = false;
     
     // Only fetch groups if tournament ID is provided
     if (!empty($tournament_id)) {
-      $groups = $this->fetch_tournament_groups($tournament_id);
+      $tournament_data = $this->fetch_tournament_groups($tournament_id);
+      $groups = $tournament_data['groups'];
+      $has_final_round = $tournament_data['hasFinalRound'];
     }
     
     // Always render the field, but populate it based on available groups
@@ -418,12 +421,30 @@ class MTP_Admin_Meta_Boxes {
         $selected = $is_selected ? ' selected' : '';
         echo '<option value="' . esc_attr($group_number) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan-wp'), $group['displayId'])) . '</option>';
       }
+      
+      // Add Final Round option if it exists
+      if ($has_final_round) {
+        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $final_selected = $is_final_selected ? ' selected' : '';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+      }
     } else if (!empty($saved_group) && !empty($tournament_id)) {
       // Show a placeholder for the saved group if groups haven't loaded yet
-      echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan-wp'), $saved_group)) . '</option>';
+      if ($saved_group == '90') {
+        echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan-wp')) . '</option>';
+      } else {
+        echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan-wp'), $saved_group)) . '</option>';
+      }
     } else {
-      // No groups available - show default option
-      echo '<option value="">' . esc_html(__('Default', 'meinturnierplan-wp')) . '</option>';
+      // No groups available - check for Final Round only
+      if ($has_final_round) {
+        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $final_selected = $is_final_selected ? ' selected' : '';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+      } else {
+        // No groups and no final round - show default option
+        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan-wp')) . '</option>';
+      }
     }
     
     echo '</select>';
@@ -458,7 +479,7 @@ class MTP_Admin_Meta_Boxes {
    */
   private function fetch_tournament_groups($tournament_id, $force_refresh = false) {
     if (empty($tournament_id)) {
-      return array();
+      return array('groups' => array(), 'hasFinalRound' => false);
     }
     
     $cache_key = 'mtp_groups_' . $tournament_id;
@@ -466,10 +487,21 @@ class MTP_Admin_Meta_Boxes {
     
     // Try to get cached data first (unless force refresh is requested)
     if (!$force_refresh) {
-      $cached_groups = get_transient($cache_key);
-      if ($cached_groups !== false) {
-        return $cached_groups;
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        // Handle backwards compatibility - if cached data is old format (just array of groups)
+        if (is_array($cached_data) && !isset($cached_data['groups'])) {
+          // Old format - convert to new format
+          return array(
+            'groups' => $cached_data,
+            'hasFinalRound' => false
+          );
+        }
+        return $cached_data;
       }
+    } else {
+      // Force refresh - clear the cache first
+      delete_transient($cache_key);
     }
     
     // Use WordPress HTTP API to fetch the JSON
@@ -482,27 +514,48 @@ class MTP_Admin_Meta_Boxes {
     // Check for errors
     if (is_wp_error($response)) {
       // Return cached data if available, even if expired
-      $cached_groups = get_transient($cache_key);
-      if ($cached_groups !== false) {
-        return $cached_groups;
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        // Handle backwards compatibility
+        if (is_array($cached_data) && !isset($cached_data['groups'])) {
+          return array(
+            'groups' => $cached_data,
+            'hasFinalRound' => false
+          );
+        }
+        return $cached_data;
       }
-      return array();
+      return array('groups' => array(), 'hasFinalRound' => false);
     }
     
     $body = wp_remote_retrieve_body($response);
     $data = json_decode($body, true);
     
     $groups = array();
+    $has_final_round = false;
     
     // Check if groups exist and are not empty
     if (isset($data['groups']) && is_array($data['groups']) && !empty($data['groups'])) {
       $groups = $data['groups'];
     }
     
-    // Cache the result (even if empty)
-    set_transient($cache_key, $groups, $cache_expiry);
+    // Check if finalRankTable exists and has valid final ranking data
+    if (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && count($data['finalRankTable']) > 0) {
+      // Verify it contains valid ranking objects with rank and teamId
+      $first_entry = $data['finalRankTable'][0];
+      if (is_array($first_entry) && isset($first_entry['rank']) && isset($first_entry['teamId'])) {
+        $has_final_round = true;
+      }
+    }
     
-    return $groups;
+    // Cache the result (even if empty)
+    $result = array(
+      'groups' => $groups,
+      'hasFinalRound' => $has_final_round
+    );
+    set_transient($cache_key, $result, $cache_expiry);
+    
+    return $result;
   }
   
   /**
@@ -739,7 +792,13 @@ class MTP_Admin_Meta_Boxes {
               $groupSelect.append('<option value="' + groupNumber + '"' + (isSelected ? ' selected' : '') + '>' + groupLabel + '</option>');
             });
             
-            // If we had a previous selection but it's not in the new list, select the first group
+            // Add Final Round option if it exists
+            if (response.data.hasFinalRound) {
+              var finalRoundSelected = (currentSelection && currentSelection == '90') ? ' selected' : '';
+              $groupSelect.append('<option value="90"' + finalRoundSelected + '>Final Round</option>');
+            }
+            
+            // If we had a previous selection but it's not in the new list, select the first available option
             if (currentSelection && $groupSelect.find('option[value="' + currentSelection + '"]').length === 0) {
               $groupSelect.find('option:first').prop('selected', true);
             }
@@ -752,12 +811,20 @@ class MTP_Admin_Meta_Boxes {
               showTemporaryMessage("Groups refreshed successfully!", "success");
             }
           } else {
-            // No groups found, but keep the field visible with saved value if it exists
+            // No groups found, but check for Final Round
             $groupSelect.prop("disabled", false).empty();
-            $groupSelect.append('<option value="">Default</option>');
+            
+            if (response.data.hasFinalRound) {
+              // If only Final Round is available
+              var finalRoundSelected = (currentSelection && currentSelection == '90') ? ' selected' : '';
+              $groupSelect.append('<option value="90"' + finalRoundSelected + '>Final Round</option>');
+            } else {
+              // No groups and no final round
+              $groupSelect.append('<option value="">Default</option>');
+            }
             
             // If there was a saved value, show it as an option even if groups aren't available
-            if (currentSelection && currentSelection !== '') {
+            if (currentSelection && currentSelection !== '' && currentSelection !== '90' && !response.data.hasFinalRound) {
               $groupSelect.append('<option value="' + currentSelection + '" selected>Group ' + currentSelection + ' (saved)</option>');
             }
             
@@ -777,7 +844,8 @@ class MTP_Admin_Meta_Boxes {
           $groupSelect.append('<option value="">Default</option>');
           
           if (currentSelection && currentSelection !== '') {
-            $groupSelect.append('<option value="' + currentSelection + '" selected>Group ' + currentSelection + ' (saved)</option>');
+            var label = currentSelection == '90' ? 'Final Round (saved)' : 'Group ' + currentSelection + ' (saved)';
+            $groupSelect.append('<option value="' + currentSelection + '" selected>' + label + '</option>');
           }
           
           $refreshButton.prop("disabled", false);
