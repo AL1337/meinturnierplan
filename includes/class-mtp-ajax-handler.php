@@ -198,13 +198,13 @@ class MTP_Ajax_Handler {
       's-innerpadding' => $data['inner_padding'] ? $data['inner_padding'] : '5',
       's-color' => $data['text_color'] ? $data['text_color'] : '000000',
       's-maincolor' => $data['main_color'] ? $data['main_color'] : '173f75',
-      's-bgcolor' => $data['bg_color'] ? $data['bg_color'] : '00000000',
+      's-bgcolor' => $this->combine_color_and_opacity($data['bg_color'], $data['bg_opacity']),
       's-bcolor' => $data['border_color'] ? $data['border_color'] : 'bbbbbb',
       's-bbcolor' => $data['head_bottom_border_color'] ? $data['head_bottom_border_color'] : 'bbbbbb',
-      's-bgeven' => $data['even_bg_color'] ? $data['even_bg_color'] : 'f0f8ffb0',
-      's-bgodd' => $data['odd_bg_color'] ? $data['odd_bg_color'] : 'ffffffb0',
-      's-bgover' => $data['hover_bg_color'] ? $data['hover_bg_color'] : 'eeeeffb0',
-      's-bghead' => $data['head_bg_color'] ? $data['head_bg_color'] : 'eeeeffff',
+      's-bgeven' => $this->combine_color_and_opacity($data['even_bg_color'], $data['even_bg_opacity']),
+      's-bgodd' => $this->combine_color_and_opacity($data['odd_bg_color'], $data['odd_bg_opacity']),
+      's-bgover' => $this->combine_color_and_opacity($data['hover_bg_color'], $data['hover_bg_opacity']),
+      's-bghead' => $this->combine_color_and_opacity($data['head_bg_color'], $data['head_bg_opacity']),
       's-logosize' => $data['logo_size'] ? $data['logo_size'] : '20',
       's-bsizeh' => $data['bsizeh'] ? $data['bsizeh'] : '1',
       's-bsizev' => $data['bsizev'] ? $data['bsizev'] : '1',
@@ -214,10 +214,8 @@ class MTP_Ajax_Handler {
       'setlang' => $data['language'] ? $data['language'] : 'en'
     );
 
-    // Add group parameter if specified
-    if (!empty($data['group'])) {
-      $atts['group'] = $data['group'];
-    }
+    // Always add group parameter to indicate it was processed (even if empty for "all")
+    $atts['group'] = $data['group']; // Will be empty string for "all", actual value for specific groups
 
     // Add matches-specific parameters
     if (!empty($data['match_day']) && $data['match_day'] !== 'all') {
@@ -385,7 +383,7 @@ class MTP_Ajax_Handler {
       'head_bg_opacity' => isset($data['mtp_matches_head_bg_opacity']) ? sanitize_text_field($data['mtp_matches_head_bg_opacity']) : '100',
       'logo_size' => isset($data['mtp_matches_logo_size']) ? sanitize_text_field($data['mtp_matches_logo_size']) : '20',
       'language' => isset($data['mtp_matches_language']) ? sanitize_text_field($data['mtp_matches_language']) : 'en',
-      'group' => isset($data['mtp_matches_group']) ? sanitize_text_field($data['mtp_matches_group']) : '',
+      'group' => (isset($data['mtp_matches_group']) && $data['mtp_matches_group'] !== 'all') ? sanitize_text_field($data['mtp_matches_group']) : '',
       'ehrsize' => isset($data['mtp_matches_ehrsize']) ? sanitize_text_field($data['mtp_matches_ehrsize']) : '10',
       'ehrtop' => isset($data['mtp_matches_ehrtop']) ? sanitize_text_field($data['mtp_matches_ehrtop']) : '9',
       'ehrbottom' => isset($data['mtp_matches_ehrbottom']) ? sanitize_text_field($data['mtp_matches_ehrbottom']) : '3',
@@ -508,5 +506,28 @@ class MTP_Ajax_Handler {
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
     );
+  }
+
+  /**
+   * Combine color and opacity for background colors
+   */
+  private function combine_color_and_opacity($hex_color, $opacity_percent) {
+    // Default to transparent black if no color provided
+    if (empty($hex_color)) {
+      $hex_color = '000000';
+    }
+
+    // Remove # if present
+    $hex_color = ltrim($hex_color, '#');
+
+    // Default opacity if not provided or empty
+    if ($opacity_percent === '' || $opacity_percent === null) {
+      $opacity_percent = 0; // Default to transparent if no opacity specified
+    }
+
+    // Convert opacity percentage to hex
+    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
+
+    return $hex_color . $opacity_hex;
   }
 }

@@ -240,12 +240,17 @@ class MTP_Matches_Renderer {
       $params['setlang'] = get_post_meta($matches_id, '_mtp_matches_language', true) ?: 'en';
     }
 
-    // Add group parameter if specified (use 'gr' for iframe URL)
-    if (!empty($atts['group'])) {
-      $params['gr'] = $atts['group'];
+    // Add group parameter if specified and not "all" (use 'gr' for iframe URL)
+    if (isset($atts['group'])) {
+      // Group was explicitly provided in attributes (from AJAX preview)
+      if (!empty($atts['group']) && $atts['group'] !== 'all') {
+        $params['gr'] = $atts['group'];
+      }
+      // If empty or "all", don't add gr parameter at all
     } elseif (!empty($matches_id)) {
+      // Fall back to post meta only if no group attribute provided
       $group = get_post_meta($matches_id, '_mtp_matches_group', true);
-      if (!empty($group)) {
+      if (!empty($group) && $group !== 'all') {
         $params['gr'] = $group;
       }
     }

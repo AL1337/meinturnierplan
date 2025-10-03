@@ -128,7 +128,7 @@ class MTP_Matches_Admin_Meta_Boxes {
       'ehrbottom' => '3',
       'wrap' => 'false',
       'language' => $this->get_default_language(),
-      'group' => '',
+      'group' => 'all',
     );
 
     $meta_values = array();
@@ -331,19 +331,16 @@ class MTP_Matches_Admin_Meta_Boxes {
     echo '<div style="display: flex; align-items: center; gap: 10px;">';
     echo '<select id="mtp_matches_group" name="mtp_matches_group" class="regular-text">';
 
+    // Always add "All Matches" option first (default)
+    $is_all_selected = empty($saved_group) || $saved_group === 'all';
+    $all_selected = $is_all_selected ? ' selected' : '';
+    echo '<option value="all"' . $all_selected . '>' . esc_html(__('All Matches', 'meinturnierplan-wp')) . '</option>';
+
     if (!empty($groups)) {
-      // Populate with actual groups - never show "All Groups" option
+      // Populate with actual groups
       foreach ($groups as $index => $group) {
         $group_value = $index + 1; // Use 1-based indexing for URL parameter
-        $is_selected = false;
-
-        if (!empty($saved_group)) {
-          // Use saved selection (compare as string)
-          $is_selected = ($saved_group == $group_value);
-        } else if ($index == 0) {
-          // Auto-select first group as default (both single and multiple group cases)
-          $is_selected = true;
-        }
+        $is_selected = (!empty($saved_group) && $saved_group == $group_value);
 
         $selected = $is_selected ? ' selected' : '';
         echo '<option value="' . esc_attr($group_value) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan-wp'), $group['displayId'])) . '</option>';
@@ -359,18 +356,16 @@ class MTP_Matches_Admin_Meta_Boxes {
       // Show a placeholder for the saved group if groups haven't loaded yet
       if ($saved_group == '90') {
         echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan-wp')) . '</option>';
-      } else {
+      } else if ($saved_group !== 'all') {
         echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan-wp'), $saved_group)) . '</option>';
       }
     } else {
-      // No groups available - check for Final Round only
+      // No groups available - "All Matches" is already added above as default
+      // Check for Final Round only if needed
       if ($has_final_round) {
         $is_final_selected = (!empty($saved_group) && $saved_group == '90');
         $final_selected = $is_final_selected ? ' selected' : '';
         echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
-      } else {
-        // No groups and no final round - show default option
-        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan-wp')) . '</option>';
       }
     }
 
@@ -774,7 +769,13 @@ class MTP_Matches_Admin_Meta_Boxes {
         $(".mtp-color-picker").each(function() {
           var name = $(this).attr('name');
           if (name) {
-            data[name] = $(this).val();
+            // For WordPress color picker, get the actual color value
+            var colorValue = $(this).wpColorPicker('color');
+            if (colorValue) {
+              data[name] = colorValue;
+            } else {
+              data[name] = $(this).val();
+            }
           }
         });
 
