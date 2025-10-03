@@ -268,6 +268,18 @@ class MTP_Matches_Renderer {
       $params['showlocation'] = $atts['showlocation'];
     }
 
+    // Add bm parameter if projector_presentation is enabled
+    $projector_presentation = '';
+    if (!empty($atts['bm'])) {
+      $params['bm'] = $atts['bm'];
+    } elseif ($matches_id) {
+      $projector_presentation = get_post_meta($matches_id, '_mtp_matches_projector_presentation', true);
+    }
+
+    if (!empty($projector_presentation) && $projector_presentation === '1') {
+      $params['bm'] = '1';
+    }
+
     return $params;
   }
 

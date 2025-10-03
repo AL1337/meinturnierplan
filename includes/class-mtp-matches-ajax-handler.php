@@ -41,7 +41,7 @@ class MTP_Matches_Ajax_Handler {
    */
   public function ajax_preview_matches() {
     // Check nonce
-    if (!wp_verify_nonce($_POST['nonce'], 'mtp_preview_matches')) {
+    if (!wp_verify_nonce($_POST['nonce'], 'mtp_preview_nonce')) {
       wp_die('Security check failed');
     }
 
@@ -74,7 +74,7 @@ class MTP_Matches_Ajax_Handler {
       'mtp_matches_hover_bg_opacity', 'mtp_matches_head_bg_color', 'mtp_matches_head_bg_opacity',
       'mtp_matches_bsizeh', 'mtp_matches_bsizev', 'mtp_matches_bsizeoh', 'mtp_matches_bsizeov',
       'mtp_matches_bbsize', 'mtp_matches_ehrsize', 'mtp_matches_ehrtop', 'mtp_matches_ehrbottom',
-      'mtp_matches_wrap', 'mtp_matches_language'
+      'mtp_matches_wrap', 'mtp_matches_projector_presentation', 'mtp_matches_language'
     );
 
     foreach ($allowed_fields as $field) {
@@ -112,7 +112,7 @@ class MTP_Matches_Ajax_Handler {
       $data['mtp_matches_head_bg_opacity'] ?? '100'
     );
 
-    return array(
+    $atts = array(
       'id' => $data['mtp_matches_tournament_id'] ?? '',
       'lang' => $data['mtp_matches_language'] ?? 'en',
       's-size' => $data['mtp_matches_font_size'] ?? '9',
@@ -140,6 +140,11 @@ class MTP_Matches_Ajax_Handler {
       'width' => $data['mtp_matches_width'] ?? '588',
       'height' => $data['mtp_matches_height'] ?? '3784',
     );
+
+    // Add bm parameter if projector_presentation is enabled (copied from Tournament Table)
+    if (!empty($data['mtp_matches_projector_presentation']) && $data['mtp_matches_projector_presentation'] === '1') {
+      $atts['bm'] = '1';
+    }    return $atts;
   }
 
   /**

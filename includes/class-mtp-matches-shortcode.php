@@ -68,6 +68,7 @@ class MTP_Matches_Shortcode {
       's-wrap' => 'false',
       'width' => '',
       'height' => '',
+      'bm' => '0', // Projector presentation
     ), $atts, 'mtp-matches');
 
     // Map lang to setlang for internal processing

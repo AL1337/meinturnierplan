@@ -127,6 +127,7 @@ class MTP_Matches_Admin_Meta_Boxes {
       'ehrtop' => '9',
       'ehrbottom' => '3',
       'wrap' => 'false',
+      'projector_presentation' => '0',
       'language' => $this->get_default_language(),
       'group' => 'all',
     );
@@ -155,6 +156,7 @@ class MTP_Matches_Admin_Meta_Boxes {
     // Display Options Group
     $this->render_group_header(__('Display Options', 'meinturnierplan-wp'));
     $this->render_conditional_group_field($meta_values);
+    $this->render_checkbox_field('projector_presentation', __('Projector Presentation', 'meinturnierplan-wp'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the matches display.', 'meinturnierplan-wp'));
 
     // Dimensions Group
     $this->render_group_header(__('Dimensions', 'meinturnierplan-wp'));
@@ -301,6 +303,21 @@ class MTP_Matches_Admin_Meta_Boxes {
     echo '<input type="range" id="mtp_matches_' . esc_attr($opacity_field) . '" name="mtp_matches_' . esc_attr($opacity_field) . '" min="0" max="100" value="' . esc_attr($opacity_value) . '" style="width: 100px;" />';
     echo '<span id="mtp_matches_' . esc_attr($opacity_field) . '_value" style="font-size: 12px; min-width: 35px;">' . esc_html($opacity_value) . '%</span>';
     echo '</div>';
+    if ($description) {
+      echo '<p class="description">' . esc_html($description) . '</p>';
+    }
+    echo '</td>';
+    echo '</tr>';
+  }
+
+  /**
+   * Render checkbox field
+   */
+  private function render_checkbox_field($field_name, $label, $value, $description = '') {
+    echo '<tr>';
+    echo '<th scope="row"><label for="mtp_matches_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
+    echo '<td>';
+    echo '<input type="checkbox" id="mtp_matches_' . esc_attr($field_name) . '" name="mtp_matches_' . esc_attr($field_name) . '" value="1"' . checked(1, $value, false) . ' />';
     if ($description) {
       echo '<p class="description">' . esc_html($description) . '</p>';
     }
@@ -495,7 +512,7 @@ class MTP_Matches_Admin_Meta_Boxes {
     $combined_hover_bg_color = $this->combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = $this->combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
 
-    return array(
+    $atts = array(
       'id' => $meta_values['tournament_id'],
       'lang' => $meta_values['language'],
       's-size' => $meta_values['font_size'],
@@ -523,6 +540,13 @@ class MTP_Matches_Admin_Meta_Boxes {
       'width' => $meta_values['width'],
       'height' => $meta_values['height'],
     );
+
+    // Add bm parameter if projector_presentation is enabled
+    if (!empty($meta_values['projector_presentation']) && $meta_values['projector_presentation'] === '1') {
+      $atts['bm'] = '1';
+    }
+
+    return $atts;
   }
 
   /**
@@ -672,6 +696,11 @@ class MTP_Matches_Admin_Meta_Boxes {
         if ($(this).attr('id') !== 'mtp_matches_tournament_id') {
           updatePreview();
         }
+      });
+
+      // Handle checkbox changes specifically
+      $("input[type='checkbox'][id*='mtp_matches_']").on("change", function() {
+        updatePreview();
       });
 
       // Specifically handle group field changes to ensure preview and shortcode update
@@ -830,6 +859,14 @@ class MTP_Matches_Admin_Meta_Boxes {
           }
         });
 
+        // Ensure checkbox values are included
+        $("input[type='checkbox'][id*='mtp_matches_']").each(function() {
+          var name = $(this).attr('name');
+          if (name) {
+            data[name] = $(this).is(':checked') ? '1' : '0';
+          }
+        });
+
         $.post(ajaxurl, data, function(response) {
           if (response.success) {
             $("#mtp-matches-preview").html(response.data);
@@ -865,7 +902,14 @@ class MTP_Matches_Admin_Meta_Boxes {
     $combined_hover_bg_color = $this->combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = $this->combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
 
-    $shortcode = '[mtp-matches id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-ehrsize="' . esc_attr($meta_values['ehrsize']) . '" s-ehrtop="' . esc_attr($meta_values['ehrtop']) . '" s-ehrbottom="' . esc_attr($meta_values['ehrbottom']) . '" s-wrap="' . esc_attr($meta_values['wrap']) . '"' . (!empty($meta_values['group']) ? ' group="' . esc_attr($meta_values['group']) . '"' : '') . ' width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"]';
+    $shortcode = '[mtp-matches id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-ehrsize="' . esc_attr($meta_values['ehrsize']) . '" s-ehrtop="' . esc_attr($meta_values['ehrtop']) . '" s-ehrbottom="' . esc_attr($meta_values['ehrbottom']) . '" s-wrap="' . esc_attr($meta_values['wrap']) . '"';
+
+    // Add bm parameter if projector_presentation is enabled
+    if (!empty($meta_values['projector_presentation']) && $meta_values['projector_presentation'] === '1') {
+      $shortcode .= ' bm="1"';
+    }
+
+    $shortcode .= ' width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"]';
 
     return $shortcode;
   }
@@ -925,6 +969,11 @@ class MTP_Matches_Admin_Meta_Boxes {
 
       // Update shortcode when fields change
       $("input[id*='mtp_matches_'], .mtp-color-picker, select[id*='mtp_matches_']").on("input change", function() {
+        updateShortcode();
+      });
+
+      // Handle checkbox changes for shortcode updates
+      $("input[type='checkbox'][id*='mtp_matches_']").on("change", function() {
         updateShortcode();
       });
 
@@ -997,9 +1046,19 @@ class MTP_Matches_Admin_Meta_Boxes {
                           ' s-ehrsize="' + ehrsize + '"' +
                           ' s-ehrtop="' + ehrtop + '"' +
                           ' s-ehrbottom="' + ehrbottom + '"' +
-                          ' s-wrap="' + wrap + '"' +
-                          (group ? ' group="' + group + '"' : '') +
-                          ' width="' + width + '" height="' + height + '"]';
+                          ' s-wrap="' + wrap + '"';
+
+        // Add group parameter if selected
+        if (group) {
+          newShortcode += ' group="' + group + '"';
+        }
+
+        // Add bm parameter if projector_presentation checkbox is checked
+        if ($("#mtp_matches_projector_presentation").is(":checked")) {
+          newShortcode += ' bm="1"';
+        }
+
+        newShortcode += ' width="' + width + '" height="' + height + '"]';
 
         $("#mtp_matches_shortcode_field").val(newShortcode);
       }
@@ -1039,19 +1098,26 @@ class MTP_Matches_Admin_Meta_Boxes {
       'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
       'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
       'head_bg_color', 'head_bg_opacity', 'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize',
-      'ehrsize', 'ehrtop', 'ehrbottom', 'wrap', 'language', 'group'
+      'ehrsize', 'ehrtop', 'ehrbottom', 'wrap', 'projector_presentation', 'language', 'group'
     );
 
     foreach ($fields as $field) {
       $meta_key = '_mtp_matches_' . $field;
-      $value = isset($_POST['mtp_matches_' . $field]) ? sanitize_text_field($_POST['mtp_matches_' . $field]) : '';
 
-      // Strip # prefix from color fields to maintain consistency
-      if (strpos($field, 'color') !== false && !empty($value)) {
-        $value = ltrim($value, '#');
+      if ($field === 'projector_presentation') {
+        // Handle checkbox: if not checked, it won't be in $_POST
+        $value = isset($_POST['mtp_matches_' . $field]) ? '1' : '0';
+        update_post_meta($post_id, $meta_key, $value);
+      } elseif (isset($_POST['mtp_matches_' . $field])) {
+        $value = sanitize_text_field($_POST['mtp_matches_' . $field]);
+
+        // Strip # prefix from color fields to maintain consistency
+        if (strpos($field, 'color') !== false && !empty($value)) {
+          $value = ltrim($value, '#');
+        }
+
+        update_post_meta($post_id, $meta_key, $value);
       }
-
-      update_post_meta($post_id, $meta_key, $value);
     }
   }
 }
