@@ -128,6 +128,7 @@ class MTP_Matches_Admin_Meta_Boxes {
       'ehrbottom' => '3',
       'wrap' => 'false',
       'language' => $this->get_default_language(),
+      'group' => '',
     );
 
     $meta_values = array();
@@ -150,6 +151,10 @@ class MTP_Matches_Admin_Meta_Boxes {
     $this->render_group_header(__('Basic Settings', 'meinturnierplan-wp'));
     $this->render_text_field('tournament_id', __('Tournament ID', 'meinturnierplan-wp'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1752429520)', 'meinturnierplan-wp'));
     $this->render_select_field('language', __('Language', 'meinturnierplan-wp'), $meta_values['language'], $this->get_language_options(), __('Select the language for the matches display.', 'meinturnierplan-wp'));
+
+    // Display Options Group
+    $this->render_group_header(__('Display Options', 'meinturnierplan-wp'));
+    $this->render_conditional_group_field($meta_values);
 
     // Dimensions Group
     $this->render_group_header(__('Dimensions', 'meinturnierplan-wp'));
@@ -304,6 +309,166 @@ class MTP_Matches_Admin_Meta_Boxes {
   }
 
   /**
+   * Render conditional group field
+   */
+  private function render_conditional_group_field($meta_values) {
+    $tournament_id = $meta_values['tournament_id'];
+    $saved_group = $meta_values['group'];
+    $groups = array();
+    $has_final_round = false;
+
+    // Only fetch groups if tournament ID is provided
+    if (!empty($tournament_id)) {
+      $tournament_data = $this->fetch_tournament_groups($tournament_id);
+      $groups = $tournament_data['groups'];
+      $has_final_round = $tournament_data['hasFinalRound'];
+    }
+
+    // Always render the field, but populate it based on available groups
+    echo '<tr id="mtp_matches_group_field_row">';
+    echo '<th scope="row"><label for="mtp_matches_group">' . esc_html(__('Group', 'meinturnierplan-wp')) . '</label></th>';
+    echo '<td>';
+    echo '<div style="display: flex; align-items: center; gap: 10px;">';
+    echo '<select id="mtp_matches_group" name="mtp_matches_group" class="regular-text">';
+
+    if (!empty($groups)) {
+      // Populate with actual groups - never show "All Groups" option
+      foreach ($groups as $index => $group) {
+        $group_value = $index + 1; // Use 1-based indexing for URL parameter
+        $is_selected = false;
+
+        if (!empty($saved_group)) {
+          // Use saved selection (compare as string)
+          $is_selected = ($saved_group == $group_value);
+        } else if ($index == 0) {
+          // Auto-select first group as default (both single and multiple group cases)
+          $is_selected = true;
+        }
+
+        $selected = $is_selected ? ' selected' : '';
+        echo '<option value="' . esc_attr($group_value) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan-wp'), $group['displayId'])) . '</option>';
+      }
+
+      // Add Final Round option if it exists
+      if ($has_final_round) {
+        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $final_selected = $is_final_selected ? ' selected' : '';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+      }
+    } else if (!empty($saved_group) && !empty($tournament_id)) {
+      // Show a placeholder for the saved group if groups haven't loaded yet
+      if ($saved_group == '90') {
+        echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan-wp')) . '</option>';
+      } else {
+        echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan-wp'), $saved_group)) . '</option>';
+      }
+    } else {
+      // No groups available - check for Final Round only
+      if ($has_final_round) {
+        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $final_selected = $is_final_selected ? ' selected' : '';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+      } else {
+        // No groups and no final round - show default option
+        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan-wp')) . '</option>';
+      }
+    }
+
+    echo '</select>';
+    echo '<button type="button" id="mtp_matches_refresh_groups" class="button button-secondary" title="' . esc_attr(__('Refresh Groups', 'meinturnierplan-wp')) . '">';
+    echo '<span class="dashicons dashicons-update-alt" style="vertical-align: middle;"></span>';
+    echo '</button>';
+    echo '</div>';
+
+    // Update description based on group availability
+    if (!empty($groups) && count($groups) > 1) {
+      echo '<p class="description">' . esc_html(__('Select a specific group to display. Click refresh to update groups from server.', 'meinturnierplan-wp')) . '</p>';
+    } else if (!empty($groups) && count($groups) == 1) {
+      echo '<p class="description">' . esc_html(__('This tournament has only one group. Click refresh to update groups from server.', 'meinturnierplan-wp')) . '</p>';
+    } else {
+      echo '<p class="description">' . esc_html(__('No groups found for this tournament. Click refresh to update groups from server.', 'meinturnierplan-wp')) . '</p>';
+    }
+
+    // Add hidden field to store the initially saved value for JavaScript
+    echo '<input type="hidden" id="mtp_matches_group_saved_value" value="' . esc_attr($saved_group) . '" />';
+    echo '</td>';
+    echo '</tr>';
+
+    // Hide group field if no tournament ID
+    if (empty($tournament_id)) {
+      echo '<style>#mtp_matches_group_field_row { display: none; }</style>';
+    }
+  }
+
+  /**
+   * Fetch tournament groups from API
+   */
+  private function fetch_tournament_groups($tournament_id, $force_refresh = false) {
+    if (empty($tournament_id)) {
+      return array('groups' => array(), 'hasFinalRound' => false);
+    }
+
+    $cache_key = 'mtp_matches_groups_' . $tournament_id;
+    $cache_duration = 300; // 5 minutes
+
+    // Check cache first unless forcing refresh
+    if (!$force_refresh) {
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        return array(
+          'groups' => $cached_data,
+          'hasFinalRound' => get_transient($cache_key . '_final_round') === 'yes'
+        );
+      }
+    }
+
+    // Use WordPress HTTP API to fetch the JSON
+    $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+    $response = wp_remote_get($url, array(
+      'timeout' => 10,
+      'sslverify' => true
+    ));
+
+    // Check for errors
+    if (is_wp_error($response)) {
+      // Return cached data if available, even if expired
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        return array(
+          'groups' => $cached_data,
+          'hasFinalRound' => get_transient($cache_key . '_final_round') === 'yes'
+        );
+      }
+      return array('groups' => array(), 'hasFinalRound' => false);
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    $groups = array();
+    $has_final_round = false;
+
+    // Check if groups exist and are not empty
+    if (isset($data['groups']) && is_array($data['groups']) && !empty($data['groups'])) {
+      $groups = $data['groups'];
+    }
+
+    // Check if finalRankTable exists and is not empty
+    if (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && !empty($data['finalRankTable'])) {
+      $has_final_round = true;
+    }
+
+    // Cache the result (even if empty)
+    set_transient($cache_key, $groups, $cache_duration);
+    set_transient($cache_key . '_final_round', $has_final_round ? 'yes' : 'no', $cache_duration);
+
+    return array(
+      'groups' => $groups,
+      'hasFinalRound' => $has_final_round
+    );
+  }
+
+  /**
    * Render preview section
    */
   private function render_preview_section($post, $meta_values) {
@@ -426,10 +591,161 @@ class MTP_Matches_Admin_Meta_Boxes {
         updatePreview();
       });
 
-      // Update preview when fields change
-      $("input[id*='mtp_matches_'], select[id*='mtp_matches_']").on("input change", function() {
+      // Tournament ID change handler - fetch groups when tournament ID changes
+      $("#mtp_matches_tournament_id").on("input change", function() {
+        var tournamentId = $(this).val();
+        var groupField = $("#mtp_matches_group_field_row");
+
+        if (tournamentId) {
+          // Show group field
+          groupField.show();
+          // Fetch groups for this tournament
+          fetchGroups(tournamentId, false);
+        } else {
+          // Hide group field
+          groupField.hide();
+        }
+
         updatePreview();
       });
+
+      // Group refresh button handler
+      $("#mtp_matches_refresh_groups").on("click", function() {
+        var tournamentId = $("#mtp_matches_tournament_id").val();
+
+        if (!tournamentId) {
+          alert('<?php echo esc_js(__('Please enter a Tournament ID first.', 'meinturnierplan-wp')); ?>');
+          return;
+        }
+
+        var button = $(this);
+        var icon = button.find('.dashicons');
+
+        // Show loading state
+        button.prop('disabled', true);
+        icon.addClass('rotating');
+
+        fetchGroups(tournamentId, true, function() {
+          // Reset button state
+          button.prop('disabled', false);
+          icon.removeClass('rotating');
+        });
+      });
+
+      // Update preview when fields change
+      $("input[id*='mtp_matches_'], select[id*='mtp_matches_']").on("input change", function() {
+        // Skip tournament ID as it has its own handler
+        if ($(this).attr('id') !== 'mtp_matches_tournament_id') {
+          updatePreview();
+        }
+      });
+
+      // Specifically handle group field changes to ensure preview and shortcode update
+      $("#mtp_matches_group").on("change", function() {
+        updatePreview();
+      });
+
+      function fetchGroups(tournamentId, forceRefresh, callback) {
+        if (!tournamentId) return;
+
+        var action = forceRefresh ? 'mtp_refresh_matches_groups' : 'mtp_get_matches_groups';
+
+        var data = {
+          action: action,
+          tournament_id: tournamentId,
+          force_refresh: forceRefresh,
+          nonce: '<?php echo wp_create_nonce('mtp_preview_nonce'); ?>'
+        };
+
+        $.post(ajaxurl, data, function(response) {
+          if (response.success) {
+            updateGroupSelect(response.data.groups, response.data.hasFinalRound);
+
+            if (forceRefresh && response.data.refreshed) {
+              // Show temporary success message
+              showRefreshMessage();
+            }
+          }
+
+          if (callback) callback();
+        });
+      }
+
+      function updateGroupSelect(groups, hasFinalRound) {
+        var groupSelect = $("#mtp_matches_group");
+        var savedValue = $("#mtp_matches_group_saved_value").val();
+        var currentValue = groupSelect.val();
+
+        // Clear current options
+        groupSelect.empty();
+
+        if (groups && groups.length > 0) {
+          // Add group options
+          groups.forEach(function(group, index) {
+            var groupNumber = index + 1;
+            var isSelected = false;
+
+            if (savedValue) {
+              isSelected = (savedValue == groupNumber);
+            } else if (currentValue) {
+              isSelected = (currentValue == groupNumber);
+            } else if (index === 0) {
+              isSelected = true; // Auto-select first group
+            }
+
+            var option = '<option value="' + groupNumber + '"' + (isSelected ? ' selected' : '') + '>' +
+                        '<?php echo esc_js(__('Group', 'meinturnierplan-wp')); ?> ' + group.displayId + '</option>';
+            groupSelect.append(option);
+          });
+
+          // Add Final Round option if it exists
+          if (hasFinalRound) {
+            var isFinalSelected = (savedValue == '90') || (currentValue == '90');
+            var finalOption = '<option value="90"' + (isFinalSelected ? ' selected' : '') + '>' +
+                             '<?php echo esc_js(__('Final Round', 'meinturnierplan-wp')); ?></option>';
+            groupSelect.append(finalOption);
+          }
+
+          // Update description
+          var description = groupSelect.closest('td').find('p.description');
+          if (groups.length > 1) {
+            description.text('<?php echo esc_js(__('Select a specific group to display. Click refresh to update groups from server.', 'meinturnierplan-wp')); ?>');
+          } else {
+            description.text('<?php echo esc_js(__('This tournament has only one group. Click refresh to update groups from server.', 'meinturnierplan-wp')); ?>');
+          }
+        } else {
+          // No groups - add default option and handle final round
+          if (hasFinalRound) {
+            var isFinalSelected = (savedValue == '90') || (currentValue == '90');
+            groupSelect.append('<option value="90"' + (isFinalSelected ? ' selected' : '') + '><?php echo esc_js(__('Final Round', 'meinturnierplan-wp')); ?></option>');
+          } else {
+            groupSelect.append('<option value=""><?php echo esc_js(__('Default', 'meinturnierplan-wp')); ?></option>');
+          }
+
+          // Update description
+          var description = groupSelect.closest('td').find('p.description');
+          description.text('<?php echo esc_js(__('No groups found for this tournament. Click refresh to update groups from server.', 'meinturnierplan-wp')); ?>');
+        }
+
+        // Trigger preview and shortcode updates after updating group options
+        updatePreview();
+        if (typeof updateShortcode === 'function') {
+          updateShortcode();
+        }
+      }
+
+      function showRefreshMessage() {
+        var button = $("#mtp_matches_refresh_groups");
+        var message = $('<div class="mtp-refresh-success" style="margin-left: 10px; color: #46b450; font-size: 12px;">✓ <?php echo esc_js(__('Refreshed', 'meinturnierplan-wp')); ?></div>');
+
+        button.parent().append(message);
+
+        setTimeout(function() {
+          message.fadeOut(function() {
+            message.remove();
+          });
+        }, 2000);
+      }
 
       function updatePreview() {
         var tournamentId = $("#mtp_matches_tournament_id").val();
@@ -443,11 +759,27 @@ class MTP_Matches_Admin_Meta_Boxes {
           action: 'mtp_preview_matches',
           post_id: <?php echo intval($post_id); ?>,
           tournament_id: tournamentId,
-          nonce: '<?php echo wp_create_nonce('mtp_preview_matches'); ?>'
+          nonce: '<?php echo wp_create_nonce('mtp_preview_nonce'); ?>'
         };
 
         // Collect all form data
         $("input[id*='mtp_matches_'], select[id*='mtp_matches_']").each(function() {
+          var name = $(this).attr('name');
+          if (name) {
+            data[name] = $(this).val();
+          }
+        });
+
+        // Ensure color picker values are included (they might not be captured above)
+        $(".mtp-color-picker").each(function() {
+          var name = $(this).attr('name');
+          if (name) {
+            data[name] = $(this).val();
+          }
+        });
+
+        // Ensure range/slider values are included
+        $("input[type='range'][id*='mtp_matches_']").each(function() {
           var name = $(this).attr('name');
           if (name) {
             data[name] = $(this).val();
@@ -460,6 +792,9 @@ class MTP_Matches_Admin_Meta_Boxes {
           }
         });
       }
+
+      // Add CSS for rotating animation
+      $('<style>.rotating { animation: rotate 1s linear infinite; } @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }</style>').appendTo('head');
     });
     </script>
     <?php
@@ -486,7 +821,7 @@ class MTP_Matches_Admin_Meta_Boxes {
     $combined_hover_bg_color = $this->combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = $this->combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
 
-    $shortcode = '[mtp-matches id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-ehrsize="' . esc_attr($meta_values['ehrsize']) . '" s-ehrtop="' . esc_attr($meta_values['ehrtop']) . '" s-ehrbottom="' . esc_attr($meta_values['ehrbottom']) . '" s-wrap="' . esc_attr($meta_values['wrap']) . '" width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"]';
+    $shortcode = '[mtp-matches id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-ehrsize="' . esc_attr($meta_values['ehrsize']) . '" s-ehrtop="' . esc_attr($meta_values['ehrtop']) . '" s-ehrbottom="' . esc_attr($meta_values['ehrbottom']) . '" s-wrap="' . esc_attr($meta_values['wrap']) . '"' . (!empty($meta_values['group']) ? ' group="' . esc_attr($meta_values['group']) . '"' : '') . ' width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"]';
 
     return $shortcode;
   }
@@ -549,6 +884,11 @@ class MTP_Matches_Admin_Meta_Boxes {
         updateShortcode();
       });
 
+      // Specifically handle group field changes for shortcode generation
+      $("#mtp_matches_group").on("change", function() {
+        updateShortcode();
+      });
+
       // Opacity sliders
       $("input[type='range'][id*='mtp_matches_']").on("input", function() {
         updateShortcode();
@@ -577,6 +917,7 @@ class MTP_Matches_Admin_Meta_Boxes {
         var ehrbottom = $("#mtp_matches_ehrbottom").val() || "3";
         var wrap = $("#mtp_matches_wrap").val() || "false";
         var language = $("#mtp_matches_language").val() || "en";
+        var group = $("#mtp_matches_group").val() || "";
 
         function opacityToHex(opacity) {
           return Math.round(opacity).toString(16).padStart(2, '0');
@@ -613,6 +954,7 @@ class MTP_Matches_Admin_Meta_Boxes {
                           ' s-ehrtop="' + ehrtop + '"' +
                           ' s-ehrbottom="' + ehrbottom + '"' +
                           ' s-wrap="' + wrap + '"' +
+                          (group ? ' group="' + group + '"' : '') +
                           ' width="' + width + '" height="' + height + '"]';
 
         $("#mtp_matches_shortcode_field").val(newShortcode);
@@ -653,7 +995,7 @@ class MTP_Matches_Admin_Meta_Boxes {
       'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
       'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
       'head_bg_color', 'head_bg_opacity', 'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize',
-      'ehrsize', 'ehrtop', 'ehrbottom', 'wrap', 'language'
+      'ehrsize', 'ehrtop', 'ehrbottom', 'wrap', 'language', 'group'
     );
 
     foreach ($fields as $field) {

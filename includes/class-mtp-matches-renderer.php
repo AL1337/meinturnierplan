@@ -240,6 +240,29 @@ class MTP_Matches_Renderer {
       $params['setlang'] = get_post_meta($matches_id, '_mtp_matches_language', true) ?: 'en';
     }
 
+    // Add group parameter if specified (use 'gr' for iframe URL)
+    if (!empty($atts['group'])) {
+      $params['gr'] = $atts['group'];
+    } elseif (!empty($matches_id)) {
+      $group = get_post_meta($matches_id, '_mtp_matches_group', true);
+      if (!empty($group)) {
+        $params['gr'] = $group;
+      }
+    }
+
+    // Add matches-specific parameters
+    if (!empty($atts['spieltag'])) {
+      $params['spieltag'] = $atts['spieltag'];
+    }
+
+    if (!empty($atts['onlyopen'])) {
+      $params['onlyopen'] = $atts['onlyopen'];
+    }
+
+    if (!empty($atts['showlocation'])) {
+      $params['showlocation'] = $atts['showlocation'];
+    }
+
     return $params;
   }
 

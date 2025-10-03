@@ -106,15 +106,15 @@ class MTP_Plugin {
     // Initialize components
     $this->installer = new MTP_Installer();
     $this->table_renderer = new MTP_Table_Renderer();
+    $this->matches_renderer = new MTP_Matches_Renderer(); // Initialize matches renderer first
     $this->post_type = new MTP_Post_Type();
     $this->shortcode = new MTP_Shortcode($this->table_renderer);
     $this->admin_meta_boxes = new MTP_Admin_Meta_Boxes($this->table_renderer);
-    $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer);
+    $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer, $this->matches_renderer); // Now matches renderer is available
     $this->assets = new MTP_Assets();
     $this->gutenberg_block = new MTP_Gutenberg_Block($this->table_renderer);
 
-    // Initialize matches components
-    $this->matches_renderer = new MTP_Matches_Renderer();
+    // Initialize remaining matches components
     $this->matches_shortcode = new MTP_Matches_Shortcode($this->matches_renderer);
     $this->matches_admin_meta_boxes = new MTP_Matches_Admin_Meta_Boxes($this->matches_renderer);
     $this->matches_gutenberg_block = new MTP_Matches_Gutenberg_Block($this->matches_renderer);
