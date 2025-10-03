@@ -539,25 +539,64 @@ class MTP_Matches_Admin_Meta_Boxes {
   }
 
   /**
-   * Get default language
-   */
-  private function get_default_language() {
-    $locale = get_locale();
-    return substr($locale, 0, 2);
-  }
-
-  /**
    * Get language options
    */
   private function get_language_options() {
     return array(
       'en' => __('English', 'meinturnierplan-wp'),
-      'de' => __('German', 'meinturnierplan-wp'),
-      'fr' => __('French', 'meinturnierplan-wp'),
-      'es' => __('Spanish', 'meinturnierplan-wp'),
-      'it' => __('Italian', 'meinturnierplan-wp'),
-      'nl' => __('Dutch', 'meinturnierplan-wp'),
+      'de' => __('Deutsch / German', 'meinturnierplan-wp'),
+      'es' => __('Español / Spanish', 'meinturnierplan-wp'),
+      'fr' => __('Français / French', 'meinturnierplan-wp'),
+      'hr' => __('Hrvatski / Croatian', 'meinturnierplan-wp'),
+      'it' => __('Italiano / Italian', 'meinturnierplan-wp'),
+      'pl' => __('Polski / Polish', 'meinturnierplan-wp'),
+      'sl' => __('Slovenščina / Slovenian', 'meinturnierplan-wp'),
+      'tr' => __('Türkçe / Turkish', 'meinturnierplan-wp'),
     );
+  }
+
+  /**
+   * Get default language based on WordPress locale
+   */
+  private function get_default_language() {
+    // First, try to get the current user's language preference
+    $user_locale = '';
+    if (is_user_logged_in()) {
+      $user_id = get_current_user_id();
+      $user_locale = get_user_meta($user_id, 'locale', true);
+    }
+
+    // Use user locale if available, otherwise fall back to site locale
+    $wp_locale = !empty($user_locale) ? $user_locale : get_locale();
+
+    // Define supported languages with their WordPress locale mappings
+    $supported_languages = array(
+      'en' => array('en_US', 'en_GB', 'en_CA', 'en_AU', 'en_NZ', 'en_ZA'),
+      'de' => array('de_DE', 'de_AT', 'de_CH', 'de_DE_formal'),
+      'es' => array('es_ES', 'es_MX', 'es_AR', 'es_CL', 'es_CO', 'es_PE', 'es_VE'),
+      'fr' => array('fr_FR', 'fr_BE', 'fr_CA', 'fr_CH'),
+      'hr' => array('hr', 'hr_HR'),
+      'it' => array('it_IT'),
+      'pl' => array('pl_PL'),
+      'sl' => array('sl_SI'),
+      'tr' => array('tr_TR'),
+    );
+
+    // Check if current locale matches any supported language
+    foreach ($supported_languages as $lang_code => $locales) {
+      if (in_array($wp_locale, $locales)) {
+        return $lang_code;
+      }
+    }
+
+    // Check for partial matches (e.g., 'de' from 'de_DE_formal')
+    $wp_lang_code = substr($wp_locale, 0, 2);
+    if (array_key_exists($wp_lang_code, $supported_languages)) {
+      return $wp_lang_code;
+    }
+
+    // Default to English if no match found
+    return 'en';
   }
 
   /**
