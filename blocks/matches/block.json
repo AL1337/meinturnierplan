@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "meinturnierplan/matches",
+  "version": "0.1.0",
+  "title": "Tournament Matches",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Display tournament matches from your custom post types.",
+  "keywords": ["tournament", "matches", "meinturnierplan", "competition"],
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "matchesId": {
+      "type": "string",
+      "default": ""
+    },
+    "matchesName": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "meinturnierplan-wp",
+  "editorScript": "file:../../assets/js/matches-block.js"
+}

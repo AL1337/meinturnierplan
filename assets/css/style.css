@@ -248,3 +248,62 @@
     padding: 3px 5px;
   }
 }
+
+/* Tournament Matches Styles */
+.mtp-matches-widget iframe,
+.mtp-matches-block iframe {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Matches block editor styles */
+.mtp-matches-block {
+  margin: 10px 0;
+}
+
+/* Matches widget specific styles */
+.mtp-matches-widget {
+  text-align: center;
+}
+
+.mtp-matches-widget iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+/* Matches preview styles in admin */
+.mtp-admin-column-right #mtp-matches-preview {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background: #f9f9fa;
+  border-radius: 4px;
+  min-height: 200px;
+  overflow-x: auto;
+}
+
+@media (max-width: 1400px) {
+  .mtp-admin-column-right #mtp-matches-preview iframe {
+    transform: scale(0.7);
+    transform-origin: top left;
+    width: 142.86% !important; /* Compensate for the scale */
+  }
+}
+
+/* Responsive styles for matches */
+@media (max-width: 768px) {
+  .mtp-matches-widget iframe,
+  .mtp-matches-block iframe {
+    width: 100% !important;
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mtp-matches-widget iframe,
+  .mtp-matches-block iframe {
+    width: 100% !important;
+    min-width: 250px;
+  }
+}

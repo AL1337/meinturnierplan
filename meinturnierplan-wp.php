@@ -2,7 +2,7 @@
 /**
  * Plugin Name: MeinTurnierplan
  * Plugin URI: https://github.com/danfisher85/meinturnierplan-wp
- * Description: A WordPress plugin to display tournament tables using custom post types, shortcodes, and widgets.
+ * Description: A WordPress plugin to display tournament tables and matches using custom post types, shortcodes, and widgets.
  * Version: 1.0.0
  * Author: Roman Perevala
  * License: GPL v2 or later
@@ -33,6 +33,14 @@ require_once MTP_PLUGIN_PATH . 'includes/class-mtp-assets.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-installer.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-widget.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-gutenberg-block.php';
+
+// Include matches-related files
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-renderer.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-shortcode.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-admin-meta-boxes.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-widget.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-gutenberg-block.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-ajax-handler.php';
 
 // Register activation and deactivation hooks
 register_activation_hook(__FILE__, array('MTP_Installer', 'activate'));
