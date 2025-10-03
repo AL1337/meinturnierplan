@@ -713,19 +713,24 @@ class MTP_Matches_Admin_Meta_Boxes {
         // Clear current options
         groupSelect.empty();
 
+        // Always add "All Matches" option first
+        var isAllSelected = (!savedValue || savedValue === 'all') && (!currentValue || currentValue === 'all');
+        var allOption = '<option value="all"' + (isAllSelected ? ' selected' : '') + '>' +
+                       '<?php echo esc_js(__('All Matches', 'meinturnierplan-wp')); ?></option>';
+        groupSelect.append(allOption);
+
         if (groups && groups.length > 0) {
           // Add group options
           groups.forEach(function(group, index) {
             var groupNumber = index + 1;
             var isSelected = false;
 
-            if (savedValue) {
+            if (savedValue && savedValue !== 'all') {
               isSelected = (savedValue == groupNumber);
-            } else if (currentValue) {
+            } else if (currentValue && currentValue !== 'all') {
               isSelected = (currentValue == groupNumber);
-            } else if (index === 0) {
-              isSelected = true; // Auto-select first group
             }
+            // Note: Don't auto-select first group anymore since "All Matches" is the default
 
             var option = '<option value="' + groupNumber + '"' + (isSelected ? ' selected' : '') + '>' +
                         '<?php echo esc_js(__('Group', 'meinturnierplan-wp')); ?> ' + group.displayId + '</option>';
@@ -748,12 +753,11 @@ class MTP_Matches_Admin_Meta_Boxes {
             description.text('<?php echo esc_js(__('This tournament has only one group. Click refresh to update groups from server.', 'meinturnierplan-wp')); ?>');
           }
         } else {
-          // No groups - add default option and handle final round
+          // No groups - "All Matches" option is already added above
+          // Only add Final Round if it exists
           if (hasFinalRound) {
             var isFinalSelected = (savedValue == '90') || (currentValue == '90');
             groupSelect.append('<option value="90"' + (isFinalSelected ? ' selected' : '') + '><?php echo esc_js(__('Final Round', 'meinturnierplan-wp')); ?></option>');
-          } else {
-            groupSelect.append('<option value=""><?php echo esc_js(__('Default', 'meinturnierplan-wp')); ?></option>');
           }
 
           // Update description
