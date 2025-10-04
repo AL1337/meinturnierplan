@@ -3,7 +3,7 @@
  * Plugin Name: MeinTurnierplan
  * Plugin URI: https://github.com/danfisher85/meinturnierplan-wp
  * Description: A WordPress plugin to display tournament tables using custom post types, shortcodes, and widgets.
- * Version: 1.0.1
+ * Version: 0.1.1
  * Author: Roman Perevala
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
