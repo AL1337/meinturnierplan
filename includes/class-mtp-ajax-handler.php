@@ -39,7 +39,7 @@ class MTP_Ajax_Handler {
   }
 
   /**
-   * AJAX handler for table preview (existing one for admin)
+   * AJAX handler for table preview
    */
   public function ajax_preview_table() {
     // Check nonce
@@ -61,13 +61,13 @@ class MTP_Ajax_Handler {
       's-innerpadding' => $data['inner_padding'] ? $data['inner_padding'] : '5',
       's-color' => $data['text_color'] ? $data['text_color'] : '000000',
       's-maincolor' => $data['main_color'] ? $data['main_color'] : '173f75',
-      's-bgcolor' => $data['bg_color'] ? $data['bg_color'] : '00000000',
+      's-bgcolor' => $this->combine_color_and_opacity($data['bg_color'], $data['bg_opacity']),
       's-bcolor' => $data['border_color'] ? $data['border_color'] : 'bbbbbb',
       's-bbcolor' => $data['head_bottom_border_color'] ? $data['head_bottom_border_color'] : 'bbbbbb',
-      's-bgeven' => $data['even_bg_color'] ? $data['even_bg_color'] : 'f0f8ffb0',
-      's-bgodd' => $data['odd_bg_color'] ? $data['odd_bg_color'] : 'ffffffb0',
-      's-bgover' => $data['hover_bg_color'] ? $data['hover_bg_color'] : 'eeeeffb0',
-      's-bghead' => $data['head_bg_color'] ? $data['head_bg_color'] : 'eeeeffff',
+      's-bgeven' => $this->combine_color_and_opacity($data['even_bg_color'], $data['even_bg_opacity']),
+      's-bgodd' => $this->combine_color_and_opacity($data['odd_bg_color'], $data['odd_bg_opacity']),
+      's-bgover' => $this->combine_color_and_opacity($data['hover_bg_color'], $data['hover_bg_opacity']),
+      's-bghead' => $this->combine_color_and_opacity($data['head_bg_color'], $data['head_bg_opacity']),
       's-logosize' => $data['logo_size'] ? $data['logo_size'] : '20',
       's-bsizeh' => $data['bsizeh'] ? $data['bsizeh'] : '1',
       's-bsizev' => $data['bsizev'] ? $data['bsizev'] : '1',
@@ -255,13 +255,18 @@ class MTP_Ajax_Handler {
       'inner_padding' => sanitize_text_field($data['inner_padding']),
       'text_color' => sanitize_text_field($data['text_color']),
       'main_color' => sanitize_text_field($data['main_color']),
-      'bg_color' => sanitize_text_field($data['bg_color']),
+      'bg_color' => isset($data['bg_color']) ? ltrim(sanitize_text_field($data['bg_color']), '#') : '000000',
+      'bg_opacity' => isset($data['bg_opacity']) ? sanitize_text_field($data['bg_opacity']) : '0',
       'border_color' => isset($data['border_color']) ? sanitize_text_field($data['border_color']) : 'bbbbbb',
       'head_bottom_border_color' => isset($data['head_bottom_border_color']) ? sanitize_text_field($data['head_bottom_border_color']) : 'bbbbbb',
-      'even_bg_color' => isset($data['even_bg_color']) ? sanitize_text_field($data['even_bg_color']) : 'f0f8ffb0',
-      'odd_bg_color' => isset($data['odd_bg_color']) ? sanitize_text_field($data['odd_bg_color']) : 'ffffffb0',
-      'hover_bg_color' => isset($data['hover_bg_color']) ? sanitize_text_field($data['hover_bg_color']) : 'eeeeffb0',
-      'head_bg_color' => isset($data['head_bg_color']) ? sanitize_text_field($data['head_bg_color']) : 'eeeeffff',
+      'even_bg_color' => isset($data['even_bg_color']) ? ltrim(sanitize_text_field($data['even_bg_color']), '#') : 'f0f8ff',
+      'even_bg_opacity' => isset($data['even_bg_opacity']) ? sanitize_text_field($data['even_bg_opacity']) : '69',
+      'odd_bg_color' => isset($data['odd_bg_color']) ? ltrim(sanitize_text_field($data['odd_bg_color']), '#') : 'ffffff',
+      'odd_bg_opacity' => isset($data['odd_bg_opacity']) ? sanitize_text_field($data['odd_bg_opacity']) : '69',
+      'hover_bg_color' => isset($data['hover_bg_color']) ? ltrim(sanitize_text_field($data['hover_bg_color']), '#') : 'eeeeff',
+      'hover_bg_opacity' => isset($data['hover_bg_opacity']) ? sanitize_text_field($data['hover_bg_opacity']) : '69',
+      'head_bg_color' => isset($data['head_bg_color']) ? ltrim(sanitize_text_field($data['head_bg_color']), '#') : 'eeeeff',
+      'head_bg_opacity' => isset($data['head_bg_opacity']) ? sanitize_text_field($data['head_bg_opacity']) : '100',
       'logo_size' => sanitize_text_field($data['logo_size']),
       'suppress_wins' => isset($data['suppress_wins']) ? sanitize_text_field($data['suppress_wins']) : '0',
       'suppress_logos' => isset($data['suppress_logos']) ? sanitize_text_field($data['suppress_logos']) : '0',
@@ -271,5 +276,28 @@ class MTP_Ajax_Handler {
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
     );
+  }
+
+  /**
+   * Combine color and opacity for background colors
+   */
+  private function combine_color_and_opacity($hex_color, $opacity_percent) {
+    // Default to transparent black if no color provided
+    if (empty($hex_color)) {
+      $hex_color = '000000';
+    }
+
+    // Remove # if present
+    $hex_color = ltrim($hex_color, '#');
+
+    // Default opacity if not provided or empty
+    if ($opacity_percent === '' || $opacity_percent === null) {
+      $opacity_percent = 0; // Default to transparent if no opacity specified
+    }
+
+    // Convert opacity percentage to hex
+    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
+
+    return $hex_color . $opacity_hex;
   }
 }

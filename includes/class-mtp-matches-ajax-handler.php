@@ -80,6 +80,11 @@ class MTP_Matches_Ajax_Handler {
     // Always add group parameter to indicate it was processed (even if empty for "all")
     $atts['group'] = $data['group']; // Will be empty string for "all", actual value for specific groups
 
+    // Add bm parameter if projector_presentation is enabled
+    if (!empty($data['projector_presentation']) && $data['projector_presentation'] === '1') {
+      $atts['bm'] = '1';
+    }
+
     // Add matches-specific parameters
     if (!empty($data['match_day']) && $data['match_day'] !== 'all') {
       $atts['spieltag'] = $data['match_day'];
@@ -186,6 +191,7 @@ class MTP_Matches_Ajax_Handler {
       'match_day' => isset($data['match_day']) ? sanitize_text_field($data['match_day']) : 'all',
       'hide_finished_matches' => isset($data['hide_finished_matches']) ? sanitize_text_field($data['hide_finished_matches']) : '0',
       'show_location' => isset($data['show_location']) ? sanitize_text_field($data['show_location']) : '0',
+      'projector_presentation' => isset($data['projector_presentation']) ? sanitize_text_field($data['projector_presentation']) : '0',
     );
   }
 
