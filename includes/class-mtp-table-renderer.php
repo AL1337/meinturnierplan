@@ -56,7 +56,7 @@ class MTP_Table_Renderer {
     $params = $this->build_url_params($tournament_id, $table_id, $atts);
 
     // Build the iframe URL
-    $iframe_url = 'https://www.meinturnierplan.de/displayTable.php?' . http_build_query($params);
+    $iframe_url = 'https://www.meinturnierplan.de/displayTable.php?' . $this->build_query_string($params);
 
     // Generate unique ID for this iframe instance
     $iframe_id = 'mtp-table-' . $tournament_id . '-' . substr(md5(serialize($atts)), 0, 8);
@@ -107,7 +107,7 @@ class MTP_Table_Renderer {
     }
 
     if (!empty($suppress_wins) && $suppress_wins === '1') {
-      $params['sw'] = '1';
+      $params['sw'] = '';
     }
 
     // Add sl parameter if suppress_logos is enabled
@@ -119,7 +119,7 @@ class MTP_Table_Renderer {
     }
 
     if (!empty($suppress_logos) && $suppress_logos === '1') {
-      $params['sl'] = '1';
+      $params['sl'] = '';
     }
 
     // Add sn parameter if suppress_num_matches is enabled
@@ -131,7 +131,7 @@ class MTP_Table_Renderer {
     }
 
     if (!empty($suppress_num_matches) && $suppress_num_matches === '1') {
-      $params['sn'] = '1';
+      $params['sn'] = '';
     }
 
     // Add bm parameter if projector_presentation is enabled
@@ -143,7 +143,7 @@ class MTP_Table_Renderer {
     }
 
     if (!empty($projector_presentation) && $projector_presentation === '1') {
-      $params['bm'] = '1';
+      $params['bm'] = '';
     }
 
     // Add nav parameter if navigation_for_groups is enabled
@@ -155,7 +155,7 @@ class MTP_Table_Renderer {
     }
 
     if (!empty($navigation_for_groups) && $navigation_for_groups === '1') {
-      $params['nav'] = '1';
+      $params['nav'] = '';
     }
 
     // Add setlang parameter if language is specified
@@ -315,6 +315,28 @@ class MTP_Table_Renderer {
     $html .= '</div>';
 
     return $html;
+  }
+
+  /**
+   * Build custom query string to handle parameters without values
+   */
+  private function build_query_string($params) {
+    $query_parts = array();
+
+    // Parameters that should appear without values when enabled
+    $no_value_params = array('bm', 'sn', 'sw', 'sl', 'nav');
+
+    foreach ($params as $key => $value) {
+      if (in_array($key, $no_value_params) && $value === '') {
+        // Special case: just add parameter name without equals sign
+        $query_parts[] = urlencode($key);
+      } else {
+        // Normal parameter with value
+        $query_parts[] = urlencode($key) . '=' . urlencode($value);
+      }
+    }
+
+    return implode('&', $query_parts);
   }
 
   /**
