@@ -110,7 +110,7 @@ class MTP_Plugin {
     $this->post_type = new MTP_Post_Type();
     $this->shortcode = new MTP_Shortcode($this->table_renderer);
     $this->admin_meta_boxes = new MTP_Admin_Meta_Boxes($this->table_renderer);
-    $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer, $this->matches_renderer); // Now matches renderer is available
+    $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer); // Table AJAX handler only
     $this->assets = new MTP_Assets();
     $this->gutenberg_block = new MTP_Gutenberg_Block($this->table_renderer);
 
