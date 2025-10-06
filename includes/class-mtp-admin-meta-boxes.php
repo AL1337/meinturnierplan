@@ -705,18 +705,25 @@ class MTP_Admin_Meta_Boxes {
         updatePreview();
       });
 
-      // Handle tournament ID changes to load groups dynamically
+      // Handle tournament ID changes to load groups dynamically AND update preview
       var tournamentIdChangeTimeout;
+      var previewUpdateTimeout;
       $("#mtp_tournament_id").on("input", function() {
         var tournamentId = $(this).val();
 
-        // Clear previous timeout to avoid multiple calls
+        // Clear previous timeouts to avoid multiple calls
         clearTimeout(tournamentIdChangeTimeout);
+        clearTimeout(previewUpdateTimeout);
 
         // Only load groups after user stops typing for 500ms
         tournamentIdChangeTimeout = setTimeout(function() {
           loadGroupsForTournament(tournamentId);
         }, 500);
+
+        // Update preview after user stops typing for 300ms (faster than group loading)
+        previewUpdateTimeout = setTimeout(function() {
+          updatePreview();
+        }, 300);
       });
 
       // Function to load groups for a tournament
@@ -880,10 +887,6 @@ class MTP_Admin_Meta_Boxes {
       }
 
       $("#<?php echo implode(', #', $field_list); ?>").on("input change", function() {
-        // Don't reload groups when other fields change, only when tournament ID changes
-        if (this.id === 'mtp_tournament_id') {
-          return; // Tournament ID changes are handled separately above
-        }
         updatePreview();
       });
 
