@@ -6,10 +6,10 @@
   const { apiFetch } = wp;
 
   registerBlockType('meinturnierplan/tournament-table', {
-    title: __('Tournament Table', 'meinturnierplan-wp'),
+    title: __('Tournament Table', 'meinturnierplan'),
     icon: 'editor-table',
     category: 'widgets',
-    description: __('Display a tournament table from your custom post types.', 'meinturnierplan-wp'),
+    description: __('Display a tournament table from your custom post types.', 'meinturnierplan'),
     
     attributes: {
       tableId: {
@@ -64,7 +64,7 @@
           Placeholder,
           {
             icon: 'editor-table',
-            label: __('Tournament Table', 'meinturnierplan-wp')
+            label: __('Tournament Table', 'meinturnierplan')
           },
           el(Spinner)
         );
@@ -77,13 +77,13 @@
           Placeholder,
           {
             icon: 'editor-table',
-            label: __('Tournament Table', 'meinturnierplan-wp'),
+            label: __('Tournament Table', 'meinturnierplan'),
             instructions: tableId 
-              ? __('Tournament table selected: ', 'meinturnierplan-wp') + tableName
-              : __('Choose a tournament table to display.', 'meinturnierplan-wp')
+              ? __('Tournament table selected: ', 'meinturnierplan') + tableName
+              : __('Choose a tournament table to display.', 'meinturnierplan')
           },
           el(SelectControl, {
-            label: __('Select Tournament Table', 'meinturnierplan-wp'),
+            label: __('Select Tournament Table', 'meinturnierplan'),
             value: tableId,
             options: tables,
             onChange: onChangeTable

@@ -70,9 +70,9 @@ class MTP_Table_Renderer {
       esc_url($iframe_url),
       esc_attr($width),
       esc_attr($height),
-      __('Your browser does not support the tournament widget.', 'meinturnierplan-wp'),
+      __('Your browser does not support the tournament widget.', 'meinturnierplan'),
       esc_attr($tournament_id),
-      __('Go to Tournament.', 'meinturnierplan-wp')
+      __('Go to Tournament.', 'meinturnierplan')
     );
 
     return $iframe_html;
@@ -310,8 +310,8 @@ class MTP_Table_Renderer {
 
     // Simple placeholder message
     $html = '<div style="width: ' . esc_attr($width) . 'px; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; text-align: center; color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">';
-    $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan-wp') . '</strong><br>';
-    $html .= __('Enter a Tournament ID above to display live tournament data.', 'meinturnierplan-wp');
+    $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan') . '</strong><br>';
+    $html .= __('Enter a Tournament ID above to display live tournament data.', 'meinturnierplan');
     $html .= '</div>';
 
     return $html;

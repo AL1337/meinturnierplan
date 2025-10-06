@@ -11,9 +11,9 @@ class MTP_Table_Widget extends WP_Widget {
   public function __construct() {
     parent::__construct(
       'mtp_table_widget',
-      __('Tournament Table', 'meinturnierplan-wp'),
+      __('Tournament Table', 'meinturnierplan'),
       array(
-        'description' => __('Display a tournament table.', 'meinturnierplan-wp'),
+        'description' => __('Display a tournament table.', 'meinturnierplan'),
         'classname'   => 'mtp-table-widget'
       )
     );
@@ -53,7 +53,7 @@ class MTP_Table_Widget extends WP_Widget {
       $shortcode = new MTP_Shortcode($mtp_plugin->table_renderer);
       echo $shortcode->shortcode_callback($shortcode_atts);
     } else {
-      echo '<div class="mtp-widget-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan-wp') . '</div>';
+      echo '<div class="mtp-widget-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';
     }
 
     echo $args['after_widget'];
@@ -63,7 +63,7 @@ class MTP_Table_Widget extends WP_Widget {
    * Widget form in admin
    */
   public function form($instance) {
-    $title = !empty($instance['title']) ? $instance['title'] : __('Tournament Table', 'meinturnierplan-wp');
+    $title = !empty($instance['title']) ? $instance['title'] : __('Tournament Table', 'meinturnierplan');
     $table_id = !empty($instance['table_id']) ? $instance['table_id'] : '';
 
     // Get all tournament tables
@@ -76,14 +76,14 @@ class MTP_Table_Widget extends WP_Widget {
     ));
     ?>
     <p>
-      <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'meinturnierplan-wp'); ?></label>
+      <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'meinturnierplan'); ?></label>
       <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
     </p>
 
     <p>
-      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php _e('Select Tournament Table:', 'meinturnierplan-wp'); ?></label>
+      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php _e('Select Tournament Table:', 'meinturnierplan'); ?></label>
       <select class="widefat" id="<?php echo esc_attr($this->get_field_id('table_id')); ?>" name="<?php echo esc_attr($this->get_field_name('table_id')); ?>">
-        <option value=""><?php _e('-- Select Table --', 'meinturnierplan-wp'); ?></option>
+        <option value=""><?php _e('-- Select Table --', 'meinturnierplan'); ?></option>
         <?php foreach ($tables as $table): ?>
           <option value="<?php echo esc_attr($table->ID); ?>" <?php selected($table_id, $table->ID); ?>>
             <?php echo esc_html($table->post_title); ?>
@@ -93,7 +93,7 @@ class MTP_Table_Widget extends WP_Widget {
     </p>
 
     <p>
-      <small><?php _e('The widget will use the width, height, and all styling settings configured for the selected Tournament Table.', 'meinturnierplan-wp'); ?></small>
+      <small><?php _e('The widget will use the width, height, and all styling settings configured for the selected Tournament Table.', 'meinturnierplan'); ?></small>
     </p>
     <?php
   }

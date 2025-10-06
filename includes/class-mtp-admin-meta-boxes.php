@@ -43,7 +43,7 @@ class MTP_Admin_Meta_Boxes {
   public function add_meta_boxes() {
     add_meta_box(
       'mtp_table_settings',
-      __('Table Settings & Preview', 'meinturnierplan-wp'),
+      __('Table Settings & Preview', 'meinturnierplan'),
       array($this, 'meta_box_callback'),
       'mtp_table',
       'normal',
@@ -52,7 +52,7 @@ class MTP_Admin_Meta_Boxes {
 
     add_meta_box(
       'mtp_table_shortcode',
-      __('Shortcode Generator', 'meinturnierplan-wp'),
+      __('Shortcode Generator', 'meinturnierplan'),
       array($this, 'shortcode_meta_box_callback'),
       'mtp_table',
       'side',
@@ -75,7 +75,7 @@ class MTP_Admin_Meta_Boxes {
 
     // Left column - Table Settings
     echo '<div class="mtp-admin-column mtp-admin-column-left">';
-    echo '<h3>' . __('Table Settings', 'meinturnierplan-wp') . '</h3>';
+    echo '<h3>' . __('Table Settings', 'meinturnierplan') . '</h3>';
     $this->render_settings_form($meta_values);
     echo '</div>';
 
@@ -150,57 +150,57 @@ class MTP_Admin_Meta_Boxes {
     echo '<table class="form-table">';
 
     // Basic Settings Group
-    $this->render_group_header(__('Basic Settings', 'meinturnierplan-wp'));
-    $this->render_text_field('tournament_id', __('Tournament ID', 'meinturnierplan-wp'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan-wp'));
-    $this->render_select_field('language', __('Language', 'meinturnierplan-wp'), $meta_values['language'], $this->get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan-wp'));
+    $this->render_group_header(__('Basic Settings', 'meinturnierplan'));
+    $this->render_text_field('tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
+    $this->render_select_field('language', __('Language', 'meinturnierplan'), $meta_values['language'], $this->get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
 
     // Dimensions Group
-    $this->render_group_header(__('Dimensions', 'meinturnierplan-wp'));
-    $this->render_number_field('width', __('Table Width (px)', 'meinturnierplan-wp'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan-wp'), 100, 2000);
-    $this->render_number_field('height', __('Table Height (px)', 'meinturnierplan-wp'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan-wp'), 100, 2000);
+    $this->render_group_header(__('Dimensions', 'meinturnierplan'));
+    $this->render_number_field('width', __('Table Width (px)', 'meinturnierplan'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
+    $this->render_number_field('height', __('Table Height (px)', 'meinturnierplan'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
 
     // Display Options Group
-    $this->render_group_header(__('Display Options', 'meinturnierplan-wp'));
+    $this->render_group_header(__('Display Options', 'meinturnierplan'));
     $this->render_conditional_group_field($meta_values);
-    $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan-wp'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan-wp'));
-    $this->render_checkbox_field('suppress_logos', __('Suppress Logos', 'meinturnierplan-wp'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan-wp'));
-    $this->render_checkbox_field('suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan-wp'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan-wp'));
-    $this->render_checkbox_field('projector_presentation', __('Projector Presentation', 'meinturnierplan-wp'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan-wp'));
-    $this->render_checkbox_field('navigation_for_groups', __('Navigation for Groups', 'meinturnierplan-wp'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan-wp'));
+    $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan'));
+    $this->render_checkbox_field('suppress_logos', __('Suppress Logos', 'meinturnierplan'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan'));
+    $this->render_checkbox_field('suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan'));
+    $this->render_checkbox_field('projector_presentation', __('Projector Presentation', 'meinturnierplan'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan'));
+    $this->render_checkbox_field('navigation_for_groups', __('Navigation for Groups', 'meinturnierplan'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan'));
 
     // Typography Group
-    $this->render_group_header(__('Typography', 'meinturnierplan-wp'));
-    $this->render_number_field('font_size', __('Content Font Size (pt)', 'meinturnierplan-wp'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan-wp'), 6, 24);
-    $this->render_number_field('header_font_size', __('Header Font Size (pt)', 'meinturnierplan-wp'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan-wp'), 6, 24);
-    $this->render_number_field('logo_size', __('Logo Size (pt)', 'meinturnierplan-wp'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan-wp'), 6, 24);
+    $this->render_group_header(__('Typography', 'meinturnierplan'));
+    $this->render_number_field('font_size', __('Content Font Size (pt)', 'meinturnierplan'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan'), 6, 24);
+    $this->render_number_field('header_font_size', __('Header Font Size (pt)', 'meinturnierplan'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan'), 6, 24);
+    $this->render_number_field('logo_size', __('Logo Size (pt)', 'meinturnierplan'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan'), 6, 24);
 
     // Spacing & Layout Group
-    $this->render_group_header(__('Spacing & Layout', 'meinturnierplan-wp'));
-    $this->render_number_field('table_padding', __('Table Padding (px)', 'meinturnierplan-wp'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan-wp'), 0, 50);
-    $this->render_number_field('inner_padding', __('Inner Padding (px)', 'meinturnierplan-wp'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan-wp'), 0, 20);
+    $this->render_group_header(__('Spacing & Layout', 'meinturnierplan'));
+    $this->render_number_field('table_padding', __('Table Padding (px)', 'meinturnierplan'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan'), 0, 50);
+    $this->render_number_field('inner_padding', __('Inner Padding (px)', 'meinturnierplan'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan'), 0, 20);
 
     // Border Settings Group
-    $this->render_group_header(__('Border Settings', 'meinturnierplan-wp'));
-    $this->render_number_field('bsizeh', __('Border Vertical Size (px)', 'meinturnierplan-wp'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
-    $this->render_number_field('bsizev', __('Border Horizontal Size (px)', 'meinturnierplan-wp'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
-    $this->render_number_field('bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan-wp'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
-    $this->render_number_field('bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan-wp'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan-wp'), 1, 10);
-    $this->render_number_field('bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan-wp'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan-wp'), 1, 10);
+    $this->render_group_header(__('Border Settings', 'meinturnierplan'));
+    $this->render_number_field('bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    $this->render_number_field('bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    $this->render_number_field('bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    $this->render_number_field('bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    $this->render_number_field('bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan'), 1, 10);
 
     // Colors Group
-    $this->render_group_header(__('Colors', 'meinturnierplan-wp'));
-    $this->render_color_field('text_color', __('Text Color', 'meinturnierplan-wp'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan-wp'));
-    $this->render_color_field('main_color', __('Main Color', 'meinturnierplan-wp'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan-wp'));
-    $this->render_color_field('border_color', __('Border Color', 'meinturnierplan-wp'), $meta_values['border_color'], __('Set the border color of the tournament table. Light gray (#bbbbbb) is the default value.', 'meinturnierplan-wp'));
-    $this->render_color_field('head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan-wp'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan-wp'));
+    $this->render_group_header(__('Colors', 'meinturnierplan'));
+    $this->render_color_field('text_color', __('Text Color', 'meinturnierplan'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan'));
+    $this->render_color_field('main_color', __('Main Color', 'meinturnierplan'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan'));
+    $this->render_color_field('border_color', __('Border Color', 'meinturnierplan'), $meta_values['border_color'], __('Set the border color of the tournament table. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
+    $this->render_color_field('head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
 
     // Background Colors Group
-    $this->render_group_header(__('Background Colors', 'meinturnierplan-wp'));
-    $this->render_color_opacity_field('bg_color', 'bg_opacity', __('Background Color', 'meinturnierplan-wp'), $meta_values['bg_color'], $meta_values['bg_opacity'], __('Set the background color and opacity of the tournament table. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
-    $this->render_color_opacity_field('head_bg_color', 'head_bg_opacity', __('Head Background Color', 'meinturnierplan-wp'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
-    $this->render_color_opacity_field('even_bg_color', 'even_bg_opacity', __('Even Rows Background Color', 'meinturnierplan-wp'), $meta_values['even_bg_color'], $meta_values['even_bg_opacity'], __('Set the background color and opacity for even-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
-    $this->render_color_opacity_field('odd_bg_color', 'odd_bg_opacity', __('Odd Rows Background Color', 'meinturnierplan-wp'), $meta_values['odd_bg_color'], $meta_values['odd_bg_opacity'], __('Set the background color and opacity for odd-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
-    $this->render_color_opacity_field('hover_bg_color', 'hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan-wp'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan-wp'));
+    $this->render_group_header(__('Background Colors', 'meinturnierplan'));
+    $this->render_color_opacity_field('bg_color', 'bg_opacity', __('Background Color', 'meinturnierplan'), $meta_values['bg_color'], $meta_values['bg_opacity'], __('Set the background color and opacity of the tournament table. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    $this->render_color_opacity_field('head_bg_color', 'head_bg_opacity', __('Head Background Color', 'meinturnierplan'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    $this->render_color_opacity_field('even_bg_color', 'even_bg_opacity', __('Even Rows Background Color', 'meinturnierplan'), $meta_values['even_bg_color'], $meta_values['even_bg_opacity'], __('Set the background color and opacity for even-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    $this->render_color_opacity_field('odd_bg_color', 'odd_bg_opacity', __('Odd Rows Background Color', 'meinturnierplan'), $meta_values['odd_bg_color'], $meta_values['odd_bg_opacity'], __('Set the background color and opacity for odd-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    $this->render_color_opacity_field('hover_bg_color', 'hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan'));
 
     echo '</table>';
   }
@@ -274,7 +274,7 @@ class MTP_Admin_Meta_Boxes {
     echo '<div style="display: flex; align-items: center; gap: 15px;">';
     echo '<input type="text" id="mtp_' . esc_attr($color_field) . '" name="mtp_' . esc_attr($color_field) . '" value="#' . esc_attr($color_value) . '" class="mtp-color-picker" style="width: 120px;" />';
     echo '<div style="display: flex; align-items: center; gap: 8px;">';
-    echo '<label for="mtp_' . esc_attr($opacity_field) . '" style="margin: 0; font-weight: normal;">' . __('Opacity:', 'meinturnierplan-wp') . '</label>';
+    echo '<label for="mtp_' . esc_attr($opacity_field) . '" style="margin: 0; font-weight: normal;">' . __('Opacity:', 'meinturnierplan') . '</label>';
     echo '<input type="range" id="mtp_' . esc_attr($opacity_field) . '" name="mtp_' . esc_attr($opacity_field) . '" value="' . esc_attr($opacity_value) . '" min="0" max="100" step="1" style="width: 100px;" />';
     echo '<span id="mtp_' . esc_attr($opacity_field) . '_value" style="min-width: 35px; font-size: 12px; color: #666;">' . esc_attr($opacity_value) . '%</span>';
     echo '</div>';
@@ -325,15 +325,15 @@ class MTP_Admin_Meta_Boxes {
    */
   private function get_language_options() {
     return array(
-      'en' => __('English', 'meinturnierplan-wp'),
-      'de' => __('Deutsch / German', 'meinturnierplan-wp'),
-      'es' => __('Español / Spanish', 'meinturnierplan-wp'),
-      'fr' => __('Français / French', 'meinturnierplan-wp'),
-      'hr' => __('Hrvatski / Croatian', 'meinturnierplan-wp'),
-      'it' => __('Italiano / Italian', 'meinturnierplan-wp'),
-      'pl' => __('Polski / Polish', 'meinturnierplan-wp'),
-      'sl' => __('Slovenščina / Slovenian', 'meinturnierplan-wp'),
-      'tr' => __('Türkçe / Turkish', 'meinturnierplan-wp'),
+      'en' => __('English', 'meinturnierplan'),
+      'de' => __('Deutsch / German', 'meinturnierplan'),
+      'es' => __('Español / Spanish', 'meinturnierplan'),
+      'fr' => __('Français / French', 'meinturnierplan'),
+      'hr' => __('Hrvatski / Croatian', 'meinturnierplan'),
+      'it' => __('Italiano / Italian', 'meinturnierplan'),
+      'pl' => __('Polski / Polish', 'meinturnierplan'),
+      'sl' => __('Slovenščina / Slovenian', 'meinturnierplan'),
+      'tr' => __('Türkçe / Turkish', 'meinturnierplan'),
     );
   }
 
@@ -399,7 +399,7 @@ class MTP_Admin_Meta_Boxes {
 
     // Always render the field, but populate it based on available groups
     echo '<tr id="mtp_group_field_row">';
-    echo '<th scope="row"><label for="mtp_group">' . esc_html(__('Group', 'meinturnierplan-wp')) . '</label></th>';
+    echo '<th scope="row"><label for="mtp_group">' . esc_html(__('Group', 'meinturnierplan')) . '</label></th>';
     echo '<td>';
     echo '<div style="display: flex; align-items: center; gap: 10px;">';
     echo '<select id="mtp_group" name="mtp_group" class="regular-text">';
@@ -419,42 +419,42 @@ class MTP_Admin_Meta_Boxes {
         }
 
         $selected = $is_selected ? ' selected' : '';
-        echo '<option value="' . esc_attr($group_number) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan-wp'), $group['displayId'])) . '</option>';
+        echo '<option value="' . esc_attr($group_number) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan'), $group['displayId'])) . '</option>';
       }
 
       // Add Final Round option if it exists
       if ($has_final_round) {
         $is_final_selected = (!empty($saved_group) && $saved_group == '90');
         $final_selected = $is_final_selected ? ' selected' : '';
-        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan')) . '</option>';
       }
     } else if (!empty($saved_group) && !empty($tournament_id)) {
       // Show a placeholder for the saved group if groups haven't loaded yet
       if ($saved_group == '90') {
-        echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan-wp')) . '</option>';
+        echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan')) . '</option>';
       } else {
-        echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan-wp'), $saved_group)) . '</option>';
+        echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan'), $saved_group)) . '</option>';
       }
     } else {
       // No groups available - check for Final Round only
       if ($has_final_round) {
         $is_final_selected = (!empty($saved_group) && $saved_group == '90');
         $final_selected = $is_final_selected ? ' selected' : '';
-        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan-wp')) . '</option>';
+        echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan')) . '</option>';
       } else {
         // No groups and no final round - show default option
-        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan-wp')) . '</option>';
+        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan')) . '</option>';
       }
     }
 
     echo '</select>';
-    echo '<button type="button" id="mtp_refresh_groups" class="button button-secondary" title="' . esc_attr(__('Refresh Groups', 'meinturnierplan-wp')) . '">';
+    echo '<button type="button" id="mtp_refresh_groups" class="button button-secondary" title="' . esc_attr(__('Refresh Groups', 'meinturnierplan')) . '">';
     echo '<span class="dashicons dashicons-update-alt" style="vertical-align: middle;"></span>';
     echo '</button>';
     echo '</div>';
 
     // Static description that covers all scenarios
-    echo '<p class="description">' . esc_html(__('Select a group to display from this tournament. Click refresh to update groups from server. Note, some tournaments don\'t have groups.', 'meinturnierplan-wp')) . '</p>';
+    echo '<p class="description">' . esc_html(__('Select a group to display from this tournament. Click refresh to update groups from server. Note, some tournaments don\'t have groups.', 'meinturnierplan')) . '</p>';
 
     // Add hidden field to store the initially saved value for JavaScript
     echo '<input type="hidden" id="mtp_group_saved_value" value="' . esc_attr($saved_group) . '" />';
@@ -556,7 +556,7 @@ class MTP_Admin_Meta_Boxes {
    * Render preview section
    */
   private function render_preview_section($post, $meta_values) {
-    echo '<h3>' . __('Preview', 'meinturnierplan-wp') . '</h3>';
+    echo '<h3>' . __('Preview', 'meinturnierplan') . '</h3>';
     echo '<div id="mtp-table-preview" style="border: 1px solid #ddd; padding: 10px; background: #f9f9fa;">';
 
     // Create attributes for preview
@@ -1014,24 +1014,24 @@ class MTP_Admin_Meta_Boxes {
    */
   private function render_shortcode_generator($shortcode, $tournament_id) {
     echo '<div style="margin-bottom: 15px;">';
-    echo '<label for="mtp_shortcode_field" style="display: block; margin-bottom: 5px; font-weight: bold;">' . __('Generated Shortcode:', 'meinturnierplan-wp') . '</label>';
+    echo '<label for="mtp_shortcode_field" style="display: block; margin-bottom: 5px; font-weight: bold;">' . __('Generated Shortcode:', 'meinturnierplan') . '</label>';
     echo '<textarea id="mtp_shortcode_field" readonly style="width: 100%; height: 80px; font-family: monospace; font-size: 12px; padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">' . esc_textarea($shortcode) . '</textarea>';
     echo '</div>';
 
     echo '<button type="button" id="mtp_copy_shortcode" class="button button-secondary" style="width: 100%; margin-bottom: 10px;">';
     echo '<span class="dashicons dashicons-admin-page" style="vertical-align: middle; margin-right: 5px;"></span>';
-    echo __('Copy Shortcode', 'meinturnierplan-wp');
+    echo __('Copy Shortcode', 'meinturnierplan');
     echo '</button>';
 
     echo '<div id="mtp_copy_success" style="display: none; color: #46b450; margin-top: 8px; text-align: center;">';
     echo '<span class="dashicons dashicons-yes-alt" style="vertical-align: middle;"></span> ';
-    echo __('Shortcode copied to clipboard!', 'meinturnierplan-wp');
+    echo __('Shortcode copied to clipboard!', 'meinturnierplan');
     echo '</div>';
 
     if (empty($tournament_id)) {
       echo '<div style="margin-top: 10px; padding: 8px; background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; border-radius: 3px;">';
-      echo '<strong>' . __('Note:', 'meinturnierplan-wp') . '</strong> ';
-      echo __('Enter a Tournament ID above to display live tournament data. Without an ID, a placeholder will be shown.', 'meinturnierplan-wp');
+      echo '<strong>' . __('Note:', 'meinturnierplan') . '</strong> ';
+      echo __('Enter a Tournament ID above to display live tournament data. Without an ID, a placeholder will be shown.', 'meinturnierplan');
       echo '</div>';
     }
 

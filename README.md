@@ -56,8 +56,8 @@ A WordPress plugin to display tournament tables using custom post types, support
 ## File Structure
 
 ```
-meinturnierplan-wp/
-├── meinturnierplan-wp.php          # Main plugin file
+meinturnierplan/
+├── meinturnierplan.php          # Main plugin file
 ├── includes/
 │   └── class-mtp-table-widget.php  # Widget class
 ├── assets/
@@ -72,7 +72,7 @@ The plugin follows WordPress coding standards and best practices:
 
 - Proper sanitization and validation of user input
 - Nonce verification for security
-- Internationalization ready (text domain: `meinturnierplan-wp`)
+- Internationalization ready (text domain: `meinturnierplan`)
 - Responsive design with mobile breakpoints
 - Clean separation of concerns
 

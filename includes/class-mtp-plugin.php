@@ -15,12 +15,12 @@ if (!defined('ABSPATH')) {
  * Main Plugin Class
  */
 class MTP_Plugin {
-  
+
   /**
    * The single instance of the class
    */
   protected static $_instance = null;
-  
+
   /**
    * Plugin components
    */
@@ -32,7 +32,7 @@ class MTP_Plugin {
   public $assets;
   public $installer;
   public $gutenberg_block;
-  
+
   /**
    * Main Plugin Instance
    */
@@ -42,7 +42,7 @@ class MTP_Plugin {
     }
     return self::$_instance;
   }
-  
+
   /**
    * Constructor
    */
@@ -51,19 +51,19 @@ class MTP_Plugin {
     $this->includes();
     $this->init();
   }
-  
+
   /**
    * Hook into actions and filters
    */
   private function init_hooks() {
     add_action('init', array($this, 'init'), 0);
     add_action('plugins_loaded', array($this, 'load_textdomain'));
-    
+
     // Activation and deactivation hooks
     register_activation_hook(MTP_PLUGIN_FILE, array($this, 'activate'));
     register_deactivation_hook(MTP_PLUGIN_FILE, array($this, 'deactivate'));
   }
-  
+
   /**
    * Include required core files
    */
@@ -76,14 +76,14 @@ class MTP_Plugin {
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-assets.php';
-    
+
     // Widget class
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-widget.php';
-    
+
     // Gutenberg block class
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-gutenberg-block.php';
   }
-  
+
   /**
    * Initialize plugin components
    */
@@ -97,24 +97,24 @@ class MTP_Plugin {
     $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer);
     $this->assets = new MTP_Assets();
     $this->gutenberg_block = new MTP_Gutenberg_Block($this->table_renderer);
-    
+
     // Initialize widget
     add_action('widgets_init', function() {
       register_widget('MTP_Table_Widget');
     });
   }
-  
+
   /**
    * Load plugin text domain
    */
   public function load_textdomain() {
     load_plugin_textdomain(
-      'meinturnierplan-wp',
+      'meinturnierplan',
       false,
       dirname(plugin_basename(MTP_PLUGIN_FILE)) . '/languages'
     );
   }
-  
+
   /**
    * Plugin activation
    */
@@ -123,7 +123,7 @@ class MTP_Plugin {
       $this->installer->activate();
     }
   }
-  
+
   /**
    * Plugin deactivation
    */
@@ -132,14 +132,14 @@ class MTP_Plugin {
       $this->installer->deactivate();
     }
   }
-  
+
   /**
    * Get the plugin URL
    */
   public function plugin_url() {
     return untrailingslashit(plugins_url('/', MTP_PLUGIN_FILE));
   }
-  
+
   /**
    * Get the plugin path
    */

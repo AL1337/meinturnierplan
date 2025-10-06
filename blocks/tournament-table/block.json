@@ -11,7 +11,7 @@
     "html": false,
     "align": ["left", "center", "right", "wide", "full"]
   },
-  "textdomain": "meinturnierplan-wp",
+  "textdomain": "meinturnierplan",
   "attributes": {
     "tableId": {
       "type": "string",

@@ -72,7 +72,7 @@ class MTP_Gutenberg_Block {
     $table_id = isset($attributes['tableId']) ? $attributes['tableId'] : '';
 
     if (empty($table_id)) {
-      return '<div class="mtp-block-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan-wp') . '</div>';
+      return '<div class="mtp-block-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';
     }
 
     // Get saved width and height from post meta
@@ -221,7 +221,7 @@ class MTP_Gutenberg_Block {
   public function get_tables_ajax() {
     // Verify nonce
     if (!wp_verify_nonce($_POST['nonce'], 'mtp_block_nonce')) {
-      wp_die(__('Security check failed', 'meinturnierplan-wp'));
+      wp_die(__('Security check failed', 'meinturnierplan'));
     }
 
     $tables = get_posts(array(
@@ -235,7 +235,7 @@ class MTP_Gutenberg_Block {
     $options = array();
     $options[] = array(
       'value' => '',
-      'label' => __('Select a Tournament Table', 'meinturnierplan-wp')
+      'label' => __('Select a Tournament Table', 'meinturnierplan')
     );
 
     foreach ($tables as $table) {
