@@ -20,13 +20,14 @@ if (!defined('ABSPATH')) {
 define('MTP_PLUGIN_FILE', __FILE__);
 define('MTP_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MTP_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('MTP_PLUGIN_VERSION', '1.0.0');
+define('MTP_PLUGIN_VERSION', '0.1.1');
 
 // Include required files
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-plugin.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-post-type.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-shortcode.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-utilities.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-assets.php';

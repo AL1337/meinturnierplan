@@ -77,6 +77,24 @@
   width: 65%;
 }
 
+/* Group Header */
+.form-table .mtp-group-header-wrapper {
+  padding: 0;
+}
+.form-table .mtp-group-header {
+  margin: 20px 0 10px 0;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #23282d;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Field: Number */
+input[type="number"].regular-text {
+  width: 64px;
+}
+
 /* Preview section styling */
 .mtp-admin-column-right #mtp-table-preview {
   border: 1px solid #ddd;

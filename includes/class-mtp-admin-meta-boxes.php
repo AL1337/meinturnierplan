@@ -150,175 +150,62 @@ class MTP_Admin_Meta_Boxes {
     echo '<table class="form-table">';
 
     // Basic Settings Group
-    $this->render_group_header(__('Basic Settings', 'meinturnierplan'));
-    $this->render_text_field('tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
-    $this->render_select_field('language', __('Language', 'meinturnierplan'), $meta_values['language'], $this->get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_group_header(__('Basic Settings', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_text_field('mtp_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_select_field('mtp_language', __('Language', 'meinturnierplan'), $meta_values['language'], $this->get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
 
     // Dimensions Group
-    $this->render_group_header(__('Dimensions', 'meinturnierplan'));
-    $this->render_number_field('width', __('Table Width (px)', 'meinturnierplan'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
-    $this->render_number_field('height', __('Table Height (px)', 'meinturnierplan'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
+    MTP_Admin_Utilities::render_group_header(__('Dimensions', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_number_field('mtp_width', __('Table Width (px)', 'meinturnierplan'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
+    MTP_Admin_Utilities::render_number_field('mtp_height', __('Table Height (px)', 'meinturnierplan'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
 
     // Display Options Group
-    $this->render_group_header(__('Display Options', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_group_header(__('Display Options', 'meinturnierplan'));
     $this->render_conditional_group_field($meta_values);
-    $this->render_checkbox_field('suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan'));
-    $this->render_checkbox_field('suppress_logos', __('Suppress Logos', 'meinturnierplan'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan'));
-    $this->render_checkbox_field('suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan'));
-    $this->render_checkbox_field('projector_presentation', __('Projector Presentation', 'meinturnierplan'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan'));
-    $this->render_checkbox_field('navigation_for_groups', __('Navigation for Groups', 'meinturnierplan'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_logos', __('Suppress Logos', 'meinturnierplan'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field('mtp_projector_presentation', __('Projector Presentation', 'meinturnierplan'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field('mtp_navigation_for_groups', __('Navigation for Groups', 'meinturnierplan'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan'));
 
     // Typography Group
-    $this->render_group_header(__('Typography', 'meinturnierplan'));
-    $this->render_number_field('font_size', __('Content Font Size (pt)', 'meinturnierplan'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan'), 6, 24);
-    $this->render_number_field('header_font_size', __('Header Font Size (pt)', 'meinturnierplan'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan'), 6, 24);
-    $this->render_number_field('logo_size', __('Logo Size (pt)', 'meinturnierplan'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_number_field('mtp_font_size', __('Content Font Size (pt)', 'meinturnierplan'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_number_field('mtp_header_font_size', __('Header Font Size (pt)', 'meinturnierplan'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_number_field('mtp_logo_size', __('Logo Size (pt)', 'meinturnierplan'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan'), 6, 24);
 
     // Spacing & Layout Group
-    $this->render_group_header(__('Spacing & Layout', 'meinturnierplan'));
-    $this->render_number_field('table_padding', __('Table Padding (px)', 'meinturnierplan'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan'), 0, 50);
-    $this->render_number_field('inner_padding', __('Inner Padding (px)', 'meinturnierplan'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan'), 0, 20);
+    MTP_Admin_Utilities::render_group_header(__('Spacing & Layout', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_number_field('mtp_table_padding', __('Table Padding (px)', 'meinturnierplan'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan'), 0, 50);
+    MTP_Admin_Utilities::render_number_field('mtp_inner_padding', __('Inner Padding (px)', 'meinturnierplan'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan'), 0, 20);
 
     // Border Settings Group
-    $this->render_group_header(__('Border Settings', 'meinturnierplan'));
-    $this->render_number_field('bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    $this->render_number_field('bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    $this->render_number_field('bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    $this->render_number_field('bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    $this->render_number_field('bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_group_header(__('Border Settings', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan'), 1, 10);
 
     // Colors Group
-    $this->render_group_header(__('Colors', 'meinturnierplan'));
-    $this->render_color_field('text_color', __('Text Color', 'meinturnierplan'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan'));
-    $this->render_color_field('main_color', __('Main Color', 'meinturnierplan'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan'));
-    $this->render_color_field('border_color', __('Border Color', 'meinturnierplan'), $meta_values['border_color'], __('Set the border color of the tournament table. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
-    $this->render_color_field('head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_group_header(__('Colors', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_field('mtp_text_color', __('Text Color', 'meinturnierplan'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_field('mtp_main_color', __('Main Color', 'meinturnierplan'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_field('mtp_border_color', __('Border Color', 'meinturnierplan'), $meta_values['border_color'], __('Set the border color of the tournament table. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_field('mtp_head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
 
     // Background Colors Group
-    $this->render_group_header(__('Background Colors', 'meinturnierplan'));
-    $this->render_color_opacity_field('bg_color', 'bg_opacity', __('Background Color', 'meinturnierplan'), $meta_values['bg_color'], $meta_values['bg_opacity'], __('Set the background color and opacity of the tournament table. Use opacity 0% for transparent background.', 'meinturnierplan'));
-    $this->render_color_opacity_field('head_bg_color', 'head_bg_opacity', __('Head Background Color', 'meinturnierplan'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan'));
-    $this->render_color_opacity_field('even_bg_color', 'even_bg_opacity', __('Even Rows Background Color', 'meinturnierplan'), $meta_values['even_bg_color'], $meta_values['even_bg_opacity'], __('Set the background color and opacity for even-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
-    $this->render_color_opacity_field('odd_bg_color', 'odd_bg_opacity', __('Odd Rows Background Color', 'meinturnierplan'), $meta_values['odd_bg_color'], $meta_values['odd_bg_opacity'], __('Set the background color and opacity for odd-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
-    $this->render_color_opacity_field('hover_bg_color', 'hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_group_header(__('Background Colors', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_opacity_field('mtp_bg_color', 'mtp_bg_opacity', __('Background Color', 'meinturnierplan'), $meta_values['bg_color'], $meta_values['bg_opacity'], __('Set the background color and opacity of the tournament table. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_opacity_field('mtp_head_bg_color', 'mtp_head_bg_opacity', __('Head Background Color', 'meinturnierplan'), $meta_values['head_bg_color'], $meta_values['head_bg_opacity'], __('Set the background color and opacity for table head. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_opacity_field('mtp_even_bg_color', 'mtp_even_bg_opacity', __('Even Rows Background Color', 'meinturnierplan'), $meta_values['even_bg_color'], $meta_values['even_bg_opacity'], __('Set the background color and opacity for even-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_opacity_field('mtp_odd_bg_color', 'mtp_odd_bg_opacity', __('Odd Rows Background Color', 'meinturnierplan'), $meta_values['odd_bg_color'], $meta_values['odd_bg_opacity'], __('Set the background color and opacity for odd-numbered table rows. Use opacity 0% for transparent background.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_opacity_field('mtp_hover_bg_color', 'mtp_hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan'));
 
     echo '</table>';
   }
 
-  /**
-   * Render group header
-   */
-  private function render_group_header($title) {
-    echo '<tr>';
-    echo '<td colspan="2" style="padding: 0;">';
-    echo '<h4 style="margin: 20px 0 10px 0; padding: 8px 0; font-size: 14px; font-weight: 600; color: #23282d; border-bottom: 1px solid #ddd;">' . esc_html($title) . '</h4>';
-    echo '</td>';
-    echo '</tr>';
-  }
 
-  /**
-   * Render text field
-   */
-  private function render_text_field($field_name, $label, $value, $description = '') {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<input type="text" id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" value="' . esc_attr($value) . '" class="regular-text" />';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
-
-  /**
-   * Render number field
-   */
-  private function render_number_field($field_name, $label, $value, $description = '', $min = null, $max = null, $step = 1) {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<input type="number" id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" value="' . esc_attr($value) . '"';
-    if ($min !== null) echo ' min="' . esc_attr($min) . '"';
-    if ($max !== null) echo ' max="' . esc_attr($max) . '"';
-    echo ' step="' . esc_attr($step) . '" />';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
-
-  /**
-   * Render color field
-   */
-  private function render_color_field($field_name, $label, $value, $description = '') {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<input type="text" id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" value="#' . esc_attr($value) . '" class="mtp-color-picker" />';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
-
-  /**
-   * Render color field with opacity slider
-   */
-  private function render_color_opacity_field($color_field, $opacity_field, $label, $color_value, $opacity_value, $description = '') {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($color_field) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<div style="display: flex; align-items: center; gap: 15px;">';
-    echo '<input type="text" id="mtp_' . esc_attr($color_field) . '" name="mtp_' . esc_attr($color_field) . '" value="#' . esc_attr($color_value) . '" class="mtp-color-picker" style="width: 120px;" />';
-    echo '<div style="display: flex; align-items: center; gap: 8px;">';
-    echo '<label for="mtp_' . esc_attr($opacity_field) . '" style="margin: 0; font-weight: normal;">' . __('Opacity:', 'meinturnierplan') . '</label>';
-    echo '<input type="range" id="mtp_' . esc_attr($opacity_field) . '" name="mtp_' . esc_attr($opacity_field) . '" value="' . esc_attr($opacity_value) . '" min="0" max="100" step="1" style="width: 100px;" />';
-    echo '<span id="mtp_' . esc_attr($opacity_field) . '_value" style="min-width: 35px; font-size: 12px; color: #666;">' . esc_attr($opacity_value) . '%</span>';
-    echo '</div>';
-    echo '</div>';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
-
-  /**
-   * Render checkbox field
-   */
-  private function render_checkbox_field($field_name, $label, $value, $description = '') {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<input type="checkbox" id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" value="1"' . checked(1, $value, false) . ' />';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
-
-  /**
-   * Render select field
-   */
-  private function render_select_field($field_name, $label, $value, $options, $description = '') {
-    echo '<tr>';
-    echo '<th scope="row"><label for="mtp_' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
-    echo '<td>';
-    echo '<select id="mtp_' . esc_attr($field_name) . '" name="mtp_' . esc_attr($field_name) . '" class="regular-text">';
-    foreach ($options as $option_value => $option_label) {
-      echo '<option value="' . esc_attr($option_value) . '"' . selected($value, $option_value, false) . '>' . esc_html($option_label) . '</option>';
-    }
-    echo '</select>';
-    if ($description) {
-      echo '<p class="description">' . esc_html($description) . '</p>';
-    }
-    echo '</td>';
-    echo '</tr>';
-  }
 
   /**
    * Get available language options
@@ -640,11 +527,7 @@ class MTP_Admin_Meta_Boxes {
    * Combine color and opacity
    */
   private function combine_color_opacity($color, $opacity) {
-    if ($opacity !== '' && $opacity !== null) {
-      $opacity_hex = str_pad(dechex(round(($opacity / 100) * 255)), 2, '0', STR_PAD_LEFT);
-      return $color . $opacity_hex;
-    }
-    return $color;
+    return MTP_Admin_Utilities::combine_color_opacity($color, $opacity);
   }
 
   /**
@@ -1242,35 +1125,6 @@ class MTP_Admin_Meta_Boxes {
    * Sanitize meta value based on field type
    */
   private function sanitize_meta_value($field, $value) {
-    // Checkbox fields
-    if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups'))) {
-      return $value === '1' ? '1' : '0';
-    }
-
-    // Color fields
-    if (in_array($field, array('text_color', 'main_color', 'bg_color', 'border_color', 'head_bottom_border_color', 'even_bg_color', 'odd_bg_color', 'hover_bg_color', 'head_bg_color'))) {
-      $color = sanitize_hex_color($value);
-      return $color ? ltrim($color, '#') : '';
-    }
-
-    // Opacity fields
-    if (strpos($field, '_opacity') !== false) {
-      $opacity = absint($value);
-      return max(0, min(100, $opacity));
-    }
-
-    // Number fields
-    if (in_array($field, array('width', 'height', 'font_size', 'header_font_size', 'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize', 'table_padding', 'inner_padding', 'logo_size'))) {
-      return absint($value);
-    }
-
-    // Language field - validate against allowed languages
-    if ($field === 'language') {
-      $allowed_languages = array('en', 'de', 'es', 'fr', 'hr', 'it', 'pl', 'sl', 'tr');
-      return in_array($value, $allowed_languages) ? $value : 'en';
-    }
-
-    // Text fields
-    return sanitize_text_field($value);
+    return MTP_Admin_Utilities::sanitize_meta_value($field, $value);
   }
 }
