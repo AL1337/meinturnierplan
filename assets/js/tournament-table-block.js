@@ -92,10 +92,7 @@
                 fill: 'currentColor'
               })
             ),
-            label: __('Tournament Table', 'meinturnierplan'),
-            instructions: tableId
-              ? __('Tournament table selected: ', 'meinturnierplan') + tableName
-              : __('Choose a tournament table to display.', 'meinturnierplan')
+            label: __('Tournament Table', 'meinturnierplan')
           },
           el(SelectControl, {
             label: __('Select Tournament Table', 'meinturnierplan'),
