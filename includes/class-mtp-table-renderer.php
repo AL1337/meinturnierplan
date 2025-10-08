@@ -40,17 +40,9 @@ class MTP_Table_Renderer {
       return $this->render_empty_table($atts);
     }
 
-    // Get width from shortcode attribute or post meta
-    $width = !empty($atts['width']) ? $atts['width'] : get_post_meta($table_id, '_mtp_width', true);
-    if (empty($width)) {
-      $width = '300'; // Default width
-    }
-
-    // Get height from shortcode attribute or post meta
-    $height = !empty($atts['height']) ? $atts['height'] : get_post_meta($table_id, '_mtp_height', true);
-    if (empty($height)) {
-      $height = '152'; // Default height
-    }
+    // Get width and height from shortcode attributes or use defaults for auto-sizing
+    $width = !empty($atts['width']) ? intval($atts['width']) : 300;
+    $height = !empty($atts['height']) ? intval($atts['height']) : 200;
 
     // Build URL parameters array
     $params = $this->build_url_params($tournament_id, $table_id, $atts);
@@ -61,15 +53,17 @@ class MTP_Table_Renderer {
     // Generate unique ID for this iframe instance
     $iframe_id = 'mtp-table-' . $tournament_id . '-' . substr(md5(serialize($atts)), 0, 8);
 
-    // Build the iframe HTML
+    // Build the iframe HTML with auto-sizing styles and shortcode dimensions
     $iframe_html = sprintf(
-      '<iframe id="%s" src="%s" style="overflow:hidden;" allowtransparency="true" frameborder="0" width="%s" height="%s">
+      '<iframe id="%s" src="%s" width="%d" height="%d" style="overflow:hidden; min-width: 300px; min-height: 150px; width: %dpx; height: %dpx; border: none; display: block;" allowtransparency="true" frameborder="0">
         <p>%s <a href="https://www.meinturnierplan.de/showit.php?id=%s">%s</a></p>
       </iframe>',
       esc_attr($iframe_id),
       esc_url($iframe_url),
-      esc_attr($width),
-      esc_attr($height),
+      $width,
+      $height,
+      $width,
+      $height,
       __('Your browser does not support the tournament widget.', 'meinturnierplan'),
       esc_attr($tournament_id),
       __('Go to Tournament.', 'meinturnierplan')
@@ -305,11 +299,8 @@ class MTP_Table_Renderer {
    * Render empty static table when no tournament ID is provided
    */
   private function render_empty_table($atts = array()) {
-    // Get width from shortcode attributes
-    $width = !empty($atts['width']) ? $atts['width'] : '300';
-
-    // Simple placeholder message
-    $html = '<div style="width: ' . esc_attr($width) . 'px; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; text-align: center; color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">';
+    // Simple placeholder message with auto-sizing
+    $html = '<div style="min-width: 300px; max-width: 100%; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; text-align: center; color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">';
     $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan') . '</strong><br>';
     $html .= __('Enter a Tournament ID above to display live tournament data.', 'meinturnierplan');
     $html .= '</div>';

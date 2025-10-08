@@ -153,10 +153,7 @@ class MTP_Admin_Meta_Boxes {
     MTP_Admin_Utilities::render_text_field('mtp_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
     MTP_Admin_Utilities::render_select_field('mtp_language', __('Language', 'meinturnierplan'), $meta_values['language'], MTP_Admin_Utilities::get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
 
-    // Dimensions Group
-    MTP_Admin_Utilities::render_group_header(__('Dimensions', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_number_field('mtp_width', __('Table Width (px)', 'meinturnierplan'), $meta_values['width'], __('Set the width of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
-    MTP_Admin_Utilities::render_number_field('mtp_height', __('Table Height (px)', 'meinturnierplan'), $meta_values['height'], __('Set the height of the tournament table in pixels.', 'meinturnierplan'), 100, 2000);
+    // Note: Width and height are now automatically determined by the iframe content via postMessage
 
     // Display Options Group
     MTP_Admin_Utilities::render_group_header(__('Display Options', 'meinturnierplan'));
@@ -202,6 +199,10 @@ class MTP_Admin_Meta_Boxes {
     MTP_Admin_Utilities::render_color_opacity_field('mtp_hover_bg_color', 'mtp_hover_bg_opacity', __('Row Hover Background Color', 'meinturnierplan'), $meta_values['hover_bg_color'], $meta_values['hover_bg_opacity'], __('Set the background color and opacity for table rows hover. Use opacity 0% for transparent background.', 'meinturnierplan'));
 
     echo '</table>';
+
+    // Hidden fields for width and height (updated by JavaScript when iframe dimensions change)
+    echo '<input type="hidden" id="mtp_width" name="mtp_width" value="' . esc_attr($meta_values['width']) . '" />';
+    echo '<input type="hidden" id="mtp_height" name="mtp_height" value="' . esc_attr($meta_values['height']) . '" />';
   }
 
 
@@ -295,7 +296,7 @@ class MTP_Admin_Meta_Boxes {
    */
   private function add_preview_javascript($post_id) {
     $field_list = array(
-      'mtp_tournament_id', 'mtp_width', 'mtp_height', 'mtp_font_size', 'mtp_header_font_size',
+      'mtp_tournament_id', 'mtp_font_size', 'mtp_header_font_size',
       'mtp_bsizeh', 'mtp_bsizev', 'mtp_bsizeoh', 'mtp_bsizeov', 'mtp_bbsize',
       'mtp_table_padding', 'mtp_inner_padding', 'mtp_text_color', 'mtp_main_color',
       'mtp_bg_color', 'mtp_logo_size', 'mtp_bg_opacity', 'mtp_border_color',
@@ -341,8 +342,6 @@ class MTP_Admin_Meta_Boxes {
         var data = {
           post_id: <?php echo intval($post_id); ?>,
           tournament_id: $("#mtp_tournament_id").val(),
-          width: $("#mtp_width").val(),
-          height: $("#mtp_height").val(),
           font_size: $("#mtp_font_size").val(),
           header_font_size: $("#mtp_header_font_size").val(),
           bsizeh: $("#mtp_bsizeh").val(),
@@ -417,7 +416,7 @@ class MTP_Admin_Meta_Boxes {
     $combined_hover_bg_color = MTP_Admin_Utilities::combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = MTP_Admin_Utilities::combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
 
-    $shortcode = '[mtp-table id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="' . esc_attr($meta_values['logo_size']) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '" width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"';
+    $shortcode = '[mtp-table id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="' . esc_attr($meta_values['logo_size']) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '"';
 
     // Add group parameter if specified
     if (!empty($meta_values['group'])) {
@@ -449,6 +448,9 @@ class MTP_Admin_Meta_Boxes {
       $shortcode .= ' nav="1"';
     }
 
+    // Add width and height parameters for iframe sizing
+    $shortcode .= ' width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"';
+
     $shortcode .= ']';
 
     return $shortcode;
@@ -459,7 +461,8 @@ class MTP_Admin_Meta_Boxes {
    */
   private function render_shortcode_generator($shortcode, $tournament_id) {
     // First define the update function, then use shared utilities
-    $this->add_shortcode_update_javascript();
+    $meta_values = $this->get_meta_values(get_the_ID());
+    $this->add_shortcode_update_javascript($meta_values);
 
     // Use shared utilities for the shortcode generator UI - but disable automatic field listeners
     // since we need to ensure updateShortcode is defined first
@@ -470,16 +473,60 @@ class MTP_Admin_Meta_Boxes {
   }  /**
    * Add tournament table specific shortcode update JavaScript
    */
-  private function add_shortcode_update_javascript() {
+  private function add_shortcode_update_javascript($meta_values) {
     ?>
     <script>
     jQuery(document).ready(function($) {
+      // Helper function to get current iframe dimensions
+      function getCurrentIframeDimensions() {
+        var dimensions = { width: null, height: null };
+
+        // Check if global dimensions are available from frontend script
+        if (window.MTP_IframeDimensions) {
+          // Find the most recent dimensions for any iframe
+          var latestTimestamp = 0;
+          var latestDimensions = null;
+
+          for (var iframeId in window.MTP_IframeDimensions) {
+            var dim = window.MTP_IframeDimensions[iframeId];
+            if (dim.timestamp > latestTimestamp) {
+              latestTimestamp = dim.timestamp;
+              latestDimensions = dim;
+            }
+          }
+
+          if (latestDimensions) {
+            dimensions.width = latestDimensions.width;
+            dimensions.height = latestDimensions.height;
+          }
+        }
+
+        // Fallback: check actual iframe dimensions in the preview
+        if (!dimensions.width || !dimensions.height) {
+          var previewIframe = $("#mtp-preview iframe[id^='mtp-table-']").first();
+          if (previewIframe.length) {
+            dimensions.width = previewIframe.attr('width') || previewIframe.width();
+            dimensions.height = previewIframe.attr('height') || previewIframe.height();
+          }
+        }
+
+        return dimensions;
+      }
+
       // Define updateShortcode function globally so shared utilities can call it
       window.updateShortcode = function() {
         var postId = <?php echo intval(get_the_ID()); ?>;
         var tournamentId = $("#mtp_tournament_id").val() || "";
-        var width = $("#mtp_width").val() || "300";
-        var height = $("#mtp_height").val() || "152";
+
+        // Get current iframe dimensions if available, otherwise use defaults
+        var currentDimensions = getCurrentIframeDimensions();
+        var width = currentDimensions.width || "<?php echo esc_js($meta_values['width']); ?>" || "300";
+        var height = currentDimensions.height || "<?php echo esc_js($meta_values['height']); ?>" || "200";
+
+        // Update hidden fields so the values get saved
+        $("#mtp_width").val(width);
+        $("#mtp_height").val(height);
+
         var fontSize = $("#mtp_font_size").val() || "9";
         var headerFontSize = $("#mtp_header_font_size").val() || "10";
         var textColor = $("#mtp_text_color").val().replace("#", "") || "000000";
@@ -504,7 +551,7 @@ class MTP_Admin_Meta_Boxes {
         var hoverBgColor = $("#mtp_hover_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_hover_bg_opacity").val() / 100) * 255));
         var headBgColor = $("#mtp_head_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_head_bg_opacity").val() / 100) * 255));
 
-        // Build complete shortcode
+        // Build complete shortcode (width and height removed for auto-sizing)
         var newShortcode = '[mtp-table id="' + tournamentId + '" post_id="' + postId + '" lang="' + language + '"' +
                           ' s-size="' + fontSize + '"' +
                           ' s-sizeheader="' + headerFontSize + '"' +
@@ -524,9 +571,7 @@ class MTP_Admin_Meta_Boxes {
                           ' s-bbsize="' + bbsize + '"' +
                           ' s-bgodd="' + oddBgColor + '"' +
                           ' s-bgover="' + hoverBgColor + '"' +
-                          ' s-bghead="' + headBgColor + '"' +
-                          ' width="' + width + '"' +
-                          ' height="' + height + '"';
+                          ' s-bghead="' + headBgColor + '"';
 
         // Add sw parameter if suppress_wins checkbox is checked
         if ($("#mtp_suppress_wins").is(":checked")) {
@@ -557,6 +602,9 @@ class MTP_Admin_Meta_Boxes {
         if (group) {
           newShortcode += ' group="' + group + '"';
         }
+
+        // Add width and height parameters
+        newShortcode += ' width="' + width + '" height="' + height + '"';
 
         newShortcode += ']';
 

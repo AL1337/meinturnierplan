@@ -33,20 +33,8 @@ class MTP_Table_Widget extends WP_Widget {
       // Use the same approach as the Gutenberg block - get settings from post meta
       $table_id = $instance['table_id'];
 
-      // Get saved width and height from post meta
-      $width = get_post_meta($table_id, '_mtp_width', true);
-      $height = get_post_meta($table_id, '_mtp_height', true);
-
-      // Prepare shortcode attributes
+      // Prepare shortcode attributes (width and height are now auto-determined)
       $shortcode_atts = array('post_id' => $table_id);
-
-      // Add width and height if they exist
-      if (!empty($width)) {
-        $shortcode_atts['width'] = $width;
-      }
-      if (!empty($height)) {
-        $shortcode_atts['height'] = $height;
-      }
 
       // Use the existing shortcode functionality
       $mtp_plugin = MTP_Plugin::instance();
@@ -93,7 +81,7 @@ class MTP_Table_Widget extends WP_Widget {
     </p>
 
     <p>
-      <small><?php _e('The widget will use the width, height, and all styling settings configured for the selected Tournament Table.', 'meinturnierplan'); ?></small>
+      <small><?php _e('The widget will use all styling settings configured for the selected Tournament Table. Width and height are automatically determined.', 'meinturnierplan'); ?></small>
     </p>
     <?php
   }

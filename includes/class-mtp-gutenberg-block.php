@@ -75,20 +75,8 @@ class MTP_Gutenberg_Block {
       return '<div class="mtp-block-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';
     }
 
-    // Get saved width and height from post meta
-    $width = get_post_meta($table_id, '_mtp_width', true);
-    $height = get_post_meta($table_id, '_mtp_height', true);
-
-    // Prepare shortcode attributes
+    // Prepare shortcode attributes (width and height are now auto-determined)
     $shortcode_atts = array('post_id' => $table_id);
-
-    // Add width and height if they exist
-    if (!empty($width)) {
-      $shortcode_atts['width'] = $width;
-    }
-    if (!empty($height)) {
-      $shortcode_atts['height'] = $height;
-    }
 
     // Load all styling parameters from post meta to ensure customizations are applied
     $shortcode_atts = array_merge($shortcode_atts, $this->get_styling_attributes_from_meta($table_id));

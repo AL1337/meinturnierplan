@@ -27,8 +27,11 @@ class MTP_Assets {
    * Initialize assets
    */
   public function init() {
-    // Only enqueue admin scripts and styles - frontend uses iframe with third-party styling
+    // Enqueue admin scripts and styles
     add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+
+    // Enqueue frontend scripts for iframe auto-resizing
+    add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
   }
 
   /**
@@ -63,13 +66,79 @@ class MTP_Assets {
           true
         );
 
+        // Enqueue frontend auto-resize script for admin preview
+        wp_enqueue_script(
+          'mtp-frontend-scripts',
+          MTP_PLUGIN_URL . 'assets/js/frontend.js',
+          array(),
+          MTP_PLUGIN_VERSION,
+          true
+        );
+
         // Localize script for AJAX
         wp_localize_script('mtp-admin-scripts', 'mtp_ajax', array(
           'ajax_url' => admin_url('admin-ajax.php'),
           'preview_nonce' => wp_create_nonce('mtp_preview_nonce')
         ));
+
+        // Add debug info for admin
+        wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] Frontend script loaded in admin for preview functionality");', 'before');
       }
     }
+  }
+
+  /**
+   * Enqueue frontend scripts and styles
+   */
+  public function enqueue_frontend_scripts() {
+    // Debug: Always enqueue for testing (remove this later)
+    wp_enqueue_script(
+      'mtp-frontend-scripts',
+      MTP_PLUGIN_URL . 'assets/js/frontend.js',
+      array(),
+      MTP_PLUGIN_VERSION,
+      true
+    );
+
+    // Also check if we have tournament tables on the page
+    if ($this->page_has_tournament_tables()) {
+      // Add debug info to the page
+      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] Tournament tables detected on page");', 'before');
+    } else {
+      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] No tournament tables detected on page");', 'before');
+    }
+  }
+
+  /**
+   * Check if current page has tournament tables
+   */
+  private function page_has_tournament_tables() {
+    global $post;
+
+    // Check if we're on a page/post with tournament table shortcodes or blocks
+    if ($post && ($post->post_content)) {
+      // Check for shortcodes
+      if (has_shortcode($post->post_content, 'mtp_table')) {
+        return true;
+      }
+
+      // Check for Gutenberg blocks
+      if (has_block('meinturnierplan/tournament-table', $post)) {
+        return true;
+      }
+
+      // Check if this is a tournament table post type
+      if ($post->post_type === 'mtp_table') {
+        return true;
+      }
+    }
+
+    // Also check if any widgets are displaying tournament tables
+    if (is_active_widget(false, false, 'mtp_table_widget')) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
