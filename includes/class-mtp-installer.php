@@ -55,7 +55,7 @@ class MTP_Installer {
    * Register post type for activation (temporary)
    */
   private static function register_post_type_for_activation() {
-    // Simple registration for activation - the full registration is handled by MTP_Post_Type
+    // Simple registration for activation - the full registration is handled by MTP_Table_Post_Type
     register_post_type('mtp_table', array(
       'public' => true,
       'rewrite' => array('slug' => 'tournament-table'),

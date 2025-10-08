@@ -24,9 +24,9 @@ define('MTP_PLUGIN_VERSION', '0.1.1');
 
 // Include required files
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-plugin.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-post-type.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-shortcode.php';
+require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-utilities.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';

@@ -38,7 +38,7 @@ class MTP_Table_Widget extends WP_Widget {
 
       // Use the existing shortcode functionality
       $mtp_plugin = MTP_Plugin::instance();
-      $shortcode = new MTP_Shortcode($mtp_plugin->table_renderer);
+      $shortcode = new MTP_Table_Shortcode($mtp_plugin->table_renderer);
       echo $shortcode->shortcode_callback($shortcode_atts);
     } else {
       echo '<div class="mtp-widget-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';

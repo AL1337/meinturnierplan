@@ -85,7 +85,7 @@ class MTP_Gutenberg_Block {
     $shortcode_atts = array_merge($shortcode_atts, $this->get_config_attributes_from_meta($table_id));
 
     // Use the existing shortcode functionality
-    $shortcode = new MTP_Shortcode($this->table_renderer);
+    $shortcode = new MTP_Table_Shortcode($this->table_renderer);
     return $shortcode->shortcode_callback($shortcode_atts);
   }
 

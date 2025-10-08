@@ -12,9 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Post Type Management Class
+ * Table Post Type Management Class
  */
-class MTP_Post_Type {
+class MTP_Table_Post_Type {
 
   /**
    * Constructor
@@ -59,7 +59,7 @@ class MTP_Post_Type {
       'query_var'          => true,
       'rewrite'            => array('slug' => 'tournament-table'),
       'capability_type'    => 'post',
-      'has_archive'        => true,
+      'has_archive'        => false,
       'hierarchical'       => false,
       'menu_position'      => null,
       'menu_icon'          => 'dashicons-editor-table',

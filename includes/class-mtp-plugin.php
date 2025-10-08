@@ -70,8 +70,8 @@ class MTP_Plugin {
   public function includes() {
     // Core classes
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-installer.php';
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-post-type.php';
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-shortcode.php';
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';
@@ -91,8 +91,8 @@ class MTP_Plugin {
     // Initialize components
     $this->installer = new MTP_Installer();
     $this->table_renderer = new MTP_Table_Renderer();
-    $this->post_type = new MTP_Post_Type();
-    $this->shortcode = new MTP_Shortcode($this->table_renderer);
+    $this->post_type = new MTP_Table_Post_Type();
+    $this->shortcode = new MTP_Table_Shortcode($this->table_renderer);
     $this->admin_meta_boxes = new MTP_Admin_Meta_Boxes($this->table_renderer);
     $this->ajax_handler = new MTP_Ajax_Handler($this->table_renderer);
     $this->assets = new MTP_Assets();

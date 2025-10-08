@@ -14,13 +14,13 @@ if (!defined('ABSPATH')) {
 /**
  * Shortcode Handler Class
  */
-class MTP_Shortcode {
-  
+class MTP_Table_Shortcode {
+
   /**
    * Table renderer instance
    */
   private $table_renderer;
-  
+
   /**
    * Constructor
    */
@@ -28,14 +28,14 @@ class MTP_Shortcode {
     $this->table_renderer = $table_renderer;
     $this->init();
   }
-  
+
   /**
    * Initialize shortcode
    */
   public function init() {
     add_shortcode('mtp-table', array($this, 'shortcode_callback'));
   }
-  
+
   /**
    * Shortcode callback
    */
@@ -72,7 +72,7 @@ class MTP_Shortcode {
       'bm' => '0', // Projector presentation
       'nav' => '0' // Navigation for groups
     ), $atts, 'mtp-table');
-    
+
     // Map lang to setlang for internal processing
     $atts['setlang'] = $atts['lang'];
 
