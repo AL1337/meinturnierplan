@@ -71,9 +71,10 @@ class MTP_Plugin {
     // Core classes
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-installer.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-utilities.php';
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-assets.php';
 

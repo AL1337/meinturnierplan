@@ -24,16 +24,7 @@ define('MTP_PLUGIN_VERSION', '0.1.1');
 
 // Include required files
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-plugin.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-utilities.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-assets.php';
 require_once MTP_PLUGIN_PATH . 'includes/class-mtp-installer.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-widget.php';
-require_once MTP_PLUGIN_PATH . 'includes/class-mtp-gutenberg-block.php';
 
 // Register activation and deactivation hooks
 register_activation_hook(__FILE__, array('MTP_Installer', 'activate'));
