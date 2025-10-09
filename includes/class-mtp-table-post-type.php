@@ -1,9 +1,9 @@
 <?php
 /**
- * Post Type Management Class
+ * Table Post Type Management Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 // Prevent direct access
