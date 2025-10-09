@@ -69,11 +69,16 @@ class MTP_Plugin {
    * Include required core files
    */
   public function includes() {
-    // Core classes
+    // Core Table classes
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-post-type.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-shortcode.php';
+
+    // Core Matches classes
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-post-type.php';
+    // include_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-renderer.php';
+
+    // Core classes
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-utilities.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-admin-meta-boxes.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-ajax-handler.php';

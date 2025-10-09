@@ -229,18 +229,30 @@ class MTP_Admin_Utilities {
   }
 
   /**
-   * Combine color and opacity into a single hex value
+   * Combine hex color and opacity percentage into 8-character hex
    *
-   * @param string $color The color value (without #)
-   * @param int $opacity The opacity value (0-100)
+   * @param string $hex_color The color value (with or without #)
+   * @param int $opacity_percent The opacity value (0-100)
    * @return string The combined color value with opacity
    */
-  public static function combine_color_opacity($color, $opacity) {
-    if ($opacity !== '' && $opacity !== null) {
-      $opacity_hex = str_pad(dechex(round(($opacity / 100) * 255)), 2, '0', STR_PAD_LEFT);
-      return $color . $opacity_hex;
+  public static function combine_color_opacity($hex_color, $opacity_percent) {
+    // Remove # if present
+    $hex_color = ltrim($hex_color, '#');
+
+    // If color already has alpha (8 characters), return as is
+    if (strlen($hex_color) == 8) {
+      return $hex_color;
     }
-    return $color;
+
+    // If no opacity specified, default to fully opaque
+    if ($opacity_percent === '' || $opacity_percent === null) {
+      $opacity_percent = 100;
+    }
+
+    // Convert opacity percentage to hex
+    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
+
+    return $hex_color . $opacity_hex;
   }
 
   /**

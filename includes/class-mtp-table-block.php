@@ -135,7 +135,7 @@ class MTP_Gutenberg_Block {
       $opacity = get_post_meta($table_id, $config['opacity_meta'], true);
 
       if (!empty($color)) {
-        $combined_color = $this->combine_color_opacity($color, $opacity);
+        $combined_color = MTP_Admin_Utilities::combine_color_opacity($color, $opacity);
         $attributes[$config['attr']] = $combined_color;
       }
     }
@@ -178,29 +178,6 @@ class MTP_Gutenberg_Block {
     }
 
     return $attributes;
-  }
-
-  /**
-   * Combine hex color and opacity percentage into 8-character hex
-   */
-  private function combine_color_opacity($hex_color, $opacity_percent) {
-    // Remove # if present
-    $hex_color = ltrim($hex_color, '#');
-
-    // If color already has alpha (8 characters), return as is
-    if (strlen($hex_color) == 8) {
-      return $hex_color;
-    }
-
-    // If no opacity specified, default based on context
-    if ($opacity_percent === '' || $opacity_percent === null) {
-      $opacity_percent = 100; // Default to fully opaque
-    }
-
-    // Convert opacity percentage to hex
-    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
-
-    return $hex_color . $opacity_hex;
   }
 
   /**
