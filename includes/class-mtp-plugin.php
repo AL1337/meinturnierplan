@@ -70,7 +70,6 @@ class MTP_Plugin {
    */
   public function includes() {
     // Core classes
-    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-installer.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-matches-post-type.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';
