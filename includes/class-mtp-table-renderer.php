@@ -273,37 +273,4 @@ class MTP_Table_Renderer {
 
     return implode('&', $query_parts);
   }
-
-  /**
-   * Convert hex color with alpha to rgba
-   */
-  public function hex_to_rgba($hex) {
-    // Remove # if present
-    $hex = ltrim($hex, '#');
-
-    // Handle 8-character hex (RRGGBBAA)
-    if (strlen($hex) == 8) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      $a = round(hexdec(substr($hex, 6, 2)) / 255, 2);
-      return "rgba($r, $g, $b, $a)";
-    }
-    // Handle 6-character hex (RRGGBB)
-    elseif (strlen($hex) == 6) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      return "rgb($r, $g, $b)";
-    }
-    // Handle 3-character hex (RGB)
-    elseif (strlen($hex) == 3) {
-      $r = hexdec(str_repeat(substr($hex, 0, 1), 2));
-      $g = hexdec(str_repeat(substr($hex, 1, 1), 2));
-      $b = hexdec(str_repeat(substr($hex, 2, 1), 2));
-      return "rgb($r, $g, $b)";
-    }
-
-    return 'transparent';
-  }
 }
