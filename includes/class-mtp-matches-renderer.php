@@ -297,7 +297,7 @@ class MTP_Matches_Renderer {
     $query_parts = array();
 
     // Parameters that should appear without values when enabled
-    $no_value_params = array('bm', 'sn', 'sw', 'sl', 'nav');
+    $no_value_params = array('bm', 'si', 'sf', 'st', 'sg', 'se', 'sp', 'sh');
 
     foreach ($params as $key => $value) {
       if (in_array($key, $no_value_params) && $value === '') {
