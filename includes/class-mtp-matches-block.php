@@ -1,6 +1,6 @@
 <?php
 /**
- * Table Gutenberg Block Handler Class
+ * Matches Gutenberg Block Handler Class
  *
  * @package MeinTurnierplan
  * @since 0.1.0
@@ -12,20 +12,20 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Table Gutenberg Block Handler Class
+ * Matches Gutenberg Block Handler Class
  */
-class MTP_Table_Gutenberg_Block {
+class MTP_Matches_Gutenberg_Block {
 
   /**
-   * Table renderer instance
+   * Matches renderer instance
    */
-  private $table_renderer;
+  private $matches_renderer;
 
   /**
    * Constructor
    */
-  public function __construct($table_renderer) {
-    $this->table_renderer = $table_renderer;
+  public function __construct($matches_renderer) {
+    $this->matches_renderer = $matches_renderer;
     $this->init();
   }
 
@@ -34,12 +34,12 @@ class MTP_Table_Gutenberg_Block {
    */
   public function init() {
     add_action('init', array($this, 'register_block'));
-    add_action('wp_ajax_mtp_get_tables', array($this, 'get_tables_ajax'));
-    add_action('wp_ajax_nopriv_mtp_get_tables', array($this, 'get_tables_ajax'));
+    add_action('wp_ajax_mtp_get_matches', array($this, 'get_tables_ajax'));
+    add_action('wp_ajax_nopriv_mtp_get_matches', array($this, 'get_tables_ajax'));
   }
 
   /**
-   * Register the Gutenberg block
+   * Register the Matches Gutenberg block
    */
   public function register_block() {
     // Only register if Gutenberg is available
@@ -48,19 +48,19 @@ class MTP_Table_Gutenberg_Block {
     }
 
     wp_register_script(
-      'mtp-tournament-table-block',
-      MTP_PLUGIN_URL . 'assets/js/tournament-table-block.js',
+      'mtp-tournament-matches-block',
+      MTP_PLUGIN_URL . 'assets/js/tournament-matches-block.js',
       array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-data', 'wp-api-fetch'),
       MTP_PLUGIN_VERSION,
       true
     );
 
-    wp_localize_script('mtp-tournament-table-block', 'mtpBlock', array(
+    wp_localize_script('mtp-tournament-matches-block', 'mtpBlock', array(
       'ajaxUrl' => admin_url('admin-ajax.php'),
-      'nonce' => wp_create_nonce('mtp_block_nonce')
+      'nonce' => wp_create_nonce('mtp_matches_block_nonce')
     ));
 
-    register_block_type(MTP_PLUGIN_PATH . 'blocks/tournament-table/block.json', array(
+    register_block_type(MTP_PLUGIN_PATH . 'blocks/tournament-matches/block.json', array(
       'render_callback' => array($this, 'render_block')
     ));
   }
@@ -72,7 +72,7 @@ class MTP_Table_Gutenberg_Block {
     $table_id = isset($attributes['tableId']) ? $attributes['tableId'] : '';
 
     if (empty($table_id)) {
-      return '<div class="mtp-block-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';
+      return '<div class="mtp-block-placeholder">' . __('Please select a Matches Table.', 'meinturnierplan') . '</div>';
     }
 
     // Prepare shortcode attributes (width and height are now auto-determined)
@@ -85,7 +85,7 @@ class MTP_Table_Gutenberg_Block {
     $shortcode_atts = array_merge($shortcode_atts, $this->get_config_attributes_from_meta($table_id));
 
     // Use the existing shortcode functionality
-    $shortcode = new MTP_Table_Shortcode($this->table_renderer);
+    $shortcode = new MTP_Table_Shortcode($this->matches_renderer);
     return $shortcode->shortcode_callback($shortcode_atts);
   }
 
@@ -103,12 +103,14 @@ class MTP_Table_Gutenberg_Block {
       '_mtp_main_color' => 's-maincolor',
       '_mtp_table_padding' => 's-padding',
       '_mtp_inner_padding' => 's-innerpadding',
-      '_mtp_logo_size' => 's-logosize',
       '_mtp_border_color' => 's-bcolor',
       '_mtp_bsizeh' => 's-bsizeh',
       '_mtp_bsizev' => 's-bsizev',
       '_mtp_bsizeoh' => 's-bsizeoh',
       '_mtp_bsizeov' => 's-bsizeov',
+      '_mtp_ehrsize' => 's-ehrsize',
+      '_mtp_ehrtop' => 's-ehrtop',
+      '_mtp_ehrbottom' => 's-ehrbottom',
       '_mtp_head_bottom_border_color' => 's-bbcolor',
       '_mtp_bbsize' => 's-bbsize',
     );
@@ -151,11 +153,14 @@ class MTP_Table_Gutenberg_Block {
 
     // Define boolean parameter mapping
     $boolean_params = array(
-      '_mtp_suppress_wins' => 'sw',
-      '_mtp_suppress_logos' => 'sl',
-      '_mtp_suppress_num_matches' => 'sn',
       '_mtp_projector_presentation' => 'bm',
-      '_mtp_navigation_for_groups' => 'nav',
+      '_mtp_si' => 'si',
+      '_mtp_sf' => 'sf',
+      '_mtp_st' => 'st',
+      '_mtp_sg' => 'sg',
+      '_mtp_se' => 'se',
+      '_mtp_sp' => 'sp',
+      '_mtp_sh' => 'sh',
     );
 
     foreach ($boolean_params as $meta_key => $attr_name) {
@@ -181,7 +186,7 @@ class MTP_Table_Gutenberg_Block {
   }
 
   /**
-   * AJAX handler to get tournament tables
+   * AJAX handler to get matches
    */
   public function get_tables_ajax() {
     // Verify nonce
@@ -189,8 +194,8 @@ class MTP_Table_Gutenberg_Block {
       wp_die(__('Security check failed', 'meinturnierplan'));
     }
 
-    $tables = get_posts(array(
-      'post_type' => 'mtp_table',
+    $matches = get_posts(array(
+      'post_type' => 'mtp_match_list',
       'post_status' => 'publish',
       'posts_per_page' => -1,
       'orderby' => 'title',
@@ -200,13 +205,13 @@ class MTP_Table_Gutenberg_Block {
     $options = array();
     $options[] = array(
       'value' => '',
-      'label' => __('Select a Tournament Table', 'meinturnierplan')
+      'label' => __('Select a Matches Table', 'meinturnierplan')
     );
 
-    foreach ($tables as $table) {
+    foreach ($matches as $match) {
       $options[] = array(
-        'value' => $table->ID,
-        'label' => $table->post_title
+        'value' => $match->ID,
+        'label' => $match->post_title
       );
     }
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * AJAX Handler Class
+ * AJAX Table Handler Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 // Prevent direct access
@@ -12,9 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * AJAX Handler Class
+ * AJAX Table Handler Class
  */
-class MTP_Ajax_Handler {
+class MTP_Table_Ajax_Handler {
 
   /**
    * Table renderer instance

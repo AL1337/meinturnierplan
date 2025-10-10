@@ -1,9 +1,9 @@
 <?php
 /**
- * Admin Meta Boxes Class
+ * Admin Matches Meta Boxes Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.2.0
  */
 
 // Prevent direct access
@@ -12,20 +12,20 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Admin Meta Boxes Class
+ * Admin Matches Meta Boxes Class
  */
-class MTP_Admin_Meta_Boxes {
+class MTP_Admin_Matches_Meta_Boxes {
 
   /**
-   * Table renderer instance
+   * Matches renderer instance
    */
-  private $table_renderer;
+  private $matches_renderer;
 
   /**
    * Constructor
    */
-  public function __construct($table_renderer) {
-    $this->table_renderer = $table_renderer;
+  public function __construct($matches_renderer) {
+    $this->matches_renderer = $matches_renderer;
     $this->init();
   }
 
@@ -42,19 +42,19 @@ class MTP_Admin_Meta_Boxes {
    */
   public function add_meta_boxes() {
     add_meta_box(
-      'mtp_table_settings',
-      __('Table Settings & Preview', 'meinturnierplan'),
+      'mtp_matches_settings',
+      __('Matches Settings & Preview', 'meinturnierplan'),
       array($this, 'meta_box_callback'),
-      'mtp_table',
+      'mtp_match_list',
       'normal',
       'high'
     );
 
     add_meta_box(
-      'mtp_table_shortcode',
+      'mtp_matches_shortcode',
       __('Shortcode Generator', 'meinturnierplan'),
       array($this, 'shortcode_meta_box_callback'),
-      'mtp_table',
+      'mtp_match_list',
       'side',
       'high'
     );
@@ -65,7 +65,7 @@ class MTP_Admin_Meta_Boxes {
    */
   public function meta_box_callback($post) {
     // Add nonce for security
-    wp_nonce_field('mtp_table_meta_box', 'mtp_table_meta_box_nonce');
+    wp_nonce_field('mtp_matches_meta_box', 'mtp_matches_meta_box_nonce');
 
     // Get current values with defaults
     $meta_values = $this->get_meta_values($post->ID);
@@ -73,9 +73,9 @@ class MTP_Admin_Meta_Boxes {
     // Start two-column layout
     echo '<div class="mtp-admin-two-column-layout">';
 
-    // Left column - Table Settings
+    // Left column - Matches Settings
     echo '<div class="mtp-admin-column mtp-admin-column-left">';
-    echo '<h3>' . __('Table Settings', 'meinturnierplan') . '</h3>';
+    echo '<h3>' . __('Matches Settings', 'meinturnierplan') . '</h3>';
     $this->render_settings_form($meta_values);
     echo '</div>';
 
@@ -117,17 +117,22 @@ class MTP_Admin_Meta_Boxes {
       'hover_bg_opacity' => '69',
       'head_bg_color' => 'eeeeff',
       'head_bg_opacity' => '100',
-      'logo_size' => '20',
       'bsizeh' => '1',
       'bsizev' => '1',
       'bsizeoh' => '1',
       'bsizeov' => '1',
       'bbsize' => '2',
-      'suppress_wins' => '0',
-      'suppress_logos' => '0',
-      'suppress_num_matches' => '0',
+      'ehrsize' => '10',
+      'ehrtop' => '9',
+      'ehrbottom' => '3',
       'projector_presentation' => '0',
-      'navigation_for_groups' => '0',
+      'si' => '0',
+      'sf' => '0',
+      'st' => '0',
+      'sg' => '0',
+      'se' => '0',
+      'sp' => '0',
+      'sh' => '0',
       'language' => MTP_Admin_Utilities::get_default_language(),
       'group' => '',
     );
@@ -156,32 +161,49 @@ class MTP_Admin_Meta_Boxes {
     // Note: Width and height are now automatically determined by the iframe content via postMessage
 
     // Display Options Group
-    MTP_Admin_Utilities::render_group_header(__('Display Options', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_group_header(
+      __('Display Options', 'meinturnierplan')
+    );
     MTP_Admin_Utilities::render_conditional_group_field($meta_values);
-    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_wins', __('Suppress Num Wins, Losses, etc.', 'meinturnierplan'), $meta_values['suppress_wins'], __('Hide the number of wins, losses, and other statistical columns from the tournament table.', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_logos', __('Suppress Logos', 'meinturnierplan'), $meta_values['suppress_logos'], __('Hide the logos from the tournament table.', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_checkbox_field('mtp_suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_checkbox_field('mtp_projector_presentation', __('Projector Presentation', 'meinturnierplan'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_checkbox_field('mtp_navigation_for_groups', __('Navigation for Groups', 'meinturnierplan'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_checkbox_field(
+      'mtp_projector_presentation',
+      __('Projector Presentation', 'meinturnierplan'),
+      $meta_values['projector_presentation'],
+      __('Enable projector presentation mode for the matches table.', 'meinturnierplan')
+    );
+    MTP_Admin_Utilities::render_checkbox_field(
+      'mtp_si',
+      __('Suppress Match Number', 'meinturnierplan'),
+      $meta_values['si'],
+      __('Enable suppression of match numbers in the matches table.', 'meinturnierplan')
+    );
+    MTP_Admin_Utilities::render_checkbox_field(
+      'mtp_st',
+      __('Suppress Times', 'meinturnierplan'),
+      $meta_values['st'],
+      __('Enable suppression of match times in the matches table.', 'meinturnierplan')
+    );
 
     // Typography Group
     MTP_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_number_field('mtp_font_size', __('Content Font Size (pt)', 'meinturnierplan'), $meta_values['font_size'], __('Set the font size of the tournament table content. 9pt is the default value.', 'meinturnierplan'), 6, 24);
-    MTP_Admin_Utilities::render_number_field('mtp_header_font_size', __('Header Font Size (pt)', 'meinturnierplan'), $meta_values['header_font_size'], __('Set the font size of the tournament table headers. 10pt is the default value.', 'meinturnierplan'), 6, 24);
-    MTP_Admin_Utilities::render_number_field('mtp_logo_size', __('Logo Size (pt)', 'meinturnierplan'), $meta_values['logo_size'], __('Set the font size of the tournament table logo. 20pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_number_field('mtp_font_size', __('Content Font Size (pt)', 'meinturnierplan'), $meta_values['font_size'], __('Set the font size of the matches table content. 9pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_number_field('mtp_header_font_size', __('Header Font Size (pt)', 'meinturnierplan'), $meta_values['header_font_size'], __('Set the font size of the matches table headers. 10pt is the default value.', 'meinturnierplan'), 6, 24);
+    MTP_Admin_Utilities::render_number_field('mtp_ehrsize', __('Headlines Font Size (pt)', 'meinturnierplan'), $meta_values['ehrsize'], __('Set the font size of the matches table headlines. 10pt is the default value.', 'meinturnierplan'), 6, 24);
 
     // Spacing & Layout Group
     MTP_Admin_Utilities::render_group_header(__('Spacing & Layout', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_number_field('mtp_table_padding', __('Table Padding (px)', 'meinturnierplan'), $meta_values['table_padding'], __('Set the padding around the tournament table. 2px is the default value.', 'meinturnierplan'), 0, 50);
-    MTP_Admin_Utilities::render_number_field('mtp_inner_padding', __('Inner Padding (px)', 'meinturnierplan'), $meta_values['inner_padding'], __('Set the padding inside the tournament table cells. 5px is the default value.', 'meinturnierplan'), 0, 20);
+    MTP_Admin_Utilities::render_number_field('mtp_table_padding', __('Table Padding (px)', 'meinturnierplan'), $meta_values['table_padding'], __('Set the padding around the matches table. 2px is the default value.', 'meinturnierplan'), 0, 50);
+    MTP_Admin_Utilities::render_number_field('mtp_inner_padding', __('Inner Padding (px)', 'meinturnierplan'), $meta_values['inner_padding'], __('Set the padding inside the matches table cells. 5px is the default value.', 'meinturnierplan'), 0, 20);
+    MTP_Admin_Utilities::render_number_field('mtp_ehrtop', __('Headlines Top Padding (px)', 'meinturnierplan'), $meta_values['ehrtop'], __('Set the top padding of the headlines. 9px is the default value.', 'meinturnierplan'), 0, 20);
+    MTP_Admin_Utilities::render_number_field('mtp_ehrbottom', __('Headlines Bottom Padding (px)', 'meinturnierplan'), $meta_values['ehrbottom'], __('Set the bottom padding of the headlines. 3px is the default value.', 'meinturnierplan'), 0, 20);
 
     // Border Settings Group
     MTP_Admin_Utilities::render_group_header(__('Border Settings', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the matches table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the matches table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the matches table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the matches table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the matches table. 2px is the default value.', 'meinturnierplan'), 1, 10);
 
     // Colors Group
     MTP_Admin_Utilities::render_group_header(__('Colors', 'meinturnierplan'));
@@ -216,7 +238,7 @@ class MTP_Admin_Meta_Boxes {
 
     // Create attributes for preview
     $atts = $this->build_preview_attributes($meta_values);
-    echo $this->table_renderer->render_table_html($post->ID, $atts);
+    echo $this->matches_renderer->render_table_html($post->ID, $atts);
 
     echo '</div>';
   }
@@ -243,7 +265,6 @@ class MTP_Admin_Meta_Boxes {
       's-color' => $meta_values['text_color'],
       's-maincolor' => $meta_values['main_color'],
       's-bgcolor' => $combined_bg_color,
-      's-logosize' => $meta_values['logo_size'],
       's-bcolor' => $meta_values['border_color'],
       's-bbcolor' => $meta_values['head_bottom_border_color'],
       's-bgeven' => $combined_even_bg_color,
@@ -255,6 +276,9 @@ class MTP_Admin_Meta_Boxes {
       's-bsizeoh' => $meta_values['bsizeoh'],
       's-bsizeov' => $meta_values['bsizeov'],
       's-bbsize' => $meta_values['bbsize'],
+      's-ehrsize' => $meta_values['ehrsize'],
+      's-ehrtop' => $meta_values['ehrtop'],
+      's-ehrbottom' => $meta_values['ehrbottom'],
       'setlang' => $meta_values['language']
     );
 
@@ -263,29 +287,44 @@ class MTP_Admin_Meta_Boxes {
       $atts_array['group'] = $meta_values['group'];
     }
 
-    // Add sw parameter if suppress_wins is enabled
-    if (!empty($meta_values['suppress_wins']) && $meta_values['suppress_wins'] === '1') {
-      $atts_array['sw'] = '1';
-    }
-
-    // Add sl parameter if suppress_logos is enabled
-    if (!empty($meta_values['suppress_logos']) && $meta_values['suppress_logos'] === '1') {
-      $atts_array['sl'] = '1';
-    }
-
-    // Add sn parameter if suppress_num_matches is enabled
-    if (!empty($meta_values['suppress_num_matches']) && $meta_values['suppress_num_matches'] === '1') {
-      $atts_array['sn'] = '1';
-    }
-
     // Add bm parameter if projector_presentation is enabled
     if (!empty($meta_values['projector_presentation']) && $meta_values['projector_presentation'] === '1') {
       $atts_array['bm'] = '1';
     }
 
-    // Add nav parameter if navigation_for_groups is enabled
-    if (!empty($meta_values['navigation_for_groups']) && $meta_values['navigation_for_groups'] === '1') {
-      $atts_array['nav'] = '1';
+    // Add si parameter if si is enabled
+    if (!empty($meta_values['si']) && $meta_values['si'] === '1') {
+      $atts_array['si'] = '1';
+    }
+
+    // Add sf parameter if sf is enabled
+    if (!empty($meta_values['sf']) && $meta_values['sf'] === '1') {
+      $atts_array['sf'] = '1';
+    }
+
+    // Add st parameter if st is enabled
+    if (!empty($meta_values['st']) && $meta_values['st'] === '1') {
+      $atts_array['st'] = '1';
+    }
+
+    // Add sg parameter if sg is enabled
+    if (!empty($meta_values['sg']) && $meta_values['sg'] === '1') {
+      $atts_array['sg'] = '1';
+    }
+
+    // Add se parameter if se is enabled
+    if (!empty($meta_values['se']) && $meta_values['se'] === '1') {
+      $atts_array['se'] = '1';
+    }
+
+    // Add sp parameter if sp is enabled
+    if (!empty($meta_values['sp']) && $meta_values['sp'] === '1') {
+      $atts_array['sp'] = '1';
+    }
+
+    // Add sh parameter if sh is enabled
+    if (!empty($meta_values['sh']) && $meta_values['sh'] === '1') {
+      $atts_array['sh'] = '1';
     }
 
     return $atts_array;
@@ -296,13 +335,44 @@ class MTP_Admin_Meta_Boxes {
    */
   private function add_preview_javascript($post_id) {
     $field_list = array(
-      'mtp_tournament_id', 'mtp_font_size', 'mtp_header_font_size',
-      'mtp_bsizeh', 'mtp_bsizev', 'mtp_bsizeoh', 'mtp_bsizeov', 'mtp_bbsize',
-      'mtp_table_padding', 'mtp_inner_padding', 'mtp_text_color', 'mtp_main_color',
-      'mtp_bg_color', 'mtp_logo_size', 'mtp_bg_opacity', 'mtp_border_color',
-      'mtp_head_bottom_border_color', 'mtp_even_bg_color', 'mtp_even_bg_opacity',
-      'mtp_odd_bg_color', 'mtp_odd_bg_opacity', 'mtp_hover_bg_color', 'mtp_hover_bg_opacity',
-      'mtp_head_bg_color', 'mtp_head_bg_opacity', 'mtp_suppress_wins', 'mtp_suppress_logos', 'mtp_suppress_num_matches', 'mtp_projector_presentation', 'mtp_navigation_for_groups', 'mtp_language', 'mtp_group'
+      'mtp_tournament_id',
+      'mtp_font_size',
+      'mtp_header_font_size',
+      'mtp_bsizeh',
+      'mtp_bsizev',
+      'mtp_bsizeoh',
+      'mtp_bsizeov',
+      'mtp_bbsize',
+      'mtp_ehrsize',
+      'mtp_ehrtop',
+      'mtp_ehrbottom',
+      'mtp_table_padding',
+      'mtp_inner_padding',
+      'mtp_text_color',
+      'mtp_main_color',
+      'mtp_bg_color',
+      'mtp_logo_size',
+      'mtp_bg_opacity',
+      'mtp_border_color',
+      'mtp_head_bottom_border_color',
+      'mtp_even_bg_color',
+      'mtp_even_bg_opacity',
+      'mtp_odd_bg_color',
+      'mtp_odd_bg_opacity',
+      'mtp_hover_bg_color',
+      'mtp_hover_bg_opacity',
+      'mtp_head_bg_color',
+      'mtp_head_bg_opacity',
+      'mtp_projector_presentation',
+      'mtp_si',
+      'mtp_sf',
+      'mtp_st',
+      'mtp_sg',
+      'mtp_se',
+      'mtp_sp',
+      'mtp_sh',
+      'mtp_language',
+      'mtp_group'
     );
 
     // Include reusable admin JavaScript utilities
@@ -349,12 +419,14 @@ class MTP_Admin_Meta_Boxes {
           bsizeoh: $("#mtp_bsizeoh").val(),
           bsizeov: $("#mtp_bsizeov").val(),
           bbsize: $("#mtp_bbsize").val(),
+          ehrsize: $("#mtp_ehrsize").val(),
+          ehrtop: $("#mtp_ehrtop").val(),
+          ehrbottom: $("#mtp_ehrbottom").val(),
           table_padding: $("#mtp_table_padding").val(),
           inner_padding: $("#mtp_inner_padding").val(),
           text_color: $("#mtp_text_color").val().replace("#", ""),
           main_color: $("#mtp_main_color").val().replace("#", ""),
           bg_color: $("#mtp_bg_color").val().replace("#", ""),
-          logo_size: $("#mtp_logo_size").val(),
           bg_opacity: $("#mtp_bg_opacity").val(),
           border_color: $("#mtp_border_color").val().replace("#", ""),
           head_bottom_border_color: $("#mtp_head_bottom_border_color").val().replace("#", ""),
@@ -366,14 +438,17 @@ class MTP_Admin_Meta_Boxes {
           hover_bg_opacity: $("#mtp_hover_bg_opacity").val(),
           head_bg_color: $("#mtp_head_bg_color").val().replace("#", ""),
           head_bg_opacity: $("#mtp_head_bg_opacity").val(),
-          suppress_wins: $("#mtp_suppress_wins").is(":checked") ? "1" : "0",
-          suppress_logos: $("#mtp_suppress_logos").is(":checked") ? "1" : "0",
-          suppress_num_matches: $("#mtp_suppress_num_matches").is(":checked") ? "1" : "0",
           projector_presentation: $("#mtp_projector_presentation").is(":checked") ? "1" : "0",
-          navigation_for_groups: $("#mtp_navigation_for_groups").is(":checked") ? "1" : "0",
+          si: $("#mtp_si").is(":checked") ? "1" : "0",
+          sf: $("#mtp_sf").is(":checked") ? "1" : "0",
+          st: $("#mtp_st").is(":checked") ? "1" : "0",
+          sg: $("#mtp_sg").is(":checked") ? "1" : "0",
+          se: $("#mtp_se").is(":checked") ? "1" : "0",
+          sp: $("#mtp_sp").is(":checked") ? "1" : "0",
+          sh: $("#mtp_sh").is(":checked") ? "1" : "0",
           language: $("#mtp_language").val(),
           group: $("#mtp_group").val(),
-          action: "mtp_preview_table",
+          action: "mtp_preview_matches",
           nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
         };
 
@@ -416,26 +491,11 @@ class MTP_Admin_Meta_Boxes {
     $combined_hover_bg_color = MTP_Admin_Utilities::combine_color_opacity($meta_values['hover_bg_color'], $meta_values['hover_bg_opacity']);
     $combined_head_bg_color = MTP_Admin_Utilities::combine_color_opacity($meta_values['head_bg_color'], $meta_values['head_bg_opacity']);
 
-    $shortcode = '[mtp-table id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-logosize="' . esc_attr($meta_values['logo_size']) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '"';
+    $shortcode = '[mtp-matches id="' . esc_attr($meta_values['tournament_id']) . '" post_id="' . $post_id . '" lang="' . esc_attr($meta_values['language']) . '" s-size="' . esc_attr($meta_values['font_size']) . '" s-sizeheader="' . esc_attr($meta_values['header_font_size']) . '" s-color="' . esc_attr($meta_values['text_color']) . '" s-maincolor="' . esc_attr($meta_values['main_color']) . '" s-padding="' . esc_attr($meta_values['table_padding']) . '" s-innerpadding="' . esc_attr($meta_values['inner_padding']) . '" s-bgcolor="' . esc_attr($combined_bg_color). '" s-bcolor="' . esc_attr($meta_values['border_color']) . '" s-bbcolor="' . esc_attr($meta_values['head_bottom_border_color']) . '" s-bgeven="' . esc_attr($combined_even_bg_color) . '" s-bsizeh="' . esc_attr($meta_values['bsizeh']) . '" s-bsizev="' . esc_attr($meta_values['bsizev']) . '" s-bsizeoh="' . esc_attr($meta_values['bsizeoh']) . '" s-bsizeov="' . esc_attr($meta_values['bsizeov']) . '" s-bbsize="' . esc_attr($meta_values['bbsize']) . '" s-ehrsize="' . esc_attr($meta_values['ehrsize']) . '" s-ehrtop="' . esc_attr($meta_values['ehrtop']) . '" s-ehrbottom="' . esc_attr($meta_values['ehrbottom']). '" s-bgodd="' . esc_attr($combined_odd_bg_color) . '" s-bgover="' . esc_attr($combined_hover_bg_color) . '" s-bghead="' . esc_attr($combined_head_bg_color) . '"';
 
     // Add group parameter if specified
     if (!empty($meta_values['group'])) {
       $shortcode .= ' group="' . esc_attr($meta_values['group']) . '"';
-    }
-
-    // Add sw parameter if suppress_wins is enabled
-    if (!empty($meta_values['suppress_wins']) && $meta_values['suppress_wins'] === '1') {
-      $shortcode .= ' sw="1"';
-    }
-
-    // Add sl parameter if suppress_logos is enabled
-    if (!empty($meta_values['suppress_logos']) && $meta_values['suppress_logos'] === '1') {
-      $shortcode .= ' sl="1"';
-    }
-
-    // Add sn parameter if suppress_num_matches is enabled
-    if (!empty($meta_values['suppress_num_matches']) && $meta_values['suppress_num_matches'] === '1') {
-      $shortcode .= ' sn="1"';
     }
 
     // Add bm parameter if projector_presentation is enabled
@@ -443,9 +503,39 @@ class MTP_Admin_Meta_Boxes {
       $shortcode .= ' bm="1"';
     }
 
-    // Add nav parameter if navigation_for_groups is enabled
-    if (!empty($meta_values['navigation_for_groups']) && $meta_values['navigation_for_groups'] === '1') {
-      $shortcode .= ' nav="1"';
+    // Add si parameter if si is enabled
+    if (!empty($meta_values['si']) && $meta_values['si'] === '1') {
+      $atts_array['si'] = '1';
+    }
+
+    // Add sf parameter if sf is enabled
+    if (!empty($meta_values['sf']) && $meta_values['sf'] === '1') {
+      $atts_array['sf'] = '1';
+    }
+
+    // Add st parameter if st is enabled
+    if (!empty($meta_values['st']) && $meta_values['st'] === '1') {
+      $atts_array['st'] = '1';
+    }
+
+    // Add sg parameter if sg is enabled
+    if (!empty($meta_values['sg']) && $meta_values['sg'] === '1') {
+      $atts_array['sg'] = '1';
+    }
+
+    // Add se parameter if se is enabled
+    if (!empty($meta_values['se']) && $meta_values['se'] === '1') {
+      $atts_array['se'] = '1';
+    }
+
+    // Add sp parameter if sp is enabled
+    if (!empty($meta_values['sp']) && $meta_values['sp'] === '1') {
+      $atts_array['sp'] = '1';
+    }
+
+    // Add sh parameter if sh is enabled
+    if (!empty($meta_values['sh']) && $meta_values['sh'] === '1') {
+      $atts_array['sh'] = '1';
     }
 
     // Add width and height parameters for iframe sizing
@@ -503,7 +593,7 @@ class MTP_Admin_Meta_Boxes {
 
         // Fallback: check actual iframe dimensions in the preview
         if (!dimensions.width || !dimensions.height) {
-          var previewIframe = $("#mtp-preview iframe[id^='mtp-table-']").first();
+          var previewIframe = $("#mtp-preview iframe[id^='mtp-matches-']").first();
           if (previewIframe.length) {
             dimensions.width = previewIframe.attr('width') || previewIframe.width();
             dimensions.height = previewIframe.attr('height') || previewIframe.height();
@@ -533,7 +623,6 @@ class MTP_Admin_Meta_Boxes {
         var mainColor = $("#mtp_main_color").val().replace("#", "") || "173f75";
         var tablePadding = $("#mtp_table_padding").val() || "2";
         var innerPadding = $("#mtp_inner_padding").val() || "5";
-        var logoSize = $("#mtp_logo_size").val() || "20";
         var borderColor = $("#mtp_border_color").val().replace("#", "") || "bbbbbb";
         var headBottomBorderColor = $("#mtp_head_bottom_border_color").val().replace("#", "") || "bbbbbb";
         var bsizeh = $("#mtp_bsizeh").val() || "1";
@@ -541,6 +630,9 @@ class MTP_Admin_Meta_Boxes {
         var bsizeoh = $("#mtp_bsizeoh").val() || "1";
         var bsizeov = $("#mtp_bsizeov").val() || "1";
         var bbsize = $("#mtp_bbsize").val() || "2";
+        var ehrsize = $("#mtp_ehrsize").val() || "10";
+        var ehrtop = $("#mtp_ehrtop").val() || "9";
+        var ehrbottom = $("#mtp_ehrbottom").val() || "3";
         var language = $("#mtp_language").val() || "en";
         var group = $("#mtp_group").val() || "";
 
@@ -563,39 +655,56 @@ class MTP_Admin_Meta_Boxes {
                           ' s-bcolor="' + borderColor + '"' +
                           ' s-bbcolor="' + headBottomBorderColor + '"' +
                           ' s-bgeven="' + evenBgColor + '"' +
-                          ' s-logosize="' + logoSize + '"' +
                           ' s-bsizeh="' + bsizeh + '"' +
                           ' s-bsizev="' + bsizev + '"' +
                           ' s-bsizeoh="' + bsizeoh + '"' +
                           ' s-bsizeov="' + bsizeov + '"' +
                           ' s-bbsize="' + bbsize + '"' +
+                          ' s-ehrsize="' + ehrsize + '"' +
+                          ' s-ehrtop="' + ehrtop + '"' +
+                          ' s-ehrbottom="' + ehrbottom + '"' +
                           ' s-bgodd="' + oddBgColor + '"' +
                           ' s-bgover="' + hoverBgColor + '"' +
                           ' s-bghead="' + headBgColor + '"';
-
-        // Add sw parameter if suppress_wins checkbox is checked
-        if ($("#mtp_suppress_wins").is(":checked")) {
-          newShortcode += ' sw="1"';
-        }
-
-        // Add sl parameter if suppress_logos checkbox is checked
-        if ($("#mtp_suppress_logos").is(":checked")) {
-          newShortcode += ' sl="1"';
-        }
-
-        // Add sn parameter if suppress_num_matches checkbox is checked
-        if ($("#mtp_suppress_num_matches").is(":checked")) {
-          newShortcode += ' sn="1"';
-        }
 
         // Add bm parameter if projector_presentation checkbox is checked
         if ($("#mtp_projector_presentation").is(":checked")) {
           newShortcode += ' bm="1"';
         }
 
-        // Add nav parameter if navigation_for_groups checkbox is checked
-        if ($("#mtp_navigation_for_groups").is(":checked")) {
-          newShortcode += ' nav="1"';
+        // Add si parameter if si checkbox is checked
+        if ($("#mtp_si").is(":checked")) {
+          newShortcode += ' si="1"';
+        }
+
+        // Add sf parameter if sf checkbox is checked
+        if ($("#mtp_sf").is(":checked")) {
+          newShortcode += ' sf="1"';
+        }
+
+        // Add st parameter if st checkbox is checked
+        if ($("#mtp_st").is(":checked")) {
+          newShortcode += ' st="1"';
+        }
+
+        // Add sg parameter if sg checkbox is checked
+        if ($("#mtp_sg").is(":checked")) {
+          newShortcode += ' sg="1"';
+        }
+
+        // Add se parameter if se checkbox is checked
+        if ($("#mtp_se").is(":checked")) {
+          newShortcode += ' se="1"';
+        }
+
+        // Add sp parameter if sp checkbox is checked
+        if ($("#mtp_sp").is(":checked")) {
+          newShortcode += ' sp="1"';
+        }
+
+        // Add sh parameter if sh checkbox is checked
+        if ($("#mtp_sh").is(":checked")) {
+          newShortcode += ' sh="1"';
         }
 
         // Add group parameter if selected
@@ -631,12 +740,12 @@ class MTP_Admin_Meta_Boxes {
    */
   public function save_meta_boxes($post_id) {
     // Check if nonce is valid
-    if (!isset($_POST['mtp_table_meta_box_nonce']) || !wp_verify_nonce($_POST['mtp_table_meta_box_nonce'], 'mtp_table_meta_box')) {
+    if (!isset($_POST['mtp_matches_meta_box_nonce']) || !wp_verify_nonce($_POST['mtp_matches_meta_box_nonce'], 'mtp_matches_meta_box')) {
       return;
     }
 
     // Check if user has permission
-    if (isset($_POST['post_type']) && 'mtp_table' == $_POST['post_type']) {
+    if (isset($_POST['post_type']) && 'mtp_match_list' == $_POST['post_type']) {
       if (!current_user_can('edit_page', $post_id)) {
         return;
       }
@@ -653,19 +762,52 @@ class MTP_Admin_Meta_Boxes {
 
     // Save all meta fields
     $meta_fields = array(
-      'tournament_id', 'width', 'height', 'font_size', 'header_font_size',
-      'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize', 'table_padding',
-      'inner_padding', 'text_color', 'main_color', 'bg_color', 'bg_opacity',
-      'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
-      'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
-      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups', 'language', 'group'
+      'tournament_id',
+      'width',
+      'height',
+      'font_size',
+      'header_font_size',
+      'bsizeh',
+      'bsizev',
+      'bsizeoh',
+      'bsizeov',
+      'bbsize',
+      'ehrsize',
+      'ehrtop',
+      'ehrbottom',
+      'table_padding',
+      'inner_padding',
+      'text_color',
+      'main_color',
+      'bg_color',
+      'bg_opacity',
+      'border_color',
+      'head_bottom_border_color',
+      'even_bg_color',
+      'even_bg_opacity',
+      'odd_bg_color',
+      'odd_bg_opacity',
+      'hover_bg_color',
+      'hover_bg_opacity',
+      'head_bg_color',
+      'head_bg_opacity',
+      'projector_presentation',
+      'si',
+      'sf',
+      'st',
+      'sg',
+      'se',
+      'sp',
+      'sh',
+      'language',
+      'group'
     );
 
     foreach ($meta_fields as $field) {
       $post_field = 'mtp_' . $field;
       $meta_key = '_mtp_' . $field;
 
-      if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups'))) {
+      if (in_array($field, array('projector_presentation', 'si', 'sf', 'st', 'sg', 'se', 'sp', 'sh'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);

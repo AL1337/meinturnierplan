@@ -1,9 +1,9 @@
 <?php
 /**
- * Table Shortcode Handler Class
+ * Matches Shortcode Handler Class
  *
  * @package MeinTurnierplan
- * @since 0.1.0
+ * @since 0.2.0
  */
 
 // Prevent direct access
@@ -12,20 +12,20 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Table Shortcode Handler Class
+ * Matches Shortcode Handler Class
  */
-class MTP_Table_Shortcode {
+class MTP_Matches_Shortcode {
 
   /**
-   * Table renderer instance
+   * Matches renderer instance
    */
-  private $table_renderer;
+  private $matches_renderer;
 
   /**
    * Constructor
    */
-  public function __construct($table_renderer) {
-    $this->table_renderer = $table_renderer;
+  public function __construct($matches_renderer) {
+    $this->matches_renderer = $matches_renderer;
     $this->init();
   }
 
@@ -33,7 +33,7 @@ class MTP_Table_Shortcode {
    * Initialize shortcode
    */
   public function init() {
-    add_shortcode('mtp-table', array($this, 'shortcode_callback'));
+    add_shortcode('mtp-matches', array($this, 'shortcode_callback'));
   }
 
   /**
@@ -58,6 +58,9 @@ class MTP_Table_Shortcode {
       's-bsizev' => '1',
       's-bsizeoh' => '1',
       's-bsizeov' => '1',
+      's-ehrsize' => '10',
+      's-ehrtop' => '9',
+      's-ehrbottom' => '3',
       's-bbcolor' => 'bbbbbb',
       's-bbsize' => '2',
       's-bgeven' => 'f0f8ffb0',
@@ -66,12 +69,15 @@ class MTP_Table_Shortcode {
       's-bghead' => 'eeeeffff',
       'width' => '',
       'height' => '',
-      'sw' => '0', // Suppress wins, losses, etc.
-      'sl' => '0', // Suppress logos
-      'sn' => '0', // Suppress num matches
-      'bm' => '0', // Projector presentation
-      'nav' => '0' // Navigation for groups
-    ), $atts, 'mtp-table');
+      'bm' => '0',
+      'si' => '0',
+      'sf' => '0',
+      'st' => '0',
+      'sg' => '0',
+      'se' => '0',
+      'sp' => '0',
+      'sh' => '0',
+    ), $atts, 'mtp-matches');
 
     // Map lang to setlang for internal processing
     $atts['setlang'] = $atts['lang'];
@@ -80,6 +86,6 @@ class MTP_Table_Shortcode {
     $post_id = !empty($atts['post_id']) ? $atts['post_id'] : null;
 
     // Always render table - empty if no ID, with data if ID provided
-    return $this->table_renderer->render_table_html($post_id, $atts);
+    return $this->matches_renderer->render_table_html($post_id, $atts);
   }
 }
