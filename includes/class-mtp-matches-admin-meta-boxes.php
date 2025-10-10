@@ -376,7 +376,9 @@ class MTP_Admin_Matches_Meta_Boxes {
     );
 
     // Include reusable admin JavaScript utilities
-    MTP_Admin_Utilities::render_admin_javascript_utilities();
+    MTP_Admin_Utilities::render_admin_javascript_utilities(array(
+      'ajax_actions' => array('mtp_get_matches_groups', 'mtp_refresh_matches_groups')
+    ));
     ?>
     <script>
     jQuery(document).ready(function($) {

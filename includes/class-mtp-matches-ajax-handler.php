@@ -39,7 +39,7 @@ class MTP_Matches_Ajax_Handler {
   }
 
   /**
-   * AJAX handler for table preview (existing one for admin)
+   * AJAX handler for matches preview (existing one for admin)
    */
   public function ajax_preview_matches() {
     // Check nonce
@@ -68,12 +68,14 @@ class MTP_Matches_Ajax_Handler {
       's-bgodd' => $data['odd_bg_color'] ? $data['odd_bg_color'] : 'ffffffb0',
       's-bgover' => $data['hover_bg_color'] ? $data['hover_bg_color'] : 'eeeeffb0',
       's-bghead' => $data['head_bg_color'] ? $data['head_bg_color'] : 'eeeeffff',
-      's-logosize' => $data['logo_size'] ? $data['logo_size'] : '20',
       's-bsizeh' => $data['bsizeh'] ? $data['bsizeh'] : '1',
       's-bsizev' => $data['bsizev'] ? $data['bsizev'] : '1',
       's-bsizeoh' => $data['bsizeoh'] ? $data['bsizeoh'] : '1',
       's-bsizeov' => $data['bsizeov'] ? $data['bsizeov'] : '1',
       's-bbsize' => $data['bbsize'] ? $data['bbsize'] : '2',
+      's-ehrsize' => $data['ehrsize'] ? $data['ehrsize'] : '10',
+      's-ehrtop' => $data['ehrtop'] ? $data['ehrtop'] : '9',
+      's-ehrbottom' => $data['ehrbottom'] ? $data['ehrbottom'] : '3',
       'setlang' => $data['language'] ? $data['language'] : 'en'
     );
 
@@ -82,32 +84,47 @@ class MTP_Matches_Ajax_Handler {
       $atts['group'] = $data['group'];
     }
 
-    // Add sw parameter if suppress_wins is enabled
-    if (!empty($data['suppress_wins']) && $data['suppress_wins'] === '1') {
-      $atts['sw'] = '1';
-    }
-
-    // Add sl parameter if suppress_logos is enabled
-    if (!empty($data['suppress_logos']) && $data['suppress_logos'] === '1') {
-      $atts['sl'] = '1';
-    }
-
-    // Add sn parameter if suppress_num_matches is enabled
-    if (!empty($data['suppress_num_matches']) && $data['suppress_num_matches'] === '1') {
-      $atts['sn'] = '1';
-    }
-
     // Add bm parameter if projector_presentation is enabled
     if (!empty($data['projector_presentation']) && $data['projector_presentation'] === '1') {
       $atts['bm'] = '1';
     }
 
-    // Add nav parameter if navigation_for_groups is enabled
-    if (!empty($data['navigation_for_groups']) && $data['navigation_for_groups'] === '1') {
-      $atts['nav'] = '1';
+    // Add si parameter if si is enabled
+    if (!empty($data['si']) && $data['si'] === '1') {
+      $atts['si'] = '1';
     }
 
-    $html = $this->matches_renderer->render_table_html($post_id, $atts);
+    // Add sf parameter if sf is enabled
+    if (!empty($data['sf']) && $data['sf'] === '1') {
+      $atts['sf'] = '1';
+    }
+
+    // Add st parameter if st is enabled
+    if (!empty($data['st']) && $data['st'] === '1') {
+      $atts['st'] = '1';
+    }
+
+    // Add sg parameter if sg is enabled
+    if (!empty($data['sg']) && $data['sg'] === '1') {
+      $atts['sg'] = '1';
+    }
+
+    // Add se parameter if se is enabled
+    if (!empty($data['se']) && $data['se'] === '1') {
+      $atts['se'] = '1';
+    }
+
+    // Add sp parameter if sp is enabled
+    if (!empty($data['sp']) && $data['sp'] === '1') {
+      $atts['sp'] = '1';
+    }
+
+    // Add sh parameter if sh is enabled
+    if (!empty($data['sh']) && $data['sh'] === '1') {
+      $atts['sh'] = '1';
+    }
+
+    $html = $this->matches_renderer->render_matches_html($post_id, $atts);
 
     wp_send_json_success($html);
   }
@@ -174,6 +191,9 @@ class MTP_Matches_Ajax_Handler {
       'bsizeoh' => sanitize_text_field($data['bsizeoh']),
       'bsizeov' => sanitize_text_field($data['bsizeov']),
       'bbsize' => sanitize_text_field($data['bbsize']),
+      'ehrsize' => isset($data['ehrsize']) ? sanitize_text_field($data['ehrsize']) : '10',
+      'ehrtop' => isset($data['ehrtop']) ? sanitize_text_field($data['ehrtop']) : '9',
+      'ehrbottom' => isset($data['ehrbottom']) ? sanitize_text_field($data['ehrbottom']) : '3',
       'table_padding' => sanitize_text_field($data['table_padding']),
       'inner_padding' => sanitize_text_field($data['inner_padding']),
       'text_color' => sanitize_text_field($data['text_color']),
@@ -185,12 +205,14 @@ class MTP_Matches_Ajax_Handler {
       'odd_bg_color' => isset($data['odd_bg_color']) ? sanitize_text_field($data['odd_bg_color']) : 'ffffffb0',
       'hover_bg_color' => isset($data['hover_bg_color']) ? sanitize_text_field($data['hover_bg_color']) : 'eeeeffb0',
       'head_bg_color' => isset($data['head_bg_color']) ? sanitize_text_field($data['head_bg_color']) : 'eeeeffff',
-      'logo_size' => sanitize_text_field($data['logo_size']),
-      'suppress_wins' => isset($data['suppress_wins']) ? sanitize_text_field($data['suppress_wins']) : '0',
-      'suppress_logos' => isset($data['suppress_logos']) ? sanitize_text_field($data['suppress_logos']) : '0',
-      'suppress_num_matches' => isset($data['suppress_num_matches']) ? sanitize_text_field($data['suppress_num_matches']) : '0',
       'projector_presentation' => isset($data['projector_presentation']) ? sanitize_text_field($data['projector_presentation']) : '0',
-      'navigation_for_groups' => isset($data['navigation_for_groups']) ? sanitize_text_field($data['navigation_for_groups']) : '0',
+      'si' => isset($data['si']) ? sanitize_text_field($data['si']) : '0',
+      'sf' => isset($data['sf']) ? sanitize_text_field($data['sf']) : '0',
+      'st' => isset($data['st']) ? sanitize_text_field($data['st']) : '0',
+      'sg' => isset($data['sg']) ? sanitize_text_field($data['sg']) : '0',
+      'se' => isset($data['se']) ? sanitize_text_field($data['se']) : '0',
+      'sp' => isset($data['sp']) ? sanitize_text_field($data['sp']) : '0',
+      'sh' => isset($data['sh']) ? sanitize_text_field($data['sh']) : '0',
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
     );
