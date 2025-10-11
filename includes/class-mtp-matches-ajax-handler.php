@@ -91,6 +91,11 @@ class MTP_Matches_Ajax_Handler {
       $atts['participant'] = $data['participant'];
     }
 
+    // Add match_number parameter if specified
+    if (!empty($data['match_number'])) {
+      $atts['match_number'] = $data['match_number'];
+    }
+
     // Add bm parameter if projector_presentation is enabled
     if (!empty($data['projector_presentation']) && $data['projector_presentation'] === '1') {
       $atts['bm'] = '1';
@@ -269,6 +274,7 @@ class MTP_Matches_Ajax_Handler {
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
       'participant' => isset($data['participant']) ? sanitize_text_field($data['participant']) : '-1',
+      'match_number' => isset($data['match_number']) ? sanitize_text_field($data['match_number']) : '',
     );
   }
 }

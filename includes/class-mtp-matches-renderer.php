@@ -226,6 +226,22 @@ class MTP_Matches_Renderer {
       $params['tm'] = $participant;
     }
 
+    // Add mn parameter if match_number is specified
+    $match_number = '';
+    if (!empty($atts['match_number'])) {
+      $match_number = $atts['match_number'];
+    } elseif (!empty($atts['gamenumbers'])) {
+      // Support gamenumbers attribute from shortcode
+      $match_number = $atts['gamenumbers'];
+    } elseif ($matches_id) {
+      $match_number = get_post_meta($matches_id, '_mtp_match_number', true);
+    }
+
+    // Add mn parameter if match_number is not empty (handles both single number and range)
+    if (!empty($match_number)) {
+      $params['mn'] = $match_number;
+    }
+
     return $params;
   }
 

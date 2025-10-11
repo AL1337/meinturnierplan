@@ -136,6 +136,7 @@ class MTP_Admin_Matches_Meta_Boxes {
       'language' => MTP_Admin_Utilities::get_default_language(),
       'group' => '',
       'participant' => '-1',
+      'match_number' => '',
     );
 
     $meta_values = array();
@@ -167,6 +168,7 @@ class MTP_Admin_Matches_Meta_Boxes {
     );
     MTP_Admin_Utilities::render_conditional_group_field($meta_values, 'mtp_', 'matches');
     MTP_Admin_Utilities::render_conditional_participant_field($meta_values, 'mtp_');
+    MTP_Admin_Utilities::render_text_field('mtp_match_number', __('Match number (from-to)', 'meinturnierplan'), $meta_values['match_number'], __('Enter a single match number (e.g., "8") or a range (e.g., "2-7"). Leave empty to display all matches.', 'meinturnierplan'));
     MTP_Admin_Utilities::render_checkbox_field(
       'mtp_projector_presentation',
       __('Projector Presentation', 'meinturnierplan'),
@@ -294,6 +296,11 @@ class MTP_Admin_Matches_Meta_Boxes {
       $atts_array['participant'] = $meta_values['participant'];
     }
 
+    // Add match_number parameter if specified
+    if (!empty($meta_values['match_number'])) {
+      $atts_array['match_number'] = $meta_values['match_number'];
+    }
+
     // Add bm parameter if projector_presentation is enabled
     if (!empty($meta_values['projector_presentation']) && $meta_values['projector_presentation'] === '1') {
       $atts_array['bm'] = '1';
@@ -380,7 +387,8 @@ class MTP_Admin_Matches_Meta_Boxes {
       'mtp_sh',
       'mtp_language',
       'mtp_group',
-      'mtp_participant'
+      'mtp_participant',
+      'mtp_match_number'
     );
 
     // Include reusable admin JavaScript utilities
@@ -469,6 +477,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           language: $("#mtp_language").val(),
           group: $("#mtp_group").val(),
           participant: $("#mtp_participant").val(),
+          match_number: $("#mtp_match_number").val(),
           action: "mtp_preview_matches",
           nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
         };
@@ -522,6 +531,11 @@ class MTP_Admin_Matches_Meta_Boxes {
     // Add participant parameter if specified and not default "All"
     if (!empty($meta_values['participant']) && $meta_values['participant'] !== '-1') {
       $shortcode .= ' participant="' . esc_attr($meta_values['participant']) . '"';
+    }
+
+    // Add gamenumbers parameter if match_number is specified
+    if (!empty($meta_values['match_number'])) {
+      $shortcode .= ' gamenumbers="' . esc_attr($meta_values['match_number']) . '"';
     }
 
     // Add bm parameter if projector_presentation is enabled
@@ -662,6 +676,7 @@ class MTP_Admin_Matches_Meta_Boxes {
         var language = $("#mtp_language").val() || "en";
         var group = $("#mtp_group").val() || "";
         var participant = $("#mtp_participant").val() || "-1";
+        var matchNumber = $("#mtp_match_number").val() || "";
 
         // Combine colors with opacity (convert opacity percentage to hex)
         var bgColor = $("#mtp_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_bg_opacity").val() / 100) * 255));
@@ -742,6 +757,11 @@ class MTP_Admin_Matches_Meta_Boxes {
         // Add participant parameter if selected and not default "All"
         if (participant && participant !== '-1') {
           newShortcode += ' participant="' + participant + '"';
+        }
+
+        // Add gamenumbers parameter if specified
+        if (matchNumber) {
+          newShortcode += ' gamenumbers="' + matchNumber + '"';
         }
 
         // Add width and height parameters
@@ -833,7 +853,8 @@ class MTP_Admin_Matches_Meta_Boxes {
       'sh',
       'language',
       'group',
-      'participant'
+      'participant',
+      'match_number'
     );
 
     foreach ($meta_fields as $field) {

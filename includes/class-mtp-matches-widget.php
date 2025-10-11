@@ -196,6 +196,18 @@ class MTP_Matches_Widget extends WP_Widget {
       $attributes['group'] = $group;
     }
 
+    // Get participant setting
+    $participant = get_post_meta($table_id, '_mtp_participant', true);
+    if (!empty($participant) && $participant !== '-1') {
+      $attributes['participant'] = $participant;
+    }
+
+    // Get match_number setting
+    $match_number = get_post_meta($table_id, '_mtp_match_number', true);
+    if (!empty($match_number)) {
+      $attributes['gamenumbers'] = $match_number;
+    }
+
     return $attributes;
   }
 }

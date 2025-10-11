@@ -77,6 +77,7 @@ class MTP_Matches_Shortcode {
       'se' => '0',
       'sp' => '0',
       'sh' => '0',
+      'gamenumbers' => '',
     ), $atts, 'mtp-matches');
 
     // Map lang to setlang for internal processing
@@ -85,7 +86,7 @@ class MTP_Matches_Shortcode {
     // Use post_id if provided for getting width from meta, otherwise use null
     $post_id = !empty($atts['post_id']) ? $atts['post_id'] : null;
 
-    // Always render table - empty if no ID, with data if ID provided
-    return $this->matches_renderer->render_table_html($post_id, $atts);
+    // Always render matches - empty if no ID, with data if ID provided
+    return $this->matches_renderer->render_matches_html($post_id, $atts);
   }
 }
