@@ -189,6 +189,14 @@ class MTP_Admin_Matches_Meta_Boxes {
       $meta_values['tournament_id'],
       'showCourts'
     );
+    MTP_Admin_Utilities::render_conditional_checkbox_field(
+      'mtp_sg',
+      __('Suppress Group', 'meinturnierplan'),
+      $meta_values['sg'],
+      __('Enable suppression of group information in the matches table.', 'meinturnierplan'),
+      $meta_values['tournament_id'],
+      'showGroups'
+    );
     MTP_Admin_Utilities::render_checkbox_field(
       'mtp_st',
       __('Suppress Times', 'meinturnierplan'),
@@ -382,10 +390,11 @@ class MTP_Admin_Matches_Meta_Boxes {
         if (!tournamentId) {
           // Hide all conditional fields if no tournament ID
           $('#mtp_sf_row').hide();
+          $('#mtp_sg_row').hide();
           return;
         }
 
-        // Fetch tournament data via WordPress AJAX to avoid CORS issues
+        // Fetch tournament data for showCourts via WordPress AJAX to avoid CORS issues
         $.ajax({
           url: ajaxurl,
           type: 'POST',
@@ -414,6 +423,36 @@ class MTP_Admin_Matches_Meta_Boxes {
             $('#mtp_sf_row').hide();
           }
         });
+
+        // Fetch tournament data for showGroups via WordPress AJAX to avoid CORS issues
+        $.ajax({
+          url: ajaxurl,
+          type: 'POST',
+          data: {
+            action: 'mtp_check_tournament_option',
+            tournament_id: tournamentId,
+            option_name: 'showGroups',
+            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+          },
+          success: function(response) {
+            if (response.success && response.data) {
+              var showGroupsValue = response.data.value;
+
+              // Show/hide Suppress Group field based on showGroups
+              if (showGroupsValue === true) {
+                $('#mtp_sg_row').show();
+              } else {
+                $('#mtp_sg_row').hide();
+              }
+            } else {
+              $('#mtp_sg_row').hide();
+            }
+          },
+          error: function(xhr, status, error) {
+            // On error, hide the field
+            $('#mtp_sg_row').hide();
+          }
+        });
       }
 
       // Initialize group refresh button
@@ -438,6 +477,7 @@ class MTP_Admin_Matches_Meta_Boxes {
       } else {
         // Hide conditional fields if no tournament ID on load
         $('#mtp_sf_row').hide();
+        $('#mtp_sg_row').hide();
       }
 
       // Additional explicit listeners for checkboxes to ensure they work even when dynamically shown/hidden
