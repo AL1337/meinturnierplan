@@ -116,7 +116,7 @@ class MTP_Matches_Renderer {
       $params['si'] = '';
     }
 
-    // Add sf parameter if enabled
+    // Add sf parameter if enabled (Suppress Court)
     $sf = '';
     if (!empty($atts['sf'])) {
       $sf = $atts['sf'];
@@ -126,18 +126,6 @@ class MTP_Matches_Renderer {
 
     if (!empty($sf) && $sf === '1') {
       $params['sf'] = '';
-    }
-
-    // Add sc parameter if enabled
-    $sc = '';
-    if (!empty($atts['sc'])) {
-      $sc = $atts['sc'];
-    } elseif ($matches_id) {
-      $sc = get_post_meta($matches_id, '_mtp_sc', true);
-    }
-
-    if (!empty($sc) && $sc === '1') {
-      $params['sc'] = '';
     }
 
     // Add st parameter if enabled
@@ -423,7 +411,7 @@ class MTP_Matches_Renderer {
     $query_parts = array();
 
     // Parameters that should appear without values when enabled
-    $no_value_params = array('bm', 'si', 'sf', 'sc', 'st', 'sg', 'se', 'sp', 'sh');
+    $no_value_params = array('bm', 'si', 'sf', 'st', 'sg', 'se', 'sp', 'sh');
 
     foreach ($params as $key => $value) {
       if (in_array($key, $no_value_params) && $value === '') {

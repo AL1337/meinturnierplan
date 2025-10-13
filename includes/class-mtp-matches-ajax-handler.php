@@ -107,14 +107,9 @@ class MTP_Matches_Ajax_Handler {
       $atts['si'] = '1';
     }
 
-    // Add sf parameter if sf is enabled
+    // Add sf parameter if sf is enabled (Suppress Court)
     if (!empty($data['sf']) && $data['sf'] === '1') {
       $atts['sf'] = '1';
-    }
-
-    // Add sc parameter if sc is enabled
-    if (!empty($data['sc']) && $data['sc'] === '1') {
-      $atts['sc'] = '1';
     }
 
     // Add st parameter if st is enabled
@@ -272,7 +267,6 @@ class MTP_Matches_Ajax_Handler {
       'projector_presentation' => isset($data['projector_presentation']) ? sanitize_text_field($data['projector_presentation']) : '0',
       'si' => isset($data['si']) ? sanitize_text_field($data['si']) : '0',
       'sf' => isset($data['sf']) ? sanitize_text_field($data['sf']) : '0',
-      'sc' => isset($data['sc']) ? sanitize_text_field($data['sc']) : '0',
       'st' => isset($data['st']) ? sanitize_text_field($data['st']) : '0',
       'sg' => isset($data['sg']) ? sanitize_text_field($data['sg']) : '0',
       'se' => isset($data['se']) ? sanitize_text_field($data['se']) : '0',

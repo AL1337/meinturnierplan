@@ -128,7 +128,6 @@ class MTP_Admin_Matches_Meta_Boxes {
       'projector_presentation' => '0',
       'si' => '0',
       'sf' => '0',
-      'sc' => '0',
       'st' => '0',
       'sg' => '0',
       'se' => '0',
@@ -183,9 +182,9 @@ class MTP_Admin_Matches_Meta_Boxes {
       __('Enable suppression of match numbers in the matches table.', 'meinturnierplan')
     );
     MTP_Admin_Utilities::render_conditional_checkbox_field(
-      'mtp_sc',
+      'mtp_sf',
       __('Suppress Court', 'meinturnierplan'),
-      $meta_values['sc'],
+      $meta_values['sf'],
       __('Enable suppression of court information in the matches table.', 'meinturnierplan'),
       $meta_values['tournament_id'],
       'showCourts'
@@ -320,14 +319,9 @@ class MTP_Admin_Matches_Meta_Boxes {
       $atts_array['si'] = '1';
     }
 
-    // Add sf parameter if sf is enabled
+    // Add sf parameter if sf is enabled (Suppress Court)
     if (!empty($meta_values['sf']) && $meta_values['sf'] === '1') {
       $atts_array['sf'] = '1';
-    }
-
-    // Add sc parameter if sc is enabled
-    if (!empty($meta_values['sc']) && $meta_values['sc'] === '1') {
-      $atts_array['sc'] = '1';
     }
 
     // Add st parameter if st is enabled
@@ -387,7 +381,7 @@ class MTP_Admin_Matches_Meta_Boxes {
       function checkConditionalFields(tournamentId) {
         if (!tournamentId) {
           // Hide all conditional fields if no tournament ID
-          $('#mtp_sc_row').hide();
+          $('#mtp_sf_row').hide();
           return;
         }
 
@@ -407,17 +401,17 @@ class MTP_Admin_Matches_Meta_Boxes {
 
               // Show/hide Suppress Court field based on showCourts
               if (showCourtsValue === true) {
-                $('#mtp_sc_row').show();
+                $('#mtp_sf_row').show();
               } else {
-                $('#mtp_sc_row').hide();
+                $('#mtp_sf_row').hide();
               }
             } else {
-              $('#mtp_sc_row').hide();
+              $('#mtp_sf_row').hide();
             }
           },
           error: function(xhr, status, error) {
             // On error, hide the field
-            $('#mtp_sc_row').hide();
+            $('#mtp_sf_row').hide();
           }
         });
       }
@@ -443,7 +437,7 @@ class MTP_Admin_Matches_Meta_Boxes {
         checkConditionalFields(initialTournamentId);
       } else {
         // Hide conditional fields if no tournament ID on load
-        $('#mtp_sc_row').hide();
+        $('#mtp_sf_row').hide();
       }
 
       // Additional explicit listeners for checkboxes to ensure they work even when dynamically shown/hidden
@@ -486,7 +480,6 @@ class MTP_Admin_Matches_Meta_Boxes {
           projector_presentation: $("#mtp_projector_presentation").is(":checked") ? "1" : "0",
           si: $("#mtp_si").is(":checked") ? "1" : "0",
           sf: $("#mtp_sf").is(":checked") ? "1" : "0",
-          sc: $("#mtp_sc").is(":checked") ? "1" : "0",
           st: $("#mtp_st").is(":checked") ? "1" : "0",
           sg: $("#mtp_sg").is(":checked") ? "1" : "0",
           se: $("#mtp_se").is(":checked") ? "1" : "0",
@@ -566,14 +559,9 @@ class MTP_Admin_Matches_Meta_Boxes {
       $shortcode .= ' si="1"';
     }
 
-    // Add sf parameter if sf is enabled
+    // Add sf parameter if sf is enabled (Suppress Court)
     if (!empty($meta_values['sf']) && $meta_values['sf'] === '1') {
       $shortcode .= ' sf="1"';
-    }
-
-    // Add sc parameter if sc is enabled
-    if (!empty($meta_values['sc']) && $meta_values['sc'] === '1') {
-      $shortcode .= ' sc="1"';
     }
 
     // Add st parameter if st is enabled
@@ -742,14 +730,9 @@ class MTP_Admin_Matches_Meta_Boxes {
           newShortcode += ' si="1"';
         }
 
-        // Add sf parameter if sf checkbox is checked
+        // Add sf parameter if sf checkbox is checked (Suppress Court)
         if ($("#mtp_sf").is(":checked")) {
           newShortcode += ' sf="1"';
-        }
-
-        // Add sc parameter if sc checkbox is checked
-        if ($("#mtp_sc").is(":checked")) {
-          newShortcode += ' sc="1"';
         }
 
         // Add st parameter if st checkbox is checked
@@ -874,7 +857,6 @@ class MTP_Admin_Matches_Meta_Boxes {
       'projector_presentation',
       'si',
       'sf',
-      'sc',
       'st',
       'sg',
       'se',
@@ -890,7 +872,7 @@ class MTP_Admin_Matches_Meta_Boxes {
       $post_field = 'mtp_' . $field;
       $meta_key = '_mtp_' . $field;
 
-      if (in_array($field, array('projector_presentation', 'si', 'sf', 'sc', 'st', 'sg', 'se', 'sp', 'sh'))) {
+      if (in_array($field, array('projector_presentation', 'si', 'sf', 'st', 'sg', 'se', 'sp', 'sh'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);

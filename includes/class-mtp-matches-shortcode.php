@@ -72,7 +72,6 @@ class MTP_Matches_Shortcode {
       'bm' => '0',
       'si' => '0',
       'sf' => '0',
-      'sc' => '0',
       'st' => '0',
       'sg' => '0',
       'se' => '0',
