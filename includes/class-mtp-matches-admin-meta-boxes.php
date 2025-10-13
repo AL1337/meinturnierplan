@@ -220,6 +220,14 @@ class MTP_Admin_Matches_Meta_Boxes {
       $meta_values['tournament_id'],
       'finalMatches'
     );
+    MTP_Admin_Utilities::render_conditional_checkbox_field(
+      'mtp_sp',
+      __('Suppress Penalties', 'meinturnierplan'),
+      $meta_values['sp'],
+      __('Enable suppression of penalty information in the final matches.', 'meinturnierplan'),
+      $meta_values['tournament_id'],
+      'finalMatches'
+    );
 
     // Typography Group
     MTP_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
@@ -386,8 +394,8 @@ class MTP_Admin_Matches_Meta_Boxes {
       $atts_array['se'] = '1';
     }
 
-    // Add sp parameter if sp is enabled
-    if (!empty($meta_values['sp']) && $meta_values['sp'] === '1') {
+    // Add sp parameter if sp is enabled (Suppress Penalties) AND tournament has final matches
+    if ($has_final_matches && !empty($meta_values['sp']) && $meta_values['sp'] === '1') {
       $atts_array['sp'] = '1';
     }
 
@@ -432,6 +440,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           $('#mtp_sg_row').hide();
           $('#mtp_sr_row').hide();
           $('#mtp_se_row').hide();
+          $('#mtp_sp_row').hide();
           return;
         }
 
@@ -539,19 +548,23 @@ class MTP_Admin_Matches_Meta_Boxes {
             if (response.success && response.data) {
               var finalMatchesValue = response.data.value;
 
-              // Show Suppress Extra Time field if finalMatches exists (array or not empty)
+              // Show Suppress Extra Time and Suppress Penalties fields if finalMatches exists (array or not empty)
               if (finalMatchesValue !== null && finalMatchesValue !== undefined) {
                 $('#mtp_se_row').show();
+                $('#mtp_sp_row').show();
               } else {
                 $('#mtp_se_row').hide();
+                $('#mtp_sp_row').hide();
               }
             } else {
               $('#mtp_se_row').hide();
+              $('#mtp_sp_row').hide();
             }
           },
           error: function(xhr, status, error) {
-            // On error, hide the field
+            // On error, hide the fields
             $('#mtp_se_row').hide();
+            $('#mtp_sp_row').hide();
           }
         });
       }
@@ -581,6 +594,7 @@ class MTP_Admin_Matches_Meta_Boxes {
         $('#mtp_sg_row').hide();
         $('#mtp_sr_row').hide();
         $('#mtp_se_row').hide();
+        $('#mtp_sp_row').hide();
       }
 
       // Additional explicit listeners for checkboxes to ensure they work even when dynamically shown/hidden
@@ -628,7 +642,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           sg: ($("#mtp_sg").length && $("#mtp_sg").is(":visible") && $("#mtp_sg").is(":checked")) ? "1" : "0",
           sr: ($("#mtp_sr").length && $("#mtp_sr").is(":visible") && $("#mtp_sr").is(":checked")) ? "1" : "0",
           se: ($("#mtp_se").length && $("#mtp_se").is(":visible") && $("#mtp_se").is(":checked")) ? "1" : "0",
-          sp: $("#mtp_sp").is(":checked") ? "1" : "0",
+          sp: ($("#mtp_sp").length && $("#mtp_sp").is(":visible") && $("#mtp_sp").is(":checked")) ? "1" : "0",
           sh: $("#mtp_sh").is(":checked") ? "1" : "0",
           language: $("#mtp_language").val(),
           group: $("#mtp_group").val(),
