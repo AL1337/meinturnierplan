@@ -212,6 +212,14 @@ class MTP_Admin_Matches_Meta_Boxes {
       $meta_values['st'],
       __('Enable suppression of match times in the matches table.', 'meinturnierplan')
     );
+    MTP_Admin_Utilities::render_conditional_checkbox_field(
+      'mtp_se',
+      __('Suppress Extra Time', 'meinturnierplan'),
+      $meta_values['se'],
+      __('Enable suppression of extra time information in the final matches.', 'meinturnierplan'),
+      $meta_values['tournament_id'],
+      'finalMatches'
+    );
 
     // Typography Group
     MTP_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
@@ -281,11 +289,16 @@ class MTP_Admin_Matches_Meta_Boxes {
     $show_courts = false;
     $show_groups = false;
     $show_referees = false;
+    $has_final_matches = false;
 
     if (!empty($tournament_id)) {
       $show_courts = MTP_Admin_Utilities::fetch_tournament_option($tournament_id, 'showCourts') === true;
       $show_groups = MTP_Admin_Utilities::fetch_tournament_option($tournament_id, 'showGroups') === true;
       $show_referees = MTP_Admin_Utilities::fetch_tournament_option($tournament_id, 'showReferees') === true;
+
+      // Check if finalMatches exists (not null and not undefined)
+      $final_matches = MTP_Admin_Utilities::fetch_tournament_option($tournament_id, 'finalMatches');
+      $has_final_matches = ($final_matches !== null);
     }
 
     // Combine colors with opacity
@@ -368,8 +381,8 @@ class MTP_Admin_Matches_Meta_Boxes {
       $atts_array['sr'] = '1';
     }
 
-    // Add se parameter if se is enabled
-    if (!empty($meta_values['se']) && $meta_values['se'] === '1') {
+    // Add se parameter if se is enabled (Suppress Extra Time) AND tournament has final matches
+    if ($has_final_matches && !empty($meta_values['se']) && $meta_values['se'] === '1') {
       $atts_array['se'] = '1';
     }
 
@@ -418,6 +431,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           $('#mtp_sf_row').hide();
           $('#mtp_sg_row').hide();
           $('#mtp_sr_row').hide();
+          $('#mtp_se_row').hide();
           return;
         }
 
@@ -510,6 +524,36 @@ class MTP_Admin_Matches_Meta_Boxes {
             $('#mtp_sr_row').hide();
           }
         });
+
+        // Fetch tournament data for finalMatches via WordPress AJAX to avoid CORS issues
+        $.ajax({
+          url: ajaxurl,
+          type: 'POST',
+          data: {
+            action: 'mtp_check_tournament_option',
+            tournament_id: tournamentId,
+            option_name: 'finalMatches',
+            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+          },
+          success: function(response) {
+            if (response.success && response.data) {
+              var finalMatchesValue = response.data.value;
+
+              // Show Suppress Extra Time field if finalMatches exists (array or not empty)
+              if (finalMatchesValue !== null && finalMatchesValue !== undefined) {
+                $('#mtp_se_row').show();
+              } else {
+                $('#mtp_se_row').hide();
+              }
+            } else {
+              $('#mtp_se_row').hide();
+            }
+          },
+          error: function(xhr, status, error) {
+            // On error, hide the field
+            $('#mtp_se_row').hide();
+          }
+        });
       }
 
       // Initialize group refresh button
@@ -536,6 +580,7 @@ class MTP_Admin_Matches_Meta_Boxes {
         $('#mtp_sf_row').hide();
         $('#mtp_sg_row').hide();
         $('#mtp_sr_row').hide();
+        $('#mtp_se_row').hide();
       }
 
       // Additional explicit listeners for checkboxes to ensure they work even when dynamically shown/hidden
@@ -582,7 +627,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           st: $("#mtp_st").is(":checked") ? "1" : "0",
           sg: ($("#mtp_sg").length && $("#mtp_sg").is(":visible") && $("#mtp_sg").is(":checked")) ? "1" : "0",
           sr: ($("#mtp_sr").length && $("#mtp_sr").is(":visible") && $("#mtp_sr").is(":checked")) ? "1" : "0",
-          se: $("#mtp_se").is(":checked") ? "1" : "0",
+          se: ($("#mtp_se").length && $("#mtp_se").is(":visible") && $("#mtp_se").is(":checked")) ? "1" : "0",
           sp: $("#mtp_sp").is(":checked") ? "1" : "0",
           sh: $("#mtp_sh").is(":checked") ? "1" : "0",
           language: $("#mtp_language").val(),
