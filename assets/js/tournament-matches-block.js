@@ -2,6 +2,7 @@
   const { registerBlockType } = wp.blocks;
   const { createElement: el, Fragment, useState, useEffect } = wp.element;
   const { SelectControl, Placeholder, Spinner } = wp.components;
+  const { useBlockProps } = wp.blockEditor || {};
   const { __ } = wp.i18n;
   const { apiFetch } = wp;
 
@@ -32,6 +33,7 @@
       const { tableId, tableName } = attributes;
       const [tables, setTables] = useState([]);
       const [loading, setLoading] = useState(true);
+      const blockProps = useBlockProps ? useBlockProps() : {};
 
       // Fetch tournament tables on component mount
       useEffect(() => {
@@ -66,23 +68,43 @@
 
       if (loading) {
         return el(
-          Placeholder,
-          {
-            icon: el('svg', { width: 24, height: 24, viewBox: '0 0 24 24' },
-              el('path', {
-                d: 'M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h10v2H7v-2z',
-                fill: 'currentColor'
-              })
-            ),
-            label: __('Matches', 'meinturnierplan')
-          },
-          el(Spinner)
+          'div',
+          blockProps,
+          el(
+            Placeholder,
+            {
+              icon: el('svg', { width: 24, height: 24, viewBox: '0 0 24 24' },
+                el('path', {
+                  d: 'M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h10v2H7v-2z',
+                  fill: 'currentColor'
+                })
+              ),
+              label: __('Matches', 'meinturnierplan')
+            },
+            el(Spinner)
+          )
+        );
+      }
+
+      // If a table is selected, show a preview box, otherwise show the selector
+      if (tableId) {
+        return el(
+          'div',
+          blockProps,
+          el('div', null, __('Selected Matches:', 'meinturnierplan')),
+          el('div', null, tableName || __('Match Table', 'meinturnierplan')),
+          el(SelectControl, {
+            label: __('Change Matches Table', 'meinturnierplan'),
+            value: tableId,
+            options: tables,
+            onChange: onChangeTable
+          })
         );
       }
 
       return el(
-        Fragment,
-        null,
+        'div',
+        blockProps,
         el(
           Placeholder,
           {

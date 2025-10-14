@@ -50,7 +50,7 @@ class MTP_Table_Gutenberg_Block {
     wp_register_script(
       'mtp-tournament-table-block',
       MTP_PLUGIN_URL . 'assets/js/tournament-table-block.js',
-      array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-data', 'wp-api-fetch'),
+      array('wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-data', 'wp-api-fetch'),
       MTP_PLUGIN_VERSION,
       true
     );
