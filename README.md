@@ -169,10 +169,13 @@ The widget automatically uses all settings configured in the selected match list
 ```
 meinturnierplan-wp/
 ├── meinturnierplan-wp.php                    # Main plugin file
+├── uninstall.php                             # Uninstall cleanup script
 ├── README.md                                  # This file
+├── CHANGELOG.md                               # Version history
 ├── includes/
 │   ├── class-mtp-plugin.php                  # Core plugin class
 │   ├── class-mtp-installer.php               # Plugin activation/deactivation
+│   ├── class-mtp-requirements-checker.php    # System requirements validation
 │   ├── class-mtp-assets.php                  # Asset management
 │   ├── class-mtp-admin-utilities.php         # Admin helper functions
 │   ├── class-mtp-single-content-filter.php   # Auto-populate single CPT pages
@@ -268,11 +271,19 @@ The plugin supports integration with external tournament management systems:
 
 ## Requirements
 
-- **WordPress**: 5.0 or higher
-- **PHP**: 7.0 or higher
+- **WordPress**: 6.3 or higher (required for Block API v3)
+- **PHP**: 7.4 or higher
 - **Browser**: Modern browsers with JavaScript enabled for admin features
 
+The plugin will automatically check these requirements on activation and display a friendly error message if your system doesn't meet them.
+
 ## Changelog
+
+### Version 0.3.2
+- **Requirements Checker**: Added system requirements validation (PHP 7.4+, WordPress 6.3+)
+- **Uninstall Hook**: Proper cleanup when plugin is deleted
+- Improved code organization and documentation
+- Enhanced security and WordPress.org compliance
 
 ### Version 0.3.1
 - **Auto-populate Single CPT Pages**: Single tournament table and match list pages now automatically display their content without manual shortcode insertion

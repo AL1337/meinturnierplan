@@ -2,6 +2,35 @@
 
 All notable changes to the MeinTurnierplan WordPress plugin will be documented in this file.
 
+## [0.3.2] - 2025-10-16
+
+### Added
+- **Requirements Checker**: New `MTP_Requirements_Checker` class that validates minimum system requirements before plugin initialization
+- Minimum requirements: PHP 7.4+ and WordPress 6.3+ (required for Block API version 3)
+- User-friendly admin notices when requirements are not met
+- **Uninstall Hook**: Proper `uninstall.php` file for clean plugin removal
+- Complete data cleanup on uninstall (custom post types, post meta, options, transients)
+
+### Changed
+- Moved requirements validation from inline function to dedicated class
+- Improved main plugin file organization and readability
+- Updated plugin version to 0.3.2
+- Enhanced code documentation with proper @since tags
+
+### Technical Details
+- New file: `includes/class-mtp-requirements-checker.php`
+- New file: `uninstall.php` (connects to existing `MTP_Installer::uninstall()` method)
+- Requirements are defined as class constants for easy maintenance
+- Requirements check happens early in plugin loading process
+- If requirements fail, plugin stops initialization gracefully
+- Uninstall process removes: all custom post types, post meta with `_mtp_` prefix, plugin options, and transients
+
+### Security & Best Practices
+- Follows WordPress plugin development best practices
+- Proper security checks in uninstall.php (`WP_UNINSTALL_PLUGIN` constant)
+- Clean separation of concerns with dedicated checker class
+- Ready for WordPress.org plugin directory submission
+
 ## [0.3.1] - 2025-10-16
 
 ### Added

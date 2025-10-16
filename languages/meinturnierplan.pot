@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 14:17+0000\n"
+"POT-Creation-Date: 2025-10-16 18:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -382,6 +382,24 @@ msgstr ""
 
 #. Name of the plugin
 msgid "MeinTurnierplan"
+msgstr ""
+
+#: includes/class-mtp-requirements-checker.php:77
+msgid "MeinTurnierplan Error:"
+msgstr ""
+
+#. 1: minimum PHP version, 2: current PHP version
+#: includes/class-mtp-requirements-checker.php:43
+#, php-format
+msgid "MeinTurnierplan requires PHP %1$s or higher. You are running PHP %2$s."
+msgstr ""
+
+#. 1: minimum WordPress version, 2: current WordPress version
+#: includes/class-mtp-requirements-checker.php:53
+#, php-format
+msgid ""
+"MeinTurnierplan requires WordPress %1$s or higher. You are running WordPress "
+"%2$s."
 msgstr ""
 
 #: includes/class-mtp-table-admin-meta-boxes.php:165
