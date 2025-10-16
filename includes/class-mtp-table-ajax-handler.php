@@ -1,9 +1,9 @@
 <?php
 /**
- * AJAX Handler Class
+ * AJAX Table Handler Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 // Prevent direct access
@@ -12,9 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * AJAX Handler Class
+ * AJAX Table Handler Class
  */
-class MTP_Ajax_Handler {
+class MTP_Table_Ajax_Handler {
 
   /**
    * Table renderer instance
@@ -82,29 +82,39 @@ class MTP_Ajax_Handler {
       $atts['group'] = $data['group'];
     }
 
-    // Add sw parameter if suppress_wins is enabled
+    // Add sw parameter (always send 0 or 1 to prevent post meta fallback)
     if (!empty($data['suppress_wins']) && $data['suppress_wins'] === '1') {
       $atts['sw'] = '1';
+    } else {
+      $atts['sw'] = '0';
     }
 
-    // Add sl parameter if suppress_logos is enabled
+    // Add sl parameter (always send 0 or 1 to prevent post meta fallback)
     if (!empty($data['suppress_logos']) && $data['suppress_logos'] === '1') {
       $atts['sl'] = '1';
+    } else {
+      $atts['sl'] = '0';
     }
 
-    // Add sn parameter if suppress_num_matches is enabled
+    // Add sn parameter (always send 0 or 1 to prevent post meta fallback)
     if (!empty($data['suppress_num_matches']) && $data['suppress_num_matches'] === '1') {
       $atts['sn'] = '1';
+    } else {
+      $atts['sn'] = '0';
     }
 
-    // Add bm parameter if projector_presentation is enabled
+    // Add bm parameter (always send 0 or 1 to prevent post meta fallback)
     if (!empty($data['projector_presentation']) && $data['projector_presentation'] === '1') {
       $atts['bm'] = '1';
+    } else {
+      $atts['bm'] = '0';
     }
 
-    // Add nav parameter if navigation_for_groups is enabled
+    // Add nav parameter (always send 0 or 1 to prevent post meta fallback)
     if (!empty($data['navigation_for_groups']) && $data['navigation_for_groups'] === '1') {
       $atts['nav'] = '1';
+    } else {
+      $atts['nav'] = '0';
     }
 
     $html = $this->table_renderer->render_table_html($post_id, $atts);

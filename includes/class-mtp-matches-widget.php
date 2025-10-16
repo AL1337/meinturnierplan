@@ -1,20 +1,20 @@
 <?php
 /**
- * Widget class for Tournament Tables
+ * Widget class for Matches
  */
 
-class MTP_Table_Widget extends WP_Widget {
+class MTP_Matches_Widget extends WP_Widget {
 
   /**
    * Constructor
    */
   public function __construct() {
     parent::__construct(
-      'mtp_table_widget',
-      __('Tournament Table', 'meinturnierplan'),
+      'mtp_matches_widget',
+      __('Matches Table', 'meinturnierplan'),
       array(
-        'description' => __('Display a tournament table.', 'meinturnierplan'),
-        'classname'   => 'mtp-table-widget'
+        'description' => __('Display a matches table.', 'meinturnierplan'),
+        'classname'   => 'mtp-matches-widget'
       )
     );
   }
@@ -44,10 +44,10 @@ class MTP_Table_Widget extends WP_Widget {
 
       // Use the existing shortcode functionality
       $mtp_plugin = MTP_Plugin::instance();
-      $shortcode = new MTP_Table_Shortcode($mtp_plugin->table_renderer);
+      $shortcode = new MTP_Matches_Shortcode($mtp_plugin->matches_renderer);
       echo $shortcode->shortcode_callback($shortcode_atts);
     } else {
-      echo '<div class="mtp-widget-placeholder">' . __('Please select a Tournament Table.', 'meinturnierplan') . '</div>';
+      echo '<div class="mtp-widget-placeholder">' . __('Please select a Matches Table.', 'meinturnierplan') . '</div>';
     }
 
     echo $args['after_widget'];
@@ -57,12 +57,12 @@ class MTP_Table_Widget extends WP_Widget {
    * Widget form in admin
    */
   public function form($instance) {
-    $title = !empty($instance['title']) ? $instance['title'] : __('Tournament Table', 'meinturnierplan');
+    $title = !empty($instance['title']) ? $instance['title'] : __('Matches Table', 'meinturnierplan');
     $table_id = !empty($instance['table_id']) ? $instance['table_id'] : '';
 
-    // Get all tournament tables
+    // Get all matches tables
     $tables = get_posts(array(
-      'post_type'      => 'mtp_table',
+      'post_type'      => 'mtp_match_list',
       'post_status'    => 'publish',
       'posts_per_page' => -1,
       'orderby'        => 'title',
@@ -75,9 +75,9 @@ class MTP_Table_Widget extends WP_Widget {
     </p>
 
     <p>
-      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php _e('Select Tournament Table:', 'meinturnierplan'); ?></label>
+      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php _e('Select Matches Table:', 'meinturnierplan'); ?></label>
       <select class="widefat" id="<?php echo esc_attr($this->get_field_id('table_id')); ?>" name="<?php echo esc_attr($this->get_field_name('table_id')); ?>">
-        <option value=""><?php _e('-- Select Table --', 'meinturnierplan'); ?></option>
+        <option value=""><?php _e('-- Select Matches --', 'meinturnierplan'); ?></option>
         <?php foreach ($tables as $table): ?>
           <option value="<?php echo esc_attr($table->ID); ?>" <?php selected($table_id, $table->ID); ?>>
             <?php echo esc_html($table->post_title); ?>
@@ -87,7 +87,7 @@ class MTP_Table_Widget extends WP_Widget {
     </p>
 
     <p>
-      <small><?php _e('The widget will use all styling settings configured for the selected Tournament Table. Width and height are automatically determined.', 'meinturnierplan'); ?></small>
+      <small><?php _e('The widget will use all styling settings configured for the selected Matches Table. Width and height are automatically determined.', 'meinturnierplan'); ?></small>
     </p>
     <?php
   }
@@ -117,7 +117,6 @@ class MTP_Table_Widget extends WP_Widget {
       '_mtp_main_color' => 's-maincolor',
       '_mtp_table_padding' => 's-padding',
       '_mtp_inner_padding' => 's-innerpadding',
-      '_mtp_logo_size' => 's-logosize',
       '_mtp_border_color' => 's-bcolor',
       '_mtp_bsizeh' => 's-bsizeh',
       '_mtp_bsizev' => 's-bsizev',
@@ -125,6 +124,9 @@ class MTP_Table_Widget extends WP_Widget {
       '_mtp_bsizeov' => 's-bsizeov',
       '_mtp_head_bottom_border_color' => 's-bbcolor',
       '_mtp_bbsize' => 's-bbsize',
+      '_mtp_ehrsize' => 's-ehrsize',
+      '_mtp_ehrtop' => 's-ehrtop',
+      '_mtp_ehrbottom' => 's-ehrbottom',
     );
 
     // Get simple color/styling values
@@ -165,11 +167,14 @@ class MTP_Table_Widget extends WP_Widget {
 
     // Define boolean parameter mapping
     $boolean_params = array(
-      '_mtp_suppress_wins' => 'sw',
-      '_mtp_suppress_logos' => 'sl',
-      '_mtp_suppress_num_matches' => 'sn',
       '_mtp_projector_presentation' => 'bm',
-      '_mtp_navigation_for_groups' => 'nav',
+      '_mtp_si' => 'si',
+      '_mtp_sf' => 'sf',
+      '_mtp_st' => 'st',
+      '_mtp_sg' => 'sg',
+      '_mtp_se' => 'se',
+      '_mtp_sp' => 'sp',
+      '_mtp_sh' => 'sh',
     );
 
     foreach ($boolean_params as $meta_key => $attr_name) {
@@ -189,6 +194,18 @@ class MTP_Table_Widget extends WP_Widget {
     $group = get_post_meta($table_id, '_mtp_group', true);
     if (!empty($group)) {
       $attributes['group'] = $group;
+    }
+
+    // Get participant setting
+    $participant = get_post_meta($table_id, '_mtp_participant', true);
+    if (!empty($participant) && $participant !== '-1') {
+      $attributes['participant'] = $participant;
+    }
+
+    // Get match_number setting
+    $match_number = get_post_meta($table_id, '_mtp_match_number', true);
+    if (!empty($match_number)) {
+      $attributes['gamenumbers'] = $match_number;
     }
 
     return $attributes;

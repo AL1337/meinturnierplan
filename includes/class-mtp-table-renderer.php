@@ -3,7 +3,7 @@
  * Table Renderer Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.2.0
  */
 
 // Prevent direct access
@@ -94,7 +94,7 @@ class MTP_Table_Renderer {
 
     // Add sw parameter if suppress_wins is enabled
     $suppress_wins = '';
-    if (!empty($atts['sw'])) {
+    if (isset($atts['sw'])) {
       $suppress_wins = $atts['sw'];
     } elseif ($table_id) {
       $suppress_wins = get_post_meta($table_id, '_mtp_suppress_wins', true);
@@ -106,7 +106,7 @@ class MTP_Table_Renderer {
 
     // Add sl parameter if suppress_logos is enabled
     $suppress_logos = '';
-    if (!empty($atts['sl'])) {
+    if (isset($atts['sl'])) {
       $suppress_logos = $atts['sl'];
     } elseif ($table_id) {
       $suppress_logos = get_post_meta($table_id, '_mtp_suppress_logos', true);
@@ -118,7 +118,7 @@ class MTP_Table_Renderer {
 
     // Add sn parameter if suppress_num_matches is enabled
     $suppress_num_matches = '';
-    if (!empty($atts['sn'])) {
+    if (isset($atts['sn'])) {
       $suppress_num_matches = $atts['sn'];
     } elseif ($table_id) {
       $suppress_num_matches = get_post_meta($table_id, '_mtp_suppress_num_matches', true);
@@ -130,7 +130,7 @@ class MTP_Table_Renderer {
 
     // Add bm parameter if projector_presentation is enabled
     $projector_presentation = '';
-    if (!empty($atts['bm'])) {
+    if (isset($atts['bm'])) {
       $projector_presentation = $atts['bm'];
     } elseif ($table_id) {
       $projector_presentation = get_post_meta($table_id, '_mtp_projector_presentation', true);
@@ -142,7 +142,7 @@ class MTP_Table_Renderer {
 
     // Add nav parameter if navigation_for_groups is enabled
     $navigation_for_groups = '';
-    if (!empty($atts['nav'])) {
+    if (isset($atts['nav'])) {
       $navigation_for_groups = $atts['nav'];
     } elseif ($table_id) {
       $navigation_for_groups = get_post_meta($table_id, '_mtp_navigation_for_groups', true);
@@ -223,7 +223,7 @@ class MTP_Table_Renderer {
 
         // Handle special cases for colors with opacity
         if (in_array($url_param, array('bgcolor', 'bgeven', 'bgodd', 'bgover', 'bghead'))) {
-          $value = $this->get_bg_color_with_opacity($table_id, $config['meta']);
+          $value = MTP_Admin_Utilities::get_bg_color_with_opacity($table_id, $config['meta']);
         }
       }
 
@@ -239,69 +239,13 @@ class MTP_Table_Renderer {
   }
 
   /**
-   * Get background color with opacity from post meta
-   */
-  private function get_bg_color_with_opacity($post_id, $color_meta_key) {
-    if (!$post_id) {
-      return '00000000'; // Transparent default
-    }
-
-    $bg_color = get_post_meta($post_id, $color_meta_key, true);
-
-    // Determine opacity meta key based on color meta key
-    $opacity_meta_mapping = array(
-      '_mtp_bg_color' => '_mtp_bg_opacity',
-      '_mtp_even_bg_color' => '_mtp_even_bg_opacity',
-      '_mtp_odd_bg_color' => '_mtp_odd_bg_opacity',
-      '_mtp_hover_bg_color' => '_mtp_hover_bg_opacity',
-      '_mtp_head_bg_color' => '_mtp_head_bg_opacity',
-    );
-
-    $opacity_meta_key = isset($opacity_meta_mapping[$color_meta_key]) ? $opacity_meta_mapping[$color_meta_key] : null;
-    $bg_opacity = $opacity_meta_key ? get_post_meta($post_id, $opacity_meta_key, true) : null;
-
-    // Set defaults
-    if (empty($bg_color)) {
-      $bg_color = '000000'; // Default color
-    }
-
-    if (empty($bg_opacity) && $bg_opacity !== '0') {
-      $bg_opacity = $color_meta_key === '_mtp_bg_color' ? 0 : 69; // Different defaults for different colors
-    }
-
-    return $this->combine_color_opacity($bg_color, $bg_opacity);
-  }
-
-  /**
-   * Combine hex color and opacity percentage into 8-character hex
-   */
-  private function combine_color_opacity($hex_color, $opacity_percent) {
-    // Remove # if present
-    $hex_color = ltrim($hex_color, '#');
-
-    // If color already has alpha (8 characters), return as is
-    if (strlen($hex_color) == 8) {
-      return $hex_color;
-    }
-
-    // If no opacity specified, default to fully opaque
-    if ($opacity_percent === '' || $opacity_percent === null) {
-      $opacity_percent = 100;
-    }
-
-    // Convert opacity percentage to hex
-    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
-
-    return $hex_color . $opacity_hex;
-  }
-
-  /**
    * Render empty static table when no tournament ID is provided
    */
   private function render_empty_table($atts = array()) {
     // Simple placeholder message with auto-sizing
-    $html = '<div style="min-width: 300px; max-width: 100%; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; text-align: center; color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">';
-    $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan') . '</strong><br>';
+    $html = '<div class="mtp-empty-preview">';
+    $html .= '<svg class="mtp-empty-preview__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" /></svg>';
+    $html .= '<strong>' . __('Tournament Table Preview', 'meinturnierplan') . '</strong>';
     $html .= __('Enter a Tournament ID above to display live tournament data.', 'meinturnierplan');
     $html .= '</div>';
 
@@ -328,38 +272,5 @@ class MTP_Table_Renderer {
     }
 
     return implode('&', $query_parts);
-  }
-
-  /**
-   * Convert hex color with alpha to rgba
-   */
-  public function hex_to_rgba($hex) {
-    // Remove # if present
-    $hex = ltrim($hex, '#');
-
-    // Handle 8-character hex (RRGGBBAA)
-    if (strlen($hex) == 8) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      $a = round(hexdec(substr($hex, 6, 2)) / 255, 2);
-      return "rgba($r, $g, $b, $a)";
-    }
-    // Handle 6-character hex (RRGGBB)
-    elseif (strlen($hex) == 6) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      return "rgb($r, $g, $b)";
-    }
-    // Handle 3-character hex (RGB)
-    elseif (strlen($hex) == 3) {
-      $r = hexdec(str_repeat(substr($hex, 0, 1), 2));
-      $g = hexdec(str_repeat(substr($hex, 1, 1), 2));
-      $b = hexdec(str_repeat(substr($hex, 2, 1), 2));
-      return "rgb($r, $g, $b)";
-    }
-
-    return 'transparent';
   }
 }

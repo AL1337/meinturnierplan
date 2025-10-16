@@ -115,6 +115,47 @@ class MTP_Admin_Utilities {
   }
 
   /**
+   * Render a conditional checkbox field that shows/hides based on tournament JSON data
+   *
+   * @param string $field_name The field name/ID
+   * @param string $label The field label
+   * @param mixed $value The field value (1 for checked, 0 for unchecked)
+   * @param string $description Optional. Field description text
+   * @param string $tournament_id The tournament ID to check
+   * @param string $json_field The JSON field to check (e.g., 'showCourts')
+   */
+  public static function render_conditional_checkbox_field($field_name, $label, $value, $description, $tournament_id, $json_field) {
+    $field_row_id = $field_name . '_row';
+    $show_field = false;
+
+    // Check if the JSON field is true
+    if (!empty($tournament_id)) {
+      $json_value = self::fetch_tournament_option($tournament_id, $json_field);
+      $show_field = ($json_value === true);
+
+      // Debug logging (only visible in browser console via JavaScript below)
+      if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log("MTP Debug: Tournament ID: {$tournament_id}, Checking field: {$json_field}, Value: " . var_export($json_value, true) . ", Show field: " . var_export($show_field, true));
+      }
+    }
+
+    echo '<tr id="' . esc_attr($field_row_id) . '" class="mtp-conditional-field" data-condition-field="' . esc_attr($json_field) . '" data-tournament-id="' . esc_attr($tournament_id) . '" data-show-field="' . esc_attr($show_field ? '1' : '0') . '">';
+    echo '<th scope="row"><label for="' . esc_attr($field_name) . '">' . esc_html($label) . '</label></th>';
+    echo '<td>';
+    echo '<input type="checkbox" id="' . esc_attr($field_name) . '" name="' . esc_attr($field_name) . '" value="1"' . checked(1, $value, false) . ' />';
+    if ($description) {
+      echo '<p class="description">' . esc_html($description) . '</p>';
+    }
+    echo '</td>';
+    echo '</tr>';
+
+    // Hide the field if condition is not met
+    if (!$show_field) {
+      echo '<style>#' . esc_attr($field_row_id) . ' { display: none; }</style>';
+    }
+  }
+
+  /**
    * Render a select field for admin forms
    *
    * @param string $field_name The field name/ID
@@ -229,18 +270,68 @@ class MTP_Admin_Utilities {
   }
 
   /**
-   * Combine color and opacity into a single hex value
+   * Combine hex color and opacity percentage into 8-character hex
    *
-   * @param string $color The color value (without #)
-   * @param int $opacity The opacity value (0-100)
+   * @param string $hex_color The color value (with or without #)
+   * @param int $opacity_percent The opacity value (0-100)
    * @return string The combined color value with opacity
    */
-  public static function combine_color_opacity($color, $opacity) {
-    if ($opacity !== '' && $opacity !== null) {
-      $opacity_hex = str_pad(dechex(round(($opacity / 100) * 255)), 2, '0', STR_PAD_LEFT);
-      return $color . $opacity_hex;
+  public static function combine_color_opacity($hex_color, $opacity_percent) {
+    // Remove # if present
+    $hex_color = ltrim($hex_color, '#');
+
+    // If color already has alpha (8 characters), return as is
+    if (strlen($hex_color) == 8) {
+      return $hex_color;
     }
-    return $color;
+
+    // If no opacity specified, default to fully opaque
+    if ($opacity_percent === '' || $opacity_percent === null) {
+      $opacity_percent = 100;
+    }
+
+    // Convert opacity percentage to hex
+    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
+
+    return $hex_color . $opacity_hex;
+  }
+
+  /**
+   * Get background color with opacity from post meta
+   *
+   * @param int $post_id The post ID
+   * @param string $color_meta_key The meta key for the color field
+   * @return string The combined color value with opacity
+   */
+  public static function get_bg_color_with_opacity($post_id, $color_meta_key) {
+    if (!$post_id) {
+      return '00000000'; // Transparent default
+    }
+
+    $bg_color = get_post_meta($post_id, $color_meta_key, true);
+
+    // Determine opacity meta key based on color meta key
+    $opacity_meta_mapping = array(
+      '_mtp_bg_color' => '_mtp_bg_opacity',
+      '_mtp_even_bg_color' => '_mtp_even_bg_opacity',
+      '_mtp_odd_bg_color' => '_mtp_odd_bg_opacity',
+      '_mtp_hover_bg_color' => '_mtp_hover_bg_opacity',
+      '_mtp_head_bg_color' => '_mtp_head_bg_opacity',
+    );
+
+    $opacity_meta_key = isset($opacity_meta_mapping[$color_meta_key]) ? $opacity_meta_mapping[$color_meta_key] : null;
+    $bg_opacity = $opacity_meta_key ? get_post_meta($post_id, $opacity_meta_key, true) : null;
+
+    // Set defaults
+    if (empty($bg_color)) {
+      $bg_color = '000000'; // Default color
+    }
+
+    if (empty($bg_opacity) && $bg_opacity !== '0') {
+      $bg_opacity = $color_meta_key === '_mtp_bg_color' ? 0 : 69; // Different defaults for different colors
+    }
+
+    return self::combine_color_opacity($bg_color, $bg_opacity);
   }
 
   /**
@@ -260,6 +351,42 @@ class MTP_Admin_Utilities {
       'sl' => __('Slovenščina / Slovenian', 'meinturnierplan'),
       'tr' => __('Türkçe / Turkish', 'meinturnierplan'),
     );
+  }
+
+  /**
+   * Convert hex color with alpha to rgba
+   *
+   * @param string $hex The hex color value (with or without #)
+   * @return string The converted color in rgba format or 'transparent'
+   */
+  public static function hex_to_rgba($hex) {
+    // Remove # if present
+    $hex = ltrim($hex, '#');
+
+    // Handle 8-character hex (RRGGBBAA)
+    if (strlen($hex) == 8) {
+      $r = hexdec(substr($hex, 0, 2));
+      $g = hexdec(substr($hex, 2, 2));
+      $b = hexdec(substr($hex, 4, 2));
+      $a = round(hexdec(substr($hex, 6, 2)) / 255, 2);
+      return "rgba($r, $g, $b, $a)";
+    }
+    // Handle 6-character hex (RRGGBB)
+    elseif (strlen($hex) == 6) {
+      $r = hexdec(substr($hex, 0, 2));
+      $g = hexdec(substr($hex, 2, 2));
+      $b = hexdec(substr($hex, 4, 2));
+      return "rgb($r, $g, $b)";
+    }
+    // Handle 3-character hex (RGB)
+    elseif (strlen($hex) == 3) {
+      $r = hexdec(str_repeat(substr($hex, 0, 1), 2));
+      $g = hexdec(str_repeat(substr($hex, 1, 1), 2));
+      $b = hexdec(str_repeat(substr($hex, 2, 1), 2));
+      return "rgb($r, $g, $b)";
+    }
+
+    return 'transparent';
   }
 
   /**
@@ -397,6 +524,112 @@ class MTP_Admin_Utilities {
   }
 
   /**
+   * Fetch tournament teams from external API
+   *
+   * @param string $tournament_id The tournament ID
+   * @param bool $force_refresh Whether to force refresh the cache
+   * @return array Array of teams
+   */
+  public static function fetch_tournament_teams($tournament_id, $force_refresh = false) {
+    if (empty($tournament_id)) {
+      return array();
+    }
+
+    $cache_key = 'mtp_teams_' . $tournament_id;
+    $cache_expiry = 15 * MINUTE_IN_SECONDS; // Cache for 15 minutes
+
+    // Try to get cached data first (unless force refresh is requested)
+    if (!$force_refresh) {
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        return $cached_data;
+      }
+    } else {
+      // Force refresh - clear the cache first
+      delete_transient($cache_key);
+    }
+
+    // Use WordPress HTTP API to fetch the JSON
+    $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+    $response = wp_remote_get($url, array(
+      'timeout' => 10,
+      'sslverify' => true
+    ));
+
+    // Check for errors
+    if (is_wp_error($response)) {
+      // Return cached data if available, even if expired
+      $cached_data = get_transient($cache_key);
+      if ($cached_data !== false) {
+        return $cached_data;
+      }
+      return array();
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    $teams = array();
+
+    // Check if teams exist and are not empty
+    if (isset($data['teams']) && is_array($data['teams']) && !empty($data['teams'])) {
+      $teams = $data['teams'];
+    }
+
+    // Cache the result (even if empty)
+    set_transient($cache_key, $teams, $cache_expiry);
+
+    return $teams;
+  }
+
+  /**
+   * Fetch tournament data to check for specific options like showCourts
+   *
+   * @param string $tournament_id The tournament ID
+   * @param string $option_name The option to check (e.g., 'showCourts')
+   * @return mixed The value of the option or null if not found
+   */
+  public static function fetch_tournament_option($tournament_id, $option_name) {
+    if (empty($tournament_id) || empty($option_name)) {
+      return null;
+    }
+
+    $cache_key = 'mtp_data_' . $tournament_id;
+    $cache_expiry = 15 * MINUTE_IN_SECONDS; // Cache for 15 minutes
+
+    // Try to get cached data first
+    $cached_data = get_transient($cache_key);
+    if ($cached_data === false) {
+      // Use WordPress HTTP API to fetch the JSON
+      $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+      $response = wp_remote_get($url, array(
+        'timeout' => 10,
+        'sslverify' => true
+      ));
+
+      // Check for errors
+      if (is_wp_error($response)) {
+        return null;
+      }
+
+      $body = wp_remote_retrieve_body($response);
+      $cached_data = json_decode($body, true);
+
+      // Cache the result
+      if ($cached_data) {
+        set_transient($cache_key, $cached_data, $cache_expiry);
+      }
+    }
+
+    // Return the specific option value if it exists
+    if (is_array($cached_data) && isset($cached_data[$option_name])) {
+      return $cached_data[$option_name];
+    }
+
+    return null;
+  }
+
+  /**
    * Render JavaScript utilities for admin forms
    *
    * This generates common JavaScript functions that can be reused across different
@@ -521,6 +754,7 @@ class MTP_Admin_Utilities {
           var defaults = {
             preserveSelection: false,
             forceRefresh: false,
+            context: 'tables', // 'matches' or 'tables' - determines if "All Matches" option is shown
             groupRowSelector: "#<?php echo esc_js($config['field_prefix']); ?>group_field_row",
             groupSelectSelector: "#<?php echo esc_js($config['field_prefix']); ?>group, #<?php echo esc_js($config['field_prefix']); ?>group_select",
             refreshButtonSelector: "#<?php echo esc_js($config['field_prefix']); ?>refresh_groups",
@@ -529,6 +763,7 @@ class MTP_Admin_Utilities {
             nonce: "<?php echo wp_create_nonce($config['nonce_action']); ?>"
           };
           options = jQuery.extend(defaults, options || {});
+          var showAllOption = (options.context === 'matches');
 
           var $groupRow = jQuery(options.groupRowSelector);
           var $groupSelect = jQuery(options.groupSelectSelector);
@@ -572,14 +807,21 @@ class MTP_Admin_Utilities {
             if (response.success && response.data.groups.length > 0) {
               $groupSelect.prop("disabled", false).empty();
 
+              // Add "All Matches" option first (only for matches context)
+              if (showAllOption) {
+                var isAllSelected = !currentSelection || currentSelection === '';
+                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+              }
+
               jQuery.each(response.data.groups, function(index, group) {
                 var groupNumber = index + 1;
                 var groupLabel = "Group " + group.displayId;
                 var isSelected = false;
 
-                if (!currentSelection && index === 0) {
+                if (currentSelection && currentSelection == groupNumber) {
                   isSelected = true;
-                } else if (currentSelection && currentSelection == groupNumber) {
+                } else if (!currentSelection && !showAllOption && index === 0) {
+                  // Auto-select first group as default for tables (when no "All Matches" option)
                   isSelected = true;
                 }
 
@@ -603,11 +845,18 @@ class MTP_Admin_Utilities {
             } else {
               $groupSelect.prop("disabled", false).empty();
 
+              // For matches: Add "All Matches" option
+              // For tables: Show "Default" option
+              if (showAllOption) {
+                var isAllSelected = !currentSelection || currentSelection === '';
+                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+              } else {
+                $groupSelect.append('<option value="">Default</option>');
+              }
+
               if (response.data.hasFinalRound) {
                 var finalRoundSelected = (currentSelection && currentSelection == '90') ? ' selected' : '';
                 $groupSelect.append('<option value="90"' + finalRoundSelected + '>Final Round</option>');
-              } else {
-                $groupSelect.append('<option value="">Default</option>');
               }
 
               if (currentSelection && currentSelection !== '' && currentSelection !== '90' && !response.data.hasFinalRound) {
@@ -623,14 +872,20 @@ class MTP_Admin_Utilities {
           }).fail(function() {
             $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
             $groupSelect.prop("disabled", false).empty();
-            $groupSelect.append('<option value="">Default</option>');
+
+            // For matches: Add "All Matches" option
+            // For tables: Show "Default" option
+            if (showAllOption) {
+              var isAllSelected = !currentSelection || currentSelection === '';
+              $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+            } else {
+              $groupSelect.append('<option value="">Default</option>');
+            }
 
             if (currentSelection && currentSelection !== '') {
               var label = currentSelection == '90' ? 'Final Round (saved)' : 'Group ' + currentSelection + ' (saved)';
               $groupSelect.append('<option value="' + currentSelection + '" selected>' + label + '</option>');
-            }
-
-            $refreshButton.prop("disabled", false);
+            }            $refreshButton.prop("disabled", false);
 
             if (options.forceRefresh) {
               MTPAdminUtils.showTemporaryMessage("Error refreshing groups. Please try again.", "error", options.groupRowSelector);
@@ -672,6 +927,123 @@ class MTP_Admin_Utilities {
             var tournamentId = jQuery(tournamentIdSelector).val();
             if (tournamentId && groupLoadCallback) {
               groupLoadCallback(tournamentId, {preserveSelection: true, forceRefresh: true});
+            }
+          });
+        },
+
+        // Load tournament teams (participants)
+        loadTournamentTeams: function(tournamentId, options) {
+          var defaults = {
+            preserveSelection: false,
+            forceRefresh: false,
+            participantSelectSelector: "#<?php echo esc_js($config['field_prefix']); ?>participant",
+            refreshButtonSelector: "#<?php echo esc_js($config['field_prefix']); ?>refresh_participants",
+            savedValueSelector: "#<?php echo esc_js($config['field_prefix']); ?>participant_saved_value",
+            ajaxActions: <?php echo isset($config['ajax_actions_teams']) ? json_encode($config['ajax_actions_teams']) : '["mtp_get_teams", "mtp_refresh_teams"]'; ?>,
+            nonce: "<?php echo wp_create_nonce($config['nonce_action']); ?>"
+          };
+          options = jQuery.extend(defaults, options || {});
+
+          var $participantSelect = jQuery(options.participantSelectSelector);
+          var $refreshButton = jQuery(options.refreshButtonSelector);
+          var currentSelection = options.preserveSelection ? $participantSelect.val() : '';
+          var savedValue = jQuery(options.savedValueSelector).val();
+
+          // Use saved value if no current selection and this isn't a forced refresh
+          if (!currentSelection && savedValue && !options.forceRefresh) {
+            currentSelection = savedValue;
+          }
+
+          if (!tournamentId) {
+            $participantSelect.prop("disabled", false).empty().append('<option value="-1">All</option>');
+            $refreshButton.prop("disabled", true);
+            return;
+          }
+
+          $participantSelect.prop("disabled", true);
+          $refreshButton.prop("disabled", true);
+
+          if (options.forceRefresh) {
+            $participantSelect.empty().append('<option value="-1">Refreshing participants...</option>');
+            $refreshButton.find('.dashicons').addClass('dashicons-update-alt-rotating');
+          } else {
+            $participantSelect.empty().append('<option value="-1">Loading participants...</option>');
+          }
+
+          var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
+
+          jQuery.post(ajaxurl, {
+            action: ajaxAction,
+            tournament_id: tournamentId,
+            force_refresh: options.forceRefresh,
+            nonce: options.nonce
+          }, function(response) {
+            $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
+
+            if (response.success && response.data.teams && response.data.teams.length > 0) {
+              $participantSelect.prop("disabled", false).empty();
+
+              // Add "All" option first as default
+              var isAllSelected = !currentSelection || currentSelection === '-1';
+              $participantSelect.append('<option value="-1"' + (isAllSelected ? ' selected' : '') + '>All</option>');
+
+              jQuery.each(response.data.teams, function(index, team) {
+                var teamId = team.displayId || '';
+                var teamName = team.name || '';
+
+                if (teamId && teamName) {
+                  var isSelected = (currentSelection && currentSelection == teamId);
+                  $participantSelect.append('<option value="' + teamId + '"' + (isSelected ? ' selected' : '') + '>' + teamName + '</option>');
+                }
+              });
+
+              if (currentSelection && currentSelection !== '-1' && $participantSelect.find('option[value="' + currentSelection + '"]').length === 0) {
+                $participantSelect.find('option:first').prop('selected', true);
+              }
+
+              $refreshButton.prop("disabled", false);
+
+              if (options.forceRefresh && response.data.refreshed) {
+                MTPAdminUtils.showTemporaryMessage("Participants refreshed successfully!", "success", options.participantSelectSelector);
+              }
+            } else {
+              $participantSelect.prop("disabled", false).empty();
+              $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '>All</option>');
+
+              if (currentSelection && currentSelection !== '-1') {
+                $participantSelect.append('<option value="' + currentSelection + '" selected>Team ' + currentSelection + ' (saved)</option>');
+              }
+
+              $refreshButton.prop("disabled", false);
+
+              if (options.forceRefresh) {
+                MTPAdminUtils.showTemporaryMessage("No participants found for this tournament.", "info", options.participantSelectSelector);
+              }
+            }
+          }).fail(function() {
+            $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
+            $participantSelect.prop("disabled", false).empty();
+            $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '>All</option>');
+
+            if (currentSelection && currentSelection !== '-1') {
+              $participantSelect.append('<option value="' + currentSelection + '" selected>Team ' + currentSelection + ' (saved)</option>');
+            }
+
+            $refreshButton.prop("disabled", false);
+
+            if (options.forceRefresh) {
+              MTPAdminUtils.showTemporaryMessage("Error refreshing participants. Please try again.", "error", options.participantSelectSelector);
+            }
+          });
+        },
+
+        // Initialize participant refresh button
+        initParticipantRefreshButton: function(refreshButtonSelector, tournamentIdSelector, teamLoadCallback) {
+          jQuery(document).on("click", refreshButtonSelector, function(e) {
+            e.preventDefault();
+            var tournamentId = jQuery(tournamentIdSelector).val();
+            if (tournamentId && teamLoadCallback) {
+              teamLoadCallback(tournamentId, {preserveSelection: true, forceRefresh: true});
             }
           });
         }
@@ -775,12 +1147,14 @@ class MTP_Admin_Utilities {
    *
    * @param array $meta_values Array containing tournament_id and group values
    * @param string $field_prefix Optional. Prefix for field names. Default 'mtp_'.
+   * @param string $context Optional. Context: 'matches' or 'tables'. Default 'tables'. Only 'matches' shows "All Matches" option.
    */
-  public static function render_conditional_group_field($meta_values, $field_prefix = 'mtp_') {
+  public static function render_conditional_group_field($meta_values, $field_prefix = 'mtp_', $context = 'tables') {
     $tournament_id = $meta_values['tournament_id'];
     $saved_group = $meta_values['group'];
     $groups = array();
     $has_final_round = false;
+    $show_all_option = ($context === 'matches'); // Only show "All Matches" for matches context
 
     // Only fetch groups if tournament ID is provided
     if (!empty($tournament_id)) {
@@ -802,7 +1176,14 @@ class MTP_Admin_Utilities {
     echo '<select id="' . esc_attr($group_field_id) . '" name="' . esc_attr($group_field_id) . '" class="regular-text">';
 
     if (!empty($groups)) {
-      // Populate with actual groups - never show "All Groups" option
+      // Add "All Matches" option first as default (only for matches context)
+      if ($show_all_option) {
+        $is_all_selected = empty($saved_group);
+        $all_selected = $is_all_selected ? ' selected' : '';
+        echo '<option value=""' . $all_selected . '>' . esc_html(__('All Matches', 'meinturnierplan')) . '</option>';
+      }
+
+      // Populate with actual groups
       foreach ($groups as $index => $group) {
         $group_number = $index + 1;
         $is_selected = false;
@@ -810,8 +1191,8 @@ class MTP_Admin_Utilities {
         if (!empty($saved_group)) {
           // Use saved selection
           $is_selected = ($saved_group == $group_number);
-        } else if ($index == 0) {
-          // Auto-select first group as default (both single and multiple group cases)
+        } else if (!$show_all_option && $index == 0) {
+          // Auto-select first group as default for tables (when no "All Matches" option)
           $is_selected = true;
         }
 
@@ -826,6 +1207,11 @@ class MTP_Admin_Utilities {
         echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan')) . '</option>';
       }
     } else if (!empty($saved_group) && !empty($tournament_id)) {
+      // Add "All Matches" option first (only for matches context)
+      if ($show_all_option) {
+        echo '<option value="">' . esc_html(__('All Matches', 'meinturnierplan')) . '</option>';
+      }
+
       // Show a placeholder for the saved group if groups haven't loaded yet
       if ($saved_group == '90') {
         echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan')) . '</option>';
@@ -833,14 +1219,19 @@ class MTP_Admin_Utilities {
         echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan'), $saved_group)) . '</option>';
       }
     } else {
-      // No groups available - check for Final Round only
+      // For matches: Add "All Matches" option as default
+      // For tables: Show "Default" option
+      if ($show_all_option) {
+        echo '<option value="" selected>' . esc_html(__('All Matches', 'meinturnierplan')) . '</option>';
+      } else {
+        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan')) . '</option>';
+      }
+
+      // Check for Final Round only
       if ($has_final_round) {
         $is_final_selected = (!empty($saved_group) && $saved_group == '90');
         $final_selected = $is_final_selected ? ' selected' : '';
         echo '<option value="90"' . $final_selected . '>' . esc_html(__('Final Round', 'meinturnierplan')) . '</option>';
-      } else {
-        // No groups and no final round - show default option
-        echo '<option value="">' . esc_html(__('Default', 'meinturnierplan')) . '</option>';
       }
     }
 
@@ -863,5 +1254,71 @@ class MTP_Admin_Utilities {
     if (empty($tournament_id)) {
       echo '<style>#' . esc_attr($group_field_row_id) . ' { display: none; }</style>';
     }
+  }
+
+  /**
+   * Render conditional participant field for tournament selection
+   *
+   * @param array $meta_values Array containing tournament_id and participant values
+   * @param string $field_prefix Optional. Prefix for field names. Default 'mtp_'.
+   */
+  public static function render_conditional_participant_field($meta_values, $field_prefix = 'mtp_') {
+    $tournament_id = $meta_values['tournament_id'];
+    $saved_participant = isset($meta_values['participant']) ? $meta_values['participant'] : '-1';
+    $teams = array();
+
+    // Only fetch teams if tournament ID is provided
+    if (!empty($tournament_id)) {
+      $teams = self::fetch_tournament_teams($tournament_id);
+    }
+
+    $participant_field_id = $field_prefix . 'participant';
+    $refresh_button_id = $field_prefix . 'refresh_participants';
+    $participant_field_row_id = $field_prefix . 'participant_field_row';
+    $saved_value_field_id = $field_prefix . 'participant_saved_value';
+
+    // Always render the field (unlike Group, this is always displayed)
+    echo '<tr id="' . esc_attr($participant_field_row_id) . '">';
+    echo '<th scope="row"><label for="' . esc_attr($participant_field_id) . '">' . esc_html(__('Participant', 'meinturnierplan')) . '</label></th>';
+    echo '<td>';
+    echo '<div style="display: flex; align-items: center; gap: 10px;">';
+    echo '<select id="' . esc_attr($participant_field_id) . '" name="' . esc_attr($participant_field_id) . '" class="regular-text">';
+
+    // Add "All" option first as default
+    $is_all_selected = ($saved_participant == '-1');
+    $all_selected = $is_all_selected ? ' selected' : '';
+    echo '<option value="-1"' . $all_selected . '>' . esc_html(__('All', 'meinturnierplan')) . '</option>';
+
+    if (!empty($teams)) {
+      // Populate with actual teams
+      foreach ($teams as $team) {
+        $team_id = isset($team['displayId']) ? $team['displayId'] : '';
+        $team_name = isset($team['name']) ? $team['name'] : '';
+
+        if (!empty($team_id) && !empty($team_name)) {
+          $is_selected = ($saved_participant == $team_id);
+          $selected = $is_selected ? ' selected' : '';
+          echo '<option value="' . esc_attr($team_id) . '"' . $selected . '>' . esc_html($team_name) . '</option>';
+        }
+      }
+    } else if (!empty($saved_participant) && $saved_participant != '-1' && !empty($tournament_id)) {
+      // Show a placeholder for the saved participant if teams haven't loaded yet
+      echo '<option value="' . esc_attr($saved_participant) . '" selected>' . esc_html(sprintf(__('Team %s (saved)', 'meinturnierplan'), $saved_participant)) . '</option>';
+    }
+
+    echo '</select>';
+    echo '<button type="button" id="' . esc_attr($refresh_button_id) . '" class="button button-secondary" title="' . esc_attr(__('Refresh Participants', 'meinturnierplan')) . '">';
+    echo '<span class="dashicons dashicons-update-alt" style="vertical-align: middle;"></span>';
+    echo '</button>';
+    echo '</div>';
+
+    // Description
+    echo '<p class="description">' . esc_html(__('Select a participant (team) to filter matches. Select "All" to display matches for all participants. Click refresh to update participants from server.', 'meinturnierplan')) . '</p>';
+
+    // Add hidden field to store the initially saved value for JavaScript
+    echo '<input type="hidden" id="' . esc_attr($saved_value_field_id) . '" value="' . esc_attr($saved_participant) . '" />';
+
+    echo '</td>';
+    echo '</tr>';
   }
 }

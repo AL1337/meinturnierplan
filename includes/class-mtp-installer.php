@@ -3,7 +3,7 @@
  * Plugin Installer Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 // Prevent direct access
@@ -52,13 +52,18 @@ class MTP_Installer {
   }
 
   /**
-   * Register post type for activation (temporary)
+   * Register post types for activation (temporary)
    */
   private static function register_post_type_for_activation() {
-    // Simple registration for activation - the full registration is handled by MTP_Table_Post_Type
+    // Simple registration for activation - the full registration is handled by respective Post Type classes
     register_post_type('mtp_table', array(
       'public' => true,
       'rewrite' => array('slug' => 'tournament-table'),
+    ));
+
+    register_post_type('mtp_match_list', array(
+      'public' => true,
+      'rewrite' => array('slug' => 'tournament-match-list'),
     ));
   }
 
@@ -133,18 +138,22 @@ class MTP_Installer {
     delete_option('mtp_plugin_version');
     delete_option('mtp_default_settings');
 
-    // Remove all posts of our custom post type
-    $posts = get_posts(array(
-      'post_type' => 'mtp_table',
-      'numberposts' => -1,
-      'post_status' => 'any'
-    ));
+    // Remove all posts of our custom post types
+    $post_types = array('mtp_table', 'mtp_match_list');
 
-    foreach ($posts as $post) {
-      wp_delete_post($post->ID, true);
+    foreach ($post_types as $post_type) {
+      $posts = get_posts(array(
+        'post_type' => $post_type,
+        'numberposts' => -1,
+        'post_status' => 'any'
+      ));
+
+      foreach ($posts as $post) {
+        wp_delete_post($post->ID, true);
+      }
     }
 
-    // Remove all meta data associated with our post type
+    // Remove all meta data associated with our post types
     global $wpdb;
     $wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '_mtp_%'");
 

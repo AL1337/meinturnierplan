@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "meinturnierplan/matches-table",
+  "version": "1.0.0",
+  "title": "Matches",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "Display matches from your custom post types.",
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right", "wide", "full"]
+  },
+  "textdomain": "meinturnierplan",
+  "attributes": {
+    "tableId": {
+      "type": "string",
+      "default": ""
+    },
+    "tableName": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "mtp-tournament-matches-block"
+}

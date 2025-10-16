@@ -41,7 +41,7 @@ class MTP_Assets {
     // Only load on our post type edit pages
     if ('post.php' == $hook || 'post-new.php' == $hook) {
       global $post;
-      if ($post && $post->post_type == 'mtp_table') {
+      if ($post && ($post->post_type == 'mtp_table' || $post->post_type == 'mtp_match_list')) {
         // Enqueue WordPress color picker
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
@@ -100,41 +100,41 @@ class MTP_Assets {
       true
     );
 
-    // Also check if we have tournament tables on the page
+    // Also check if we have tournament tables or matches on the page
     if ($this->page_has_tournament_tables()) {
       // Add debug info to the page
-      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] Tournament tables detected on page");', 'before');
+      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] Tournament content detected on page");', 'before');
     } else {
-      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] No tournament tables detected on page");', 'before');
+      wp_add_inline_script('mtp-frontend-scripts', 'console.log("[MTP] No tournament content detected on page");', 'before');
     }
   }
 
   /**
-   * Check if current page has tournament tables
+   * Check if current page has tournament tables or matches
    */
   private function page_has_tournament_tables() {
     global $post;
 
-    // Check if we're on a page/post with tournament table shortcodes or blocks
+    // Check if we're on a page/post with tournament table or matches shortcodes or blocks
     if ($post && ($post->post_content)) {
       // Check for shortcodes
-      if (has_shortcode($post->post_content, 'mtp_table')) {
+      if (has_shortcode($post->post_content, 'mtp_table') || has_shortcode($post->post_content, 'mtp-matches')) {
         return true;
       }
 
       // Check for Gutenberg blocks
-      if (has_block('meinturnierplan/tournament-table', $post)) {
+      if (has_block('meinturnierplan/tournament-table', $post) || has_block('meinturnierplan/tournament-matches', $post)) {
         return true;
       }
 
-      // Check if this is a tournament table post type
-      if ($post->post_type === 'mtp_table') {
+      // Check if this is a tournament table or matches post type
+      if ($post->post_type === 'mtp_table' || $post->post_type === 'mtp_match_list') {
         return true;
       }
     }
 
-    // Also check if any widgets are displaying tournament tables
-    if (is_active_widget(false, false, 'mtp_table_widget')) {
+    // Also check if any widgets are displaying tournament tables or matches
+    if (is_active_widget(false, false, 'mtp_table_widget') || is_active_widget(false, false, 'mtp_matches_widget')) {
       return true;
     }
 

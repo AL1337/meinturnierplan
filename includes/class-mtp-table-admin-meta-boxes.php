@@ -1,9 +1,9 @@
 <?php
 /**
- * Admin Meta Boxes Class
+ * Admin Table Meta Boxes Class
  *
  * @package MeinTurnierplan
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 // Prevent direct access
@@ -12,9 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Admin Meta Boxes Class
+ * Admin Table Meta Boxes Class
  */
-class MTP_Admin_Meta_Boxes {
+class MTP_Admin_Table_Meta_Boxes {
 
   /**
    * Table renderer instance

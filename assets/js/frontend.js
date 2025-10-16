@@ -76,13 +76,13 @@
    * Handle postMessage events for iframe resizing
    */
   function handlePostMessage(event) {
-    // Verify the message is for tournament table sizing
-    if (!event.data || event.data.type !== "iframeSizeMtpTable") {
+    // Verify the message is for tournament table or matches sizing
+    if (!event.data || (event.data.type !== "iframeSizeMtpTable" && event.data.type !== "iframeSizeMtpMatches")) {
       return;
     }
 
-    // Find all tournament table iframes
-    const iframes = document.querySelectorAll('iframe[id^="mtp-table-"]');
+    // Find all tournament table and matches iframes
+    const iframes = document.querySelectorAll('iframe[id^="mtp-table-"], iframe[id^="mtp-matches-"]');
 
     let resized = false;
     iframes.forEach(function(iframe) {
@@ -104,7 +104,7 @@
    * Set up fallback resize behavior
    */
   function setupFallbacks() {
-    const iframes = document.querySelectorAll('iframe[id^="mtp-table-"]');
+    const iframes = document.querySelectorAll('iframe[id^="mtp-table-"], iframe[id^="mtp-matches-"]');
 
     iframes.forEach(function(iframe) {
       // Mark iframe as needing fallback
@@ -154,12 +154,12 @@
           // Check for new iframes or src changes
           if (mutation.type === 'childList') {
             mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1 && (node.tagName === 'IFRAME' || node.querySelector('iframe[id^="mtp-table-"]'))) {
+              if (node.nodeType === 1 && (node.tagName === 'IFRAME' || node.querySelector('iframe[id^="mtp-table-"], iframe[id^="mtp-matches-"]'))) {
                 shouldReset = true;
               }
             });
           } else if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
-            if (mutation.target.id && mutation.target.id.startsWith('mtp-table-')) {
+            if (mutation.target.id && (mutation.target.id.startsWith('mtp-table-') || mutation.target.id.startsWith('mtp-matches-'))) {
               shouldReset = true;
             }
           }
