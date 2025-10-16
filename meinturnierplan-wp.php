@@ -5,8 +5,8 @@
  * Description: A WordPress plugin to display tournament tables and match lists using custom post types, shortcodes, and widgets.
  * Version: 0.3.1
  * Author: Roman Perevala
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
  * Text Domain: meinturnierplan
  * Domain Path: /languages
  */
