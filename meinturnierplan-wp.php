@@ -3,7 +3,7 @@
  * Plugin Name: MeinTurnierplan
  * Plugin URI: https://www.meinturnierplan.de
  * Description: Display tournament tables and match lists from Tournej/MeinTurnierplan using shortcodes and blocks.
- * Version: 0.1
+ * Version: 1.0.0
  * Author: Roman Perevala
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ if (!defined('MTP_PLUGIN_PATH')) {
   define('MTP_PLUGIN_PATH', plugin_dir_path(__FILE__));
 }
 if (!defined('MTP_PLUGIN_VERSION')) {
-  define('MTP_PLUGIN_VERSION', '0.1');
+  define('MTP_PLUGIN_VERSION', '1.0.0');
 }
 
 // Load requirements checker
