@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-16 18:07+0000\n"
-"PO-Revision-Date: 2025-10-17 11:31+0000\n"
+"PO-Revision-Date: 2025-10-30 15:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -15,18 +15,22 @@ msgstr ""
 "X-Loco-Version: 2.8.0; wp-6.8.3; php-8.2.27\n"
 "X-Domain: meinturnierplan"
 
+#: includes/class-mtp-admin-utilities.php:1014
+#: includes/class-mtp-admin-utilities.php:1029
+msgid " (saved)"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:863
+#: includes/class-mtp-admin-utilities.php:886
+msgid "(saved)"
+msgstr ""
+
 #: includes/class-mtp-matches-widget.php:80
 msgid "-- Select Matches --"
 msgstr ""
 
 #: includes/class-mtp-table-widget.php:80
 msgid "-- Select Table --"
-msgstr ""
-
-#. Description of the plugin
-msgid ""
-"A WordPress plugin to display tournament tables and match lists using custom "
-"post types, shortcodes, and widgets."
 msgstr ""
 
 #: includes/class-mtp-matches-post-type.php:35
@@ -62,10 +66,16 @@ msgctxt "Admin Menu text"
 msgid "Tournament Tables"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:958
+#: includes/class-mtp-admin-utilities.php:1011
+#: includes/class-mtp-admin-utilities.php:1026
 #: includes/class-mtp-admin-utilities.php:1290
 msgid "All"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:813
+#: includes/class-mtp-admin-utilities.php:852
+#: includes/class-mtp-admin-utilities.php:880
 #: includes/class-mtp-admin-utilities.php:1183
 #: includes/class-mtp-admin-utilities.php:1212
 #: includes/class-mtp-admin-utilities.php:1225
@@ -120,8 +130,8 @@ msgstr ""
 msgid "Border Color"
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:256
-#: includes/class-mtp-table-admin-meta-boxes.php:181
+#: includes/class-mtp-matches-admin-meta-boxes.php:255
+#: includes/class-mtp-table-admin-meta-boxes.php:180
 msgid "Border Horizontal Size (px)"
 msgstr ""
 
@@ -130,8 +140,8 @@ msgstr ""
 msgid "Border Settings"
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:255
-#: includes/class-mtp-table-admin-meta-boxes.php:180
+#: includes/class-mtp-matches-admin-meta-boxes.php:256
+#: includes/class-mtp-table-admin-meta-boxes.php:181
 msgid "Border Vertical Size (px)"
 msgstr ""
 
@@ -149,6 +159,8 @@ msgstr ""
 msgid "Copy Shortcode"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:854
+#: includes/class-mtp-admin-utilities.php:882
 #: includes/class-mtp-admin-utilities.php:1227
 msgid "Default"
 msgstr ""
@@ -168,6 +180,12 @@ msgstr ""
 #: includes/class-mtp-matches-admin-meta-boxes.php:168
 #: includes/class-mtp-table-admin-meta-boxes.php:159
 msgid "Display Options"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Display tournament tables and match lists from Tournej/MeinTurnierplan using "
+"shortcodes and blocks."
 msgstr ""
 
 #: includes/class-mtp-matches-post-type.php:38
@@ -246,6 +264,14 @@ msgstr ""
 msgid "Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:891
+msgid "Error refreshing groups. Please try again."
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:1035
+msgid "Error refreshing participants. Please try again."
+msgstr ""
+
 #: includes/class-mtp-admin-utilities.php:346
 msgid "Español / Spanish"
 msgstr ""
@@ -255,11 +281,14 @@ msgstr ""
 msgid "Even Rows Background Color"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:833
+#: includes/class-mtp-admin-utilities.php:859
 #: includes/class-mtp-admin-utilities.php:1207
 #: includes/class-mtp-admin-utilities.php:1234
 msgid "Final Round"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:886
 #: includes/class-mtp-admin-utilities.php:1217
 msgid "Final Round (saved)"
 msgstr ""
@@ -277,6 +306,8 @@ msgstr ""
 msgid "Go to Tournament."
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:863
+#: includes/class-mtp-admin-utilities.php:886
 #: includes/class-mtp-admin-utilities.php:1173
 msgid "Group"
 msgstr ""
@@ -289,6 +320,10 @@ msgstr ""
 #: includes/class-mtp-admin-utilities.php:1219
 #, php-format
 msgid "Group %s (saved)"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:843
+msgid "Groups refreshed successfully!"
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:271
@@ -332,7 +367,7 @@ msgid "Hrvatski / Croatian"
 msgstr ""
 
 #. URI of the plugin
-msgid "https://github.com/danfisher85/meinturnierplan-wp"
+msgid "https://www.meinturnierplan.de"
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:249
@@ -349,13 +384,21 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: includes/class-mtp-table-admin-meta-boxes.php:171
-msgid "Logo Size (pt)"
-msgstr ""
-
 #: includes/class-mtp-matches-admin-meta-boxes.php:264
 #: includes/class-mtp-table-admin-meta-boxes.php:189
-msgid "Main Color"
+msgid "Link & Navigation Color"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:794
+msgid "Loading groups..."
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:970
+msgid "Loading participants..."
+msgstr ""
+
+#: includes/class-mtp-table-admin-meta-boxes.php:171
+msgid "Logo Size (pt)"
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:172
@@ -411,6 +454,18 @@ msgstr ""
 
 #: includes/class-mtp-table-post-type.php:37
 msgid "New Tournament Table"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:781
+msgid "No groups available"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:869
+msgid "No groups found for this tournament."
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:1020
+msgid "No participants found for this tournament."
 msgstr ""
 
 #: includes/class-mtp-matches-post-type.php:44
@@ -476,6 +531,10 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
+#: includes/class-mtp-admin-utilities.php:1007
+msgid "Participants refreshed successfully!"
+msgstr ""
+
 #: includes/class-mtp-matches-block.php:75
 #: includes/class-mtp-matches-widget.php:50
 msgid "Please select a Matches Table."
@@ -525,6 +584,14 @@ msgstr ""
 
 #: includes/class-mtp-admin-utilities.php:1310
 msgid "Refresh Participants"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:791
+msgid "Refreshing groups..."
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:967
+msgid "Refreshing participants..."
 msgstr ""
 
 #. Author of the plugin
@@ -648,16 +715,6 @@ msgid ""
 "for transparent background."
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:257
-msgid ""
-"Set the block border size of the matches table. 1px is the default value."
-msgstr ""
-
-#: includes/class-mtp-table-admin-meta-boxes.php:182
-msgid ""
-"Set the block border size of the tournament table. 1px is the default value."
-msgstr ""
-
 #: includes/class-mtp-matches-admin-meta-boxes.php:265
 #: includes/class-mtp-table-admin-meta-boxes.php:190
 msgid ""
@@ -665,24 +722,24 @@ msgid ""
 "default value."
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:256
+#: includes/class-mtp-matches-admin-meta-boxes.php:255
 msgid ""
 "Set the border horizontal size of the matches table. 1px is the default "
 "value."
 msgstr ""
 
-#: includes/class-mtp-table-admin-meta-boxes.php:181
+#: includes/class-mtp-table-admin-meta-boxes.php:180
 msgid ""
 "Set the border horizontal size of the tournament table. 1px is the default "
 "value."
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:255
+#: includes/class-mtp-matches-admin-meta-boxes.php:256
 msgid ""
 "Set the border vertical size of the matches table. 1px is the default value."
 msgstr ""
 
-#: includes/class-mtp-table-admin-meta-boxes.php:180
+#: includes/class-mtp-table-admin-meta-boxes.php:181
 msgid ""
 "Set the border vertical size of the tournament table. 1px is the default "
 "value."
@@ -697,6 +754,13 @@ msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:251
 msgid "Set the bottom padding of the headlines. 3px is the default value."
+msgstr ""
+
+#: includes/class-mtp-matches-admin-meta-boxes.php:264
+#: includes/class-mtp-table-admin-meta-boxes.php:189
+msgid ""
+"Set the color for links (e.g., \"Show Full Tournament\") and navigation "
+"arrows between groups. Blue (#173f75) is the default value."
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:263
@@ -750,19 +814,14 @@ msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:258
 msgid ""
-"Set the inline border size of the matches table. 1px is the default value."
+"Set the left and right border size of the matches table. 1px is the default "
+"value."
 msgstr ""
 
 #: includes/class-mtp-table-admin-meta-boxes.php:183
 msgid ""
-"Set the inline border size of the tournament table. 1px is the default value."
-msgstr ""
-
-#: includes/class-mtp-matches-admin-meta-boxes.php:264
-#: includes/class-mtp-table-admin-meta-boxes.php:189
-msgid ""
-"Set the main color of the tournament table (headers, highlights). Blue "
-"(#173f75) is the default value."
+"Set the left and right border size of the tournament table. 1px is the "
+"default value."
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:248
@@ -781,6 +840,18 @@ msgstr ""
 #: includes/class-mtp-table-admin-meta-boxes.php:176
 msgid ""
 "Set the padding inside the tournament table cells. 5px is the default value."
+msgstr ""
+
+#: includes/class-mtp-matches-admin-meta-boxes.php:257
+msgid ""
+"Set the top and bottom border size of the matches table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtp-table-admin-meta-boxes.php:182
+msgid ""
+"Set the top and bottom border size of the tournament table. 1px is the "
+"default value."
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:250
@@ -849,11 +920,6 @@ msgstr ""
 msgid "Suppress Times"
 msgstr ""
 
-#: includes/class-mtp-matches-admin-meta-boxes.php:257
-#: includes/class-mtp-table-admin-meta-boxes.php:182
-msgid "Table Block Border Size (px)"
-msgstr ""
-
 #: includes/class-mtp-matches-admin-meta-boxes.php:259
 #: includes/class-mtp-table-admin-meta-boxes.php:184
 msgid "Table Head Border Bottom Size (px)"
@@ -866,7 +932,7 @@ msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:258
 #: includes/class-mtp-table-admin-meta-boxes.php:183
-msgid "Table Inline Border Size (px)"
+msgid "Table Left and Right Border Size (px)"
 msgstr ""
 
 #: includes/class-mtp-matches-admin-meta-boxes.php:248
@@ -880,6 +946,16 @@ msgstr ""
 
 #: includes/class-mtp-table-admin-meta-boxes.php:46
 msgid "Table Settings & Preview"
+msgstr ""
+
+#: includes/class-mtp-matches-admin-meta-boxes.php:257
+#: includes/class-mtp-table-admin-meta-boxes.php:182
+msgid "Table Top and Bottom Border Size (px)"
+msgstr ""
+
+#: includes/class-mtp-admin-utilities.php:1014
+#: includes/class-mtp-admin-utilities.php:1029
+msgid "Team "
 msgstr ""
 
 #: includes/class-mtp-admin-utilities.php:1306

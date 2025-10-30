@@ -2,6 +2,25 @@
 
 All notable changes to the MeinTurnierplan WordPress plugin will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- **Internationalization Improvements**: Made all JavaScript notification messages translatable
+- Wrapped all admin utility JavaScript strings with WordPress translation functions (`__()` and `esc_js()`)
+- Messages now properly support multi-language translations through `.po` and `.mo` files
+
+### Technical Details
+- Updated `class-mtp-admin-utilities.php` JavaScript output to use PHP translation functions
+- Affected messages:
+  - "No participants found for this tournament."
+  - "Error refreshing participants. Please try again."
+  - "No groups found for this tournament."
+  - "Error refreshing groups. Please try again."
+  - "Groups refreshed successfully!"
+  - "Participants refreshed successfully!"
+- All notification strings are now consistent with plugin's translation system
+- Improves user experience for non-English speakers
+
 ## [0.3.2] - 2025-10-16
 
 ### Added

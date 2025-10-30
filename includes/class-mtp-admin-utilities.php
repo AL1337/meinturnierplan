@@ -778,7 +778,7 @@ class MTP_Admin_Utilities {
 
           if (!tournamentId) {
             $groupRow.hide();
-            $groupSelect.prop("disabled", true).empty().append('<option value="">No groups available</option>');
+            $groupSelect.prop("disabled", true).empty().append('<option value=""><?php echo esc_js(__('No groups available', 'meinturnierplan')); ?></option>');
             $refreshButton.prop("disabled", true);
             return;
           }
@@ -788,10 +788,10 @@ class MTP_Admin_Utilities {
           $refreshButton.prop("disabled", true);
 
           if (options.forceRefresh) {
-            $groupSelect.empty().append('<option value="">Refreshing groups...</option>');
+            $groupSelect.empty().append('<option value=""><?php echo esc_js(__('Refreshing groups...', 'meinturnierplan')); ?></option>');
             $refreshButton.find('.dashicons').addClass('dashicons-update-alt-rotating');
           } else {
-            $groupSelect.empty().append('<option value="">Loading groups...</option>');
+            $groupSelect.empty().append('<option value=""><?php echo esc_js(__('Loading groups...', 'meinturnierplan')); ?></option>');
           }
 
           var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
@@ -810,7 +810,7 @@ class MTP_Admin_Utilities {
               // Add "All Matches" option first (only for matches context)
               if (showAllOption) {
                 var isAllSelected = !currentSelection || currentSelection === '';
-                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '><?php echo esc_js(__('All Matches', 'meinturnierplan')); ?></option>');
               }
 
               jQuery.each(response.data.groups, function(index, group) {
@@ -830,7 +830,7 @@ class MTP_Admin_Utilities {
 
               if (response.data.hasFinalRound) {
                 var finalRoundSelected = (currentSelection && currentSelection == '90') ? ' selected' : '';
-                $groupSelect.append('<option value="90"' + finalRoundSelected + '>Final Round</option>');
+                $groupSelect.append('<option value="90"' + finalRoundSelected + '><?php echo esc_js(__('Final Round', 'meinturnierplan')); ?></option>');
               }
 
               if (currentSelection && $groupSelect.find('option[value="' + currentSelection + '"]').length === 0) {
@@ -840,7 +840,7 @@ class MTP_Admin_Utilities {
               $refreshButton.prop("disabled", false);
 
               if (options.forceRefresh && response.data.refreshed) {
-                MTPAdminUtils.showTemporaryMessage("Groups refreshed successfully!", "success", options.groupRowSelector);
+                MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('Groups refreshed successfully!', 'meinturnierplan')); ?>", "success", options.groupRowSelector);
               }
             } else {
               $groupSelect.prop("disabled", false).empty();
@@ -849,24 +849,24 @@ class MTP_Admin_Utilities {
               // For tables: Show "Default" option
               if (showAllOption) {
                 var isAllSelected = !currentSelection || currentSelection === '';
-                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+                $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '><?php echo esc_js(__('All Matches', 'meinturnierplan')); ?></option>');
               } else {
-                $groupSelect.append('<option value="">Default</option>');
+                $groupSelect.append('<option value=""><?php echo esc_js(__('Default', 'meinturnierplan')); ?></option>');
               }
 
               if (response.data.hasFinalRound) {
                 var finalRoundSelected = (currentSelection && currentSelection == '90') ? ' selected' : '';
-                $groupSelect.append('<option value="90"' + finalRoundSelected + '>Final Round</option>');
+                $groupSelect.append('<option value="90"' + finalRoundSelected + '><?php echo esc_js(__('Final Round', 'meinturnierplan')); ?></option>');
               }
 
               if (currentSelection && currentSelection !== '' && currentSelection !== '90' && !response.data.hasFinalRound) {
-                $groupSelect.append('<option value="' + currentSelection + '" selected>Group ' + currentSelection + ' (saved)</option>');
+                $groupSelect.append('<option value="' + currentSelection + '" selected><?php echo esc_js(__('Group', 'meinturnierplan')); ?> ' + currentSelection + ' <?php echo esc_js(__('(saved)', 'meinturnierplan')); ?></option>');
               }
 
               $refreshButton.prop("disabled", false);
 
               if (options.forceRefresh) {
-                MTPAdminUtils.showTemporaryMessage("No groups found for this tournament.", "info", options.groupRowSelector);
+                MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('No groups found for this tournament.', 'meinturnierplan')); ?>", "info", options.groupRowSelector);
               }
             }
           }).fail(function() {
@@ -877,18 +877,18 @@ class MTP_Admin_Utilities {
             // For tables: Show "Default" option
             if (showAllOption) {
               var isAllSelected = !currentSelection || currentSelection === '';
-              $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '>All Matches</option>');
+              $groupSelect.append('<option value=""' + (isAllSelected ? ' selected' : '') + '><?php echo esc_js(__('All Matches', 'meinturnierplan')); ?></option>');
             } else {
-              $groupSelect.append('<option value="">Default</option>');
+              $groupSelect.append('<option value=""><?php echo esc_js(__('Default', 'meinturnierplan')); ?></option>');
             }
 
             if (currentSelection && currentSelection !== '') {
-              var label = currentSelection == '90' ? 'Final Round (saved)' : 'Group ' + currentSelection + ' (saved)';
+              var label = currentSelection == '90' ? '<?php echo esc_js(__('Final Round (saved)', 'meinturnierplan')); ?>' : '<?php echo esc_js(__('Group', 'meinturnierplan')); ?> ' + currentSelection + ' <?php echo esc_js(__('(saved)', 'meinturnierplan')); ?>';
               $groupSelect.append('<option value="' + currentSelection + '" selected>' + label + '</option>');
             }            $refreshButton.prop("disabled", false);
 
             if (options.forceRefresh) {
-              MTPAdminUtils.showTemporaryMessage("Error refreshing groups. Please try again.", "error", options.groupRowSelector);
+              MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('Error refreshing groups. Please try again.', 'meinturnierplan')); ?>", "error", options.groupRowSelector);
             }
           });
         },
@@ -955,7 +955,7 @@ class MTP_Admin_Utilities {
           }
 
           if (!tournamentId) {
-            $participantSelect.prop("disabled", false).empty().append('<option value="-1">All</option>');
+            $participantSelect.prop("disabled", false).empty().append('<option value="-1"><?php echo esc_js(__('All', 'meinturnierplan')); ?></option>');
             $refreshButton.prop("disabled", true);
             return;
           }
@@ -964,10 +964,10 @@ class MTP_Admin_Utilities {
           $refreshButton.prop("disabled", true);
 
           if (options.forceRefresh) {
-            $participantSelect.empty().append('<option value="-1">Refreshing participants...</option>');
+            $participantSelect.empty().append('<option value="-1"><?php echo esc_js(__('Refreshing participants...', 'meinturnierplan')); ?></option>');
             $refreshButton.find('.dashicons').addClass('dashicons-update-alt-rotating');
           } else {
-            $participantSelect.empty().append('<option value="-1">Loading participants...</option>');
+            $participantSelect.empty().append('<option value="-1"><?php echo esc_js(__('Loading participants...', 'meinturnierplan')); ?></option>');
           }
 
           var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
@@ -1004,35 +1004,35 @@ class MTP_Admin_Utilities {
               $refreshButton.prop("disabled", false);
 
               if (options.forceRefresh && response.data.refreshed) {
-                MTPAdminUtils.showTemporaryMessage("Participants refreshed successfully!", "success", options.participantSelectSelector);
+                MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('Participants refreshed successfully!', 'meinturnierplan')); ?>", "success", options.participantSelectSelector);
               }
             } else {
               $participantSelect.prop("disabled", false).empty();
-              $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '>All</option>');
+              $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '><?php echo esc_js(__('All', 'meinturnierplan')); ?></option>');
 
               if (currentSelection && currentSelection !== '-1') {
-                $participantSelect.append('<option value="' + currentSelection + '" selected>Team ' + currentSelection + ' (saved)</option>');
+                $participantSelect.append('<option value="' + currentSelection + '" selected><?php echo esc_js(__('Team ', 'meinturnierplan')); ?>' + currentSelection + '<?php echo esc_js(__(' (saved)', 'meinturnierplan')); ?></option>');
               }
 
               $refreshButton.prop("disabled", false);
 
               if (options.forceRefresh) {
-                MTPAdminUtils.showTemporaryMessage("No participants found for this tournament.", "info", options.participantSelectSelector);
+                MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('No participants found for this tournament.', 'meinturnierplan')); ?>", "info", options.participantSelectSelector);
               }
             }
           }).fail(function() {
             $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
             $participantSelect.prop("disabled", false).empty();
-            $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '>All</option>');
+            $participantSelect.append('<option value="-1"' + (!currentSelection || currentSelection === '-1' ? ' selected' : '') + '><?php echo esc_js(__('All', 'meinturnierplan')); ?></option>');
 
             if (currentSelection && currentSelection !== '-1') {
-              $participantSelect.append('<option value="' + currentSelection + '" selected>Team ' + currentSelection + ' (saved)</option>');
+              $participantSelect.append('<option value="' + currentSelection + '" selected><?php echo esc_js(__('Team ', 'meinturnierplan')); ?>' + currentSelection + '<?php echo esc_js(__(' (saved)', 'meinturnierplan')); ?></option>');
             }
 
             $refreshButton.prop("disabled", false);
 
             if (options.forceRefresh) {
-              MTPAdminUtils.showTemporaryMessage("Error refreshing participants. Please try again.", "error", options.participantSelectSelector);
+              MTPAdminUtils.showTemporaryMessage("<?php echo esc_js(__('Error refreshing participants. Please try again.', 'meinturnierplan')); ?>", "error", options.participantSelectSelector);
             }
           });
         },

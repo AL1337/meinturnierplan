@@ -177,16 +177,16 @@ class MTP_Admin_Table_Meta_Boxes {
 
     // Border Settings Group
     MTP_Admin_Utilities::render_group_header(__('Border Settings', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeh', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizev', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeoh', __('Table Block Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the block border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
-    MTP_Admin_Utilities::render_number_field('mtp_bsizeov', __('Table Inline Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the inline border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeh', __('Border Horizontal Size (px)', 'meinturnierplan'), $meta_values['bsizeh'], __('Set the border horizontal size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizev', __('Border Vertical Size (px)', 'meinturnierplan'), $meta_values['bsizev'], __('Set the border vertical size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeoh', __('Table Top and Bottom Border Size (px)', 'meinturnierplan'), $meta_values['bsizeoh'], __('Set the top and bottom border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
+    MTP_Admin_Utilities::render_number_field('mtp_bsizeov', __('Table Left and Right Border Size (px)', 'meinturnierplan'), $meta_values['bsizeov'], __('Set the left and right border size of the tournament table. 1px is the default value.', 'meinturnierplan'), 1, 10);
     MTP_Admin_Utilities::render_number_field('mtp_bbsize', __('Table Head Border Bottom Size (px)', 'meinturnierplan'), $meta_values['bbsize'], __('Set the head border bottom size of the tournament table. 2px is the default value.', 'meinturnierplan'), 1, 10);
 
     // Colors Group
     MTP_Admin_Utilities::render_group_header(__('Colors', 'meinturnierplan'));
     MTP_Admin_Utilities::render_color_field('mtp_text_color', __('Text Color', 'meinturnierplan'), $meta_values['text_color'], __('Set the color of the tournament table text. Black (#000000) is the default value.', 'meinturnierplan'));
-    MTP_Admin_Utilities::render_color_field('mtp_main_color', __('Main Color', 'meinturnierplan'), $meta_values['main_color'], __('Set the main color of the tournament table (headers, highlights). Blue (#173f75) is the default value.', 'meinturnierplan'));
+    MTP_Admin_Utilities::render_color_field('mtp_main_color', __('Link & Navigation Color', 'meinturnierplan'), $meta_values['main_color'], __('Set the color for links (e.g., "Show Full Tournament") and navigation arrows between groups. Blue (#173f75) is the default value.', 'meinturnierplan'));
     MTP_Admin_Utilities::render_color_field('mtp_border_color', __('Border Color', 'meinturnierplan'), $meta_values['border_color'], __('Set the border color of the tournament table. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
     MTP_Admin_Utilities::render_color_field('mtp_head_bottom_border_color', __('Table Head Bottom Border Color', 'meinturnierplan'), $meta_values['head_bottom_border_color'], __('Set the bottom border color of the table header. Light gray (#bbbbbb) is the default value.', 'meinturnierplan'));
 
