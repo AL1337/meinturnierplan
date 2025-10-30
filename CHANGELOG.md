@@ -2,7 +2,7 @@
 
 All notable changes to the MeinTurnierplan WordPress plugin will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2025-10-30
 
 ### Changed
 - **Internationalization Improvements**: Made all JavaScript notification messages translatable
