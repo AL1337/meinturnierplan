@@ -23,9 +23,11 @@ class MTP_Matches_Widget extends WP_Widget {
    * Widget output
    */
   public function widget($args, $instance) {
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['before_widget'] is already escaped by WordPress core
     echo $args['before_widget'];
 
     if (!empty($instance['title'])) {
+      // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['before_title'] and $args['after_title'] are already escaped by WordPress core
       echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
     }
 
@@ -45,11 +47,13 @@ class MTP_Matches_Widget extends WP_Widget {
       // Use the existing shortcode functionality
       $mtp_plugin = MTP_Plugin::instance();
       $shortcode = new MTP_Matches_Shortcode($mtp_plugin->matches_renderer);
+      // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already escaped in the renderer class
       echo $shortcode->shortcode_callback($shortcode_atts);
     } else {
-      echo '<div class="mtp-widget-placeholder">' . __('Please select a Matches Table.', 'meinturnierplan') . '</div>';
+      echo '<div class="mtp-widget-placeholder">' . esc_html__('Please select a Matches Table.', 'meinturnierplan') . '</div>';
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['after_widget'] is already escaped by WordPress core
     echo $args['after_widget'];
   }
 
@@ -70,14 +74,14 @@ class MTP_Matches_Widget extends WP_Widget {
     ));
     ?>
     <p>
-      <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'meinturnierplan'); ?></label>
+      <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title:', 'meinturnierplan'); ?></label>
       <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
     </p>
 
     <p>
-      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php _e('Select Matches Table:', 'meinturnierplan'); ?></label>
+      <label for="<?php echo esc_attr($this->get_field_id('table_id')); ?>"><?php esc_html_e('Select Matches Table:', 'meinturnierplan'); ?></label>
       <select class="widefat" id="<?php echo esc_attr($this->get_field_id('table_id')); ?>" name="<?php echo esc_attr($this->get_field_name('table_id')); ?>">
-        <option value=""><?php _e('-- Select Matches --', 'meinturnierplan'); ?></option>
+        <option value=""><?php esc_html_e('-- Select Matches --', 'meinturnierplan'); ?></option>
         <?php foreach ($tables as $table): ?>
           <option value="<?php echo esc_attr($table->ID); ?>" <?php selected($table_id, $table->ID); ?>>
             <?php echo esc_html($table->post_title); ?>
@@ -87,7 +91,7 @@ class MTP_Matches_Widget extends WP_Widget {
     </p>
 
     <p>
-      <small><?php _e('The widget will use all styling settings configured for the selected Matches Table. Width and height are automatically determined.', 'meinturnierplan'); ?></small>
+      <small><?php esc_html_e('The widget will use all styling settings configured for the selected Matches Table. Width and height are automatically determined.', 'meinturnierplan'); ?></small>
     </p>
     <?php
   }

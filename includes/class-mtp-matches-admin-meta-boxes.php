@@ -75,7 +75,7 @@ class MTP_Admin_Matches_Meta_Boxes {
 
     // Left column - Matches Settings
     echo '<div class="mtp-admin-column mtp-admin-column-left">';
-    echo '<h3>' . __('Matches Settings', 'meinturnierplan') . '</h3>';
+    echo '<h3>' . esc_html__('Matches Settings', 'meinturnierplan') . '</h3>';
     $this->render_settings_form($meta_values);
     echo '</div>';
 
@@ -286,11 +286,12 @@ class MTP_Admin_Matches_Meta_Boxes {
    * Render preview section
    */
   private function render_preview_section($post, $meta_values) {
-    echo '<h3>' . __('Preview', 'meinturnierplan') . '</h3>';
+    echo '<h3>' . esc_html__('Preview', 'meinturnierplan') . '</h3>';
     echo '<div id="mtp-preview">';
 
     // Create attributes for preview
     $atts = $this->build_preview_attributes($meta_values);
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already escaped in the renderer class
     echo $this->matches_renderer->render_matches_html($post->ID, $atts);
 
     echo '</div>';
@@ -461,7 +462,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showCourts',
-            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -491,7 +492,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showGroups',
-            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -521,7 +522,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showReferees',
-            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -551,7 +552,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'finalMatches',
-            nonce: '<?php echo wp_create_nonce('mtp_check_option_nonce'); ?>'
+            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -663,7 +664,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           participant: $("#mtp_participant").val(),
           match_number: $("#mtp_match_number").val(),
           action: "mtp_preview_matches",
-          nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
+          nonce: "<?php echo esc_js(wp_create_nonce('mtp_preview_nonce')); ?>"
         };
 
         // Convert opacity to hex and combine with colors

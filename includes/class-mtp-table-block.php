@@ -186,7 +186,7 @@ class MTP_Table_Gutenberg_Block {
   public function get_tables_ajax() {
     // Verify nonce
     if (!wp_verify_nonce($_POST['nonce'], 'mtp_block_nonce')) {
-      wp_die(__('Security check failed', 'meinturnierplan'));
+      wp_die(esc_html__('Security check failed', 'meinturnierplan'));
     }
 
     $tables = get_posts(array(

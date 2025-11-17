@@ -1197,6 +1197,7 @@ class MTP_Admin_Utilities {
         }
 
         $selected = $is_selected ? ' selected' : '';
+        /* translators: %s is the group display name */
         echo '<option value="' . esc_attr($group_number) . '"' . $selected . '>' . esc_html(sprintf(__('Group %s', 'meinturnierplan'), $group['displayId'])) . '</option>';
       }
 
@@ -1216,6 +1217,7 @@ class MTP_Admin_Utilities {
       if ($saved_group == '90') {
         echo '<option value="90" selected>' . esc_html(__('Final Round (saved)', 'meinturnierplan')) . '</option>';
       } else {
+        /* translators: %s is the saved group name */
         echo '<option value="' . esc_attr($saved_group) . '" selected>' . esc_html(sprintf(__('Group %s (saved)', 'meinturnierplan'), $saved_group)) . '</option>';
       }
     } else {
@@ -1303,6 +1305,7 @@ class MTP_Admin_Utilities {
       }
     } else if (!empty($saved_participant) && $saved_participant != '-1' && !empty($tournament_id)) {
       // Show a placeholder for the saved participant if teams haven't loaded yet
+      /* translators: %s is the saved team name */
       echo '<option value="' . esc_attr($saved_participant) . '" selected>' . esc_html(sprintf(__('Team %s (saved)', 'meinturnierplan'), $saved_participant)) . '</option>';
     }
 
