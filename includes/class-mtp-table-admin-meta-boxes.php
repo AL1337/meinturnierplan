@@ -75,7 +75,7 @@ class MTP_Admin_Table_Meta_Boxes {
 
     // Left column - Table Settings
     echo '<div class="mtp-admin-column mtp-admin-column-left">';
-    echo '<h3>' . __('Table Settings', 'meinturnierplan') . '</h3>';
+    echo '<h3>' . esc_html__('Table Settings', 'meinturnierplan') . '</h3>';
     $this->render_settings_form($meta_values);
     echo '</div>';
 
@@ -211,11 +211,12 @@ class MTP_Admin_Table_Meta_Boxes {
    * Render preview section
    */
   private function render_preview_section($post, $meta_values) {
-    echo '<h3>' . __('Preview', 'meinturnierplan') . '</h3>';
+    echo '<h3>' . esc_html__('Preview', 'meinturnierplan') . '</h3>';
     echo '<div id="mtp-preview">';
 
     // Create attributes for preview
     $atts = $this->build_preview_attributes($meta_values);
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already escaped in the renderer class
     echo $this->table_renderer->render_table_html($post->ID, $atts);
 
     echo '</div>';
@@ -332,7 +333,7 @@ class MTP_Admin_Table_Meta_Boxes {
       }
 
       // Add specific field listeners for all form fields
-      $("#<?php echo implode(', #', $field_list); ?>").on("input change", function() {
+      $("#<?php echo esc_js(implode(', #', array_map('esc_js', $field_list))); ?>").on("input change", function() {
         updatePreview();
       });
 
@@ -374,7 +375,7 @@ class MTP_Admin_Table_Meta_Boxes {
           language: $("#mtp_language").val(),
           group: $("#mtp_group").val(),
           action: "mtp_preview_table",
-          nonce: "<?php echo wp_create_nonce('mtp_preview_nonce'); ?>"
+          nonce: "<?php echo esc_js(wp_create_nonce('mtp_preview_nonce')); ?>"
         };
 
         // Convert opacity to hex and combine with colors
