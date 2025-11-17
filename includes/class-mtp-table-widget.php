@@ -1,6 +1,10 @@
 <?php
 /**
  * Widget class for Tournament Tables
+ * 
+ * @package MeinTurnierplan
+ * @since   0.3.0
+ * @version 1.0.0
  */
 
 class MTP_Table_Widget extends WP_Widget {

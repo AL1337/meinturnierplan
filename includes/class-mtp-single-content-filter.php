@@ -5,7 +5,8 @@
  * Automatically populates single CPT pages with their shortcode content
  *
  * @package MeinTurnierplan
- * @since 0.3.1
+ * @since   0.3.1
+ * @version 1.0.0
  */
 
 // Prevent direct access

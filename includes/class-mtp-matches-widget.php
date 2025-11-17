@@ -1,6 +1,8 @@
 <?php
 /**
  * Widget class for Matches
+ * @since   0.1.0
+ * @version 1.0.0
  */
 
 class MTP_Matches_Widget extends WP_Widget {

@@ -3,7 +3,8 @@
  * Plugin Requirements Checker
  *
  * @package MeinTurnierplan
- * @since 0.3.2
+ * @since   0.3.2
+ * @version 1.0.0
  */
 
 // Prevent direct access

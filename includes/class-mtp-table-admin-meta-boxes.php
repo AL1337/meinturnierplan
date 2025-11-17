@@ -3,7 +3,8 @@
  * Admin Table Meta Boxes Class
  *
  * @package MeinTurnierplan
- * @since 0.1.0
+ * @since   0.1.0
+ * @version 1.0.0
  */
 
 // Prevent direct access

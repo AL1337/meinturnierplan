@@ -6,7 +6,8 @@
  * This file is executed when a user deletes the plugin from WordPress.
  *
  * @package MeinTurnierplan
- * @since 0.3.2
+ * @since   0.3.2
+ * @version 1.0.0
  */
 
 // Exit if accessed directly or not uninstalling

@@ -3,7 +3,8 @@
  * Main Plugin Class
  *
  * @package MeinTurnierplan
- * @since 0.1.0
+ * @since   0.1.0
+ * @version 1.0.0
  */
 
 // Prevent direct access
@@ -123,9 +124,10 @@ class MTP_Plugin {
     $this->matches_gutenberg_block = new MTP_Matches_Gutenberg_Block($this->matches_renderer);
     $this->single_content_filter = new MTP_Single_Content_Filter($this->table_renderer, $this->matches_renderer);
 
-    // Initialize widget
+    // Initialize widgets
     add_action('widgets_init', function() {
       register_widget('MTP_Table_Widget');
+      register_widget('MTP_Matches_Widget');
     });
   }
 
