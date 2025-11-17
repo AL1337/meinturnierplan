@@ -632,7 +632,7 @@ class MTP_Admin_Table_Meta_Boxes {
    */
   public function save_meta_boxes($post_id) {
     // Check if nonce is valid
-    if (!isset($_POST['mtp_table_meta_box_nonce']) || !wp_verify_nonce($_POST['mtp_table_meta_box_nonce'], 'mtp_table_meta_box')) {
+    if (!isset($_POST['mtp_table_meta_box_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mtp_table_meta_box_nonce'])), 'mtp_table_meta_box')) {
       return;
     }
 
@@ -671,7 +671,7 @@ class MTP_Admin_Table_Meta_Boxes {
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);
       } elseif (isset($_POST[$post_field])) {
-        $value = $this->sanitize_meta_value($field, $_POST[$post_field]);
+        $value = $this->sanitize_meta_value($field, wp_unslash($_POST[$post_field]));
         update_post_meta($post_id, $meta_key, $value);
       }
     }
