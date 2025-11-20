@@ -43,12 +43,12 @@ class MTP_Table_Ajax_Handler {
    * AJAX handler for table preview (existing one for admin)
    */
   public function ajax_preview_table() {
-    // Check nonce
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'mtp_preview_nonce')) {
-      wp_die('Security check failed');
-    }
+    // Check nonce and capability
+    MTP_Nonce_Helper::verify_capability_or_die(MTP_Nonce_Helper::ACTION_PREVIEW_TABLE, 'edit_posts', 'nonce');
 
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by MTP_Nonce_Helper::verify_capability_or_die()
     $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by MTP_Nonce_Helper::verify_capability_or_die()
     $data = $this->sanitize_ajax_data($_POST);
 
     // Create attributes for rendering
@@ -127,12 +127,12 @@ class MTP_Table_Ajax_Handler {
    * AJAX handler for fetching tournament groups
    */
   public function ajax_get_groups() {
-    // Check nonce
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'mtp_preview_nonce')) {
-      wp_die('Security check failed');
-    }
+    // Check nonce and capability
+    MTP_Nonce_Helper::verify_capability_or_die(MTP_Nonce_Helper::ACTION_GET_GROUPS, 'edit_posts', 'nonce');
 
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by MTP_Nonce_Helper::verify_capability_or_die()
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by MTP_Nonce_Helper::verify_capability_or_die()
     $force_refresh = isset($_POST['force_refresh']) ? (bool)$_POST['force_refresh'] : false;
 
     if (empty($tournament_id)) {
@@ -150,11 +150,10 @@ class MTP_Table_Ajax_Handler {
    * AJAX handler for refreshing tournament groups (force refresh)
    */
   public function ajax_refresh_groups() {
-    // Check nonce
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'mtp_preview_nonce')) {
-      wp_die('Security check failed');
-    }
+    // Check nonce and capability
+    MTP_Nonce_Helper::verify_capability_or_die(MTP_Nonce_Helper::ACTION_REFRESH_GROUPS, 'edit_posts', 'nonce');
 
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by MTP_Nonce_Helper::verify_capability_or_die()
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
 
     if (empty($tournament_id)) {

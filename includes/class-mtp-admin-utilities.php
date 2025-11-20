@@ -755,10 +755,21 @@ class MTP_Admin_Utilities {
             groupSelectSelector: "#<?php echo esc_js($config['field_prefix']); ?>group, #<?php echo esc_js($config['field_prefix']); ?>group_select",
             refreshButtonSelector: "#<?php echo esc_js($config['field_prefix']); ?>refresh_groups",
             savedValueSelector: "#<?php echo esc_js($config['field_prefix']); ?>group_saved_value",
-            ajaxActions: <?php echo json_encode($config['ajax_actions']); ?>,
-            nonce: "<?php echo esc_js(wp_create_nonce($config['nonce_action'])); ?>"
+            ajaxActions: <?php echo json_encode($config['ajax_actions']); ?>
           };
           options = jQuery.extend(defaults, options || {});
+          
+          // Determine the correct nonce based on ajax action
+          var getNonce = function(action) {
+            if (mtp_ajax.nonces) {
+              if (action === 'mtp_get_groups' || action === 'mtp_refresh_groups') {
+                return mtp_ajax.nonces.get_groups || mtp_ajax.nonces.refresh_groups || mtp_ajax.preview_nonce;
+              } else if (action === 'mtp_get_matches_groups' || action === 'mtp_refresh_matches_groups') {
+                return mtp_ajax.nonces.get_matches_groups || mtp_ajax.nonces.refresh_matches_groups || mtp_ajax.preview_nonce;
+              }
+            }
+            return mtp_ajax.preview_nonce;
+          };
           var showAllOption = (options.context === 'matches');
 
           var $groupRow = jQuery(options.groupRowSelector);
@@ -796,7 +807,7 @@ class MTP_Admin_Utilities {
             action: ajaxAction,
             tournament_id: tournamentId,
             force_refresh: options.forceRefresh,
-            nonce: options.nonce
+            nonce: getNonce(ajaxAction)
           }, function(response) {
             $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
 
@@ -935,10 +946,19 @@ class MTP_Admin_Utilities {
             participantSelectSelector: "#<?php echo esc_js($config['field_prefix']); ?>participant",
             refreshButtonSelector: "#<?php echo esc_js($config['field_prefix']); ?>refresh_participants",
             savedValueSelector: "#<?php echo esc_js($config['field_prefix']); ?>participant_saved_value",
-            ajaxActions: <?php echo isset($config['ajax_actions_teams']) ? json_encode($config['ajax_actions_teams']) : '["mtp_get_teams", "mtp_refresh_teams"]'; ?>,
-            nonce: "<?php echo esc_js(wp_create_nonce($config['nonce_action'])); ?>"
+            ajaxActions: <?php echo isset($config['ajax_actions_teams']) ? json_encode($config['ajax_actions_teams']) : '["mtp_get_teams", "mtp_refresh_teams"]'; ?>
           };
           options = jQuery.extend(defaults, options || {});
+          
+          // Determine the correct nonce based on ajax action
+          var getTeamsNonce = function(action) {
+            if (mtp_ajax.nonces) {
+              if (action === 'mtp_get_matches_teams' || action === 'mtp_refresh_matches_teams') {
+                return mtp_ajax.nonces.get_matches_teams || mtp_ajax.nonces.refresh_matches_teams || mtp_ajax.preview_nonce;
+              }
+            }
+            return mtp_ajax.preview_nonce;
+          };
 
           var $participantSelect = jQuery(options.participantSelectSelector);
           var $refreshButton = jQuery(options.refreshButtonSelector);
@@ -972,7 +992,7 @@ class MTP_Admin_Utilities {
             action: ajaxAction,
             tournament_id: tournamentId,
             force_refresh: options.forceRefresh,
-            nonce: options.nonce
+            nonce: getTeamsNonce(ajaxAction)
           }, function(response) {
             $refreshButton.find('.dashicons').removeClass('dashicons-update-alt-rotating');
 

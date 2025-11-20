@@ -76,10 +76,26 @@ class MTP_Assets {
           true
         );
 
-        // Localize script for AJAX
+        // Localize script for AJAX with nonces
         wp_localize_script('mtp-admin-scripts', 'mtp_ajax', array(
           'ajax_url' => admin_url('admin-ajax.php'),
-          'preview_nonce' => wp_create_nonce('mtp_preview_nonce')
+          'nonces' => array(
+            'preview_table' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_PREVIEW_TABLE),
+            'preview_matches' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_PREVIEW_MATCHES),
+            'get_groups' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_GET_GROUPS),
+            'refresh_groups' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_REFRESH_GROUPS),
+            'get_matches_groups' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_GET_MATCHES_GROUPS),
+            'refresh_matches_groups' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_REFRESH_MATCHES_GROUPS),
+            'get_matches_teams' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_GET_MATCHES_TEAMS),
+            'refresh_matches_teams' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_REFRESH_MATCHES_TEAMS),
+            'check_tournament_option' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_CHECK_TOURNAMENT_OPTION),
+          ),
+          // Legacy support - keep this for backward compatibility
+          'preview_nonce' => MTP_Nonce_Helper::create(MTP_Nonce_Helper::ACTION_PREVIEW_TABLE),
+          'i18n' => array(
+            'error_occurred' => __('An error occurred. Please try again.', 'meinturnierplan'),
+            'security_check_failed' => __('Security check failed. Please refresh the page and try again.', 'meinturnierplan'),
+          )
         ));
 
         // Add debug info for admin

@@ -73,6 +73,9 @@ class MTP_Plugin {
    * Include required core files
    */
   public function includes() {
+    // Security helper
+    include_once MTP_PLUGIN_PATH . 'includes/class-mtp-nonce-helper.php';
+
     // Core Table classes
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-post-type.php';
     include_once MTP_PLUGIN_PATH . 'includes/class-mtp-table-renderer.php';

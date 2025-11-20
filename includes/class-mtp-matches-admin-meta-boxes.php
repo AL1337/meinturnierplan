@@ -463,7 +463,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showCourts',
-            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
+            nonce: mtp_ajax.nonces.check_tournament_option
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -493,7 +493,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showGroups',
-            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
+            nonce: mtp_ajax.nonces.check_tournament_option
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -523,7 +523,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'showReferees',
-            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
+            nonce: mtp_ajax.nonces.check_tournament_option
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -553,7 +553,7 @@ class MTP_Admin_Matches_Meta_Boxes {
             action: 'mtp_check_tournament_option',
             tournament_id: tournamentId,
             option_name: 'finalMatches',
-            nonce: '<?php echo esc_js(wp_create_nonce('mtp_check_option_nonce')); ?>'
+            nonce: mtp_ajax.nonces.check_tournament_option
           },
           success: function(response) {
             if (response.success && response.data) {
@@ -665,7 +665,7 @@ class MTP_Admin_Matches_Meta_Boxes {
           participant: $("#mtp_participant").val(),
           match_number: $("#mtp_match_number").val(),
           action: "mtp_preview_matches",
-          nonce: "<?php echo esc_js(wp_create_nonce('mtp_preview_nonce')); ?>"
+          nonce: mtp_ajax.nonces.preview_matches
         };
 
         // Convert opacity to hex and combine with colors
@@ -988,11 +988,17 @@ class MTP_Admin_Matches_Meta_Boxes {
    */
   public function save_meta_boxes($post_id) {
     // Check if nonce is valid
-    if (!isset($_POST['mtp_matches_meta_box_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mtp_matches_meta_box_nonce'])), 'mtp_matches_meta_box')) {
+    if (!MTP_Nonce_Helper::exists_in_request('mtp_matches_meta_box_nonce')) {
+      return;
+    }
+
+    $nonce = MTP_Nonce_Helper::get_from_request('mtp_matches_meta_box_nonce');
+    if (!MTP_Nonce_Helper::verify($nonce, 'mtp_matches_meta_box')) {
       return;
     }
 
     // Check if user has permission
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce already verified above
     if (isset($_POST['post_type']) && 'mtp_match_list' == $_POST['post_type']) {
       if (!current_user_can('edit_page', $post_id)) {
         return;
@@ -1060,10 +1066,12 @@ class MTP_Admin_Matches_Meta_Boxes {
 
       if (in_array($field, array('projector_presentation', 'si', 'sf', 'st', 'sg', 'sr', 'se', 'sp', 'sh'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified at start of save_meta_boxes()
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified at start of save_meta_boxes()
       } elseif (isset($_POST[$post_field])) {
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitization handled by sanitize_meta_value method
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- Sanitization handled by sanitize_meta_value method, nonce verified at start
         $value = $this->sanitize_meta_value($field, wp_unslash($_POST[$post_field]));
         update_post_meta($post_id, $meta_key, $value);
       }
