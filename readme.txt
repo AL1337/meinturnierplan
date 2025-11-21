@@ -1,5 +1,5 @@
 === MeinTurnierplan ===
-Contributors: romanperevala
+Contributors: meinturnierplan, ramzesimus
 Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 6.8
