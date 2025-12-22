@@ -309,92 +309,26 @@ class MTP_Admin_Table_Meta_Boxes {
 
     // Include reusable admin JavaScript utilities
     MTP_Admin_Utilities::render_admin_javascript_utilities();
-    ?>
-    <script>
-    jQuery(document).ready(function($) {
-      // Initialize reusable utilities with preview update callback
-      MTPAdminUtils.initColorPickers(updatePreview);
-      MTPAdminUtils.initOpacitySliders(updatePreview);
-      MTPAdminUtils.initFormFieldListeners('mtp_', updatePreview);
 
-      // Initialize tournament ID field with group loading
-      MTPAdminUtils.initTournamentIdField('#mtp_tournament_id', updatePreview, function(tournamentId) {
-        MTPAdminUtils.loadTournamentGroups(tournamentId);
-      });
+    // Enqueue preview JavaScript file
+    wp_enqueue_script(
+      'mtp-admin-table-preview',
+      plugins_url('assets/js/admin-table-preview.js', dirname(__FILE__)),
+      array('jquery', 'mtp-admin-utilities'),
+      '1.0.0',
+      true
+    );
 
-      // Initialize group refresh button
-      MTPAdminUtils.initGroupRefreshButton('#mtp_refresh_groups', '#mtp_tournament_id', function(tournamentId, options) {
-        MTPAdminUtils.loadTournamentGroups(tournamentId, options);
-      });
-
-      // Load groups on page load if tournament ID exists
-      var initialTournamentId = $("#mtp_tournament_id").val();
-      if (initialTournamentId) {
-        MTPAdminUtils.loadTournamentGroups(initialTournamentId, {preserveSelection: false});
-      }
-
-      // Add specific field listeners for all form fields
-      $("#<?php echo esc_js(implode(', #', array_map('esc_js', $field_list))); ?>").on("input change", function() {
-        updatePreview();
-      });
-
-      // Function to update preview
-      function updatePreview() {
-        // Get all field values
-        var data = {
-          post_id: <?php echo intval($post_id); ?>,
-          tournament_id: $("#mtp_tournament_id").val(),
-          font_size: $("#mtp_font_size").val(),
-          header_font_size: $("#mtp_header_font_size").val(),
-          bsizeh: $("#mtp_bsizeh").val(),
-          bsizev: $("#mtp_bsizev").val(),
-          bsizeoh: $("#mtp_bsizeoh").val(),
-          bsizeov: $("#mtp_bsizeov").val(),
-          bbsize: $("#mtp_bbsize").val(),
-          table_padding: $("#mtp_table_padding").val(),
-          inner_padding: $("#mtp_inner_padding").val(),
-          text_color: $("#mtp_text_color").val().replace("#", ""),
-          main_color: $("#mtp_main_color").val().replace("#", ""),
-          bg_color: $("#mtp_bg_color").val().replace("#", ""),
-          logo_size: $("#mtp_logo_size").val(),
-          bg_opacity: $("#mtp_bg_opacity").val(),
-          border_color: $("#mtp_border_color").val().replace("#", ""),
-          head_bottom_border_color: $("#mtp_head_bottom_border_color").val().replace("#", ""),
-          even_bg_color: $("#mtp_even_bg_color").val().replace("#", ""),
-          even_bg_opacity: $("#mtp_even_bg_opacity").val(),
-          odd_bg_color: $("#mtp_odd_bg_color").val().replace("#", ""),
-          odd_bg_opacity: $("#mtp_odd_bg_opacity").val(),
-          hover_bg_color: $("#mtp_hover_bg_color").val().replace("#", ""),
-          hover_bg_opacity: $("#mtp_hover_bg_opacity").val(),
-          head_bg_color: $("#mtp_head_bg_color").val().replace("#", ""),
-          head_bg_opacity: $("#mtp_head_bg_opacity").val(),
-          suppress_wins: $("#mtp_suppress_wins").is(":checked") ? "1" : "0",
-          suppress_logos: $("#mtp_suppress_logos").is(":checked") ? "1" : "0",
-          suppress_num_matches: $("#mtp_suppress_num_matches").is(":checked") ? "1" : "0",
-          projector_presentation: $("#mtp_projector_presentation").is(":checked") ? "1" : "0",
-          navigation_for_groups: $("#mtp_navigation_for_groups").is(":checked") ? "1" : "0",
-          language: $("#mtp_language").val(),
-          group: $("#mtp_group").val(),
-          action: "mtp_preview_table",
-          nonce: "<?php echo esc_js(wp_create_nonce('mtp_preview_nonce')); ?>"
-        };
-
-        // Convert opacity to hex and combine with colors
-        data.bg_color = data.bg_color + Math.round((data.bg_opacity / 100) * 255).toString(16).padStart(2, "0");
-        data.even_bg_color = data.even_bg_color + Math.round((data.even_bg_opacity / 100) * 255).toString(16).padStart(2, "0");
-        data.odd_bg_color = data.odd_bg_color + Math.round((data.odd_bg_opacity / 100) * 255).toString(16).padStart(2, "0");
-        data.hover_bg_color = data.hover_bg_color + Math.round((data.hover_bg_opacity / 100) * 255).toString(16).padStart(2, "0");
-        data.head_bg_color = data.head_bg_color + Math.round((data.head_bg_opacity / 100) * 255).toString(16).padStart(2, "0");
-
-        $.post(ajaxurl, data, function(response) {
-          if (response.success) {
-            $("#mtp-preview").html(response.data);
-          }
-        });
-      }
-    });
-    </script>
-    <?php
+    // Localize script with configuration
+    wp_localize_script(
+      'mtp-admin-table-preview',
+      'mtpTablePreviewConfig',
+      array(
+        'postId' => intval($post_id),
+        'previewNonce' => wp_create_nonce('mtp_preview_nonce'),
+        'fieldList' => $field_list
+      )
+    );
   }
 
   /**
@@ -476,156 +410,25 @@ class MTP_Admin_Table_Meta_Boxes {
    * Add tournament table specific shortcode update JavaScript
    */
   private function add_shortcode_update_javascript($meta_values) {
-    ?>
-    <script>
-    jQuery(document).ready(function($) {
-      // Helper function to get current iframe dimensions
-      function getCurrentIframeDimensions() {
-        var dimensions = { width: null, height: null };
+    // Enqueue external JavaScript file
+    wp_enqueue_script(
+      'mtp-admin-table-meta-boxes',
+      plugins_url('assets/js/admin-table-meta-boxes.js', dirname(__FILE__)),
+      array('jquery'),
+      '1.0.0',
+      true
+    );
 
-        // Check if global dimensions are available from frontend script
-        if (window.MTP_IframeDimensions) {
-          // Find the most recent dimensions for any iframe
-          var latestTimestamp = 0;
-          var latestDimensions = null;
-
-          for (var iframeId in window.MTP_IframeDimensions) {
-            var dim = window.MTP_IframeDimensions[iframeId];
-            if (dim.timestamp > latestTimestamp) {
-              latestTimestamp = dim.timestamp;
-              latestDimensions = dim;
-            }
-          }
-
-          if (latestDimensions) {
-            dimensions.width = latestDimensions.width;
-            dimensions.height = latestDimensions.height;
-          }
-        }
-
-        // Fallback: check actual iframe dimensions in the preview
-        if (!dimensions.width || !dimensions.height) {
-          var previewIframe = $("#mtp-preview iframe[id^='mtp-table-']").first();
-          if (previewIframe.length) {
-            dimensions.width = previewIframe.attr('width') || previewIframe.width();
-            dimensions.height = previewIframe.attr('height') || previewIframe.height();
-          }
-        }
-
-        return dimensions;
-      }
-
-      // Define updateShortcode function globally so shared utilities can call it
-      window.updateShortcode = function() {
-        var postId = <?php echo intval(get_the_ID()); ?>;
-        var tournamentId = $("#mtp_tournament_id").val() || "";
-
-        // Get current iframe dimensions if available, otherwise use defaults
-        var currentDimensions = getCurrentIframeDimensions();
-        var width = currentDimensions.width || "<?php echo esc_js($meta_values['width']); ?>" || "300";
-        var height = currentDimensions.height || "<?php echo esc_js($meta_values['height']); ?>" || "200";
-
-        // Update hidden fields so the values get saved
-        $("#mtp_width").val(width);
-        $("#mtp_height").val(height);
-
-        var fontSize = $("#mtp_font_size").val() || "9";
-        var headerFontSize = $("#mtp_header_font_size").val() || "10";
-        var textColor = $("#mtp_text_color").val().replace("#", "") || "000000";
-        var mainColor = $("#mtp_main_color").val().replace("#", "") || "173f75";
-        var tablePadding = $("#mtp_table_padding").val() || "2";
-        var innerPadding = $("#mtp_inner_padding").val() || "5";
-        var logoSize = $("#mtp_logo_size").val() || "20";
-        var borderColor = $("#mtp_border_color").val().replace("#", "") || "bbbbbb";
-        var headBottomBorderColor = $("#mtp_head_bottom_border_color").val().replace("#", "") || "bbbbbb";
-        var bsizeh = $("#mtp_bsizeh").val() || "1";
-        var bsizev = $("#mtp_bsizev").val() || "1";
-        var bsizeoh = $("#mtp_bsizeoh").val() || "1";
-        var bsizeov = $("#mtp_bsizeov").val() || "1";
-        var bbsize = $("#mtp_bbsize").val() || "2";
-        var language = $("#mtp_language").val() || "en";
-        var group = $("#mtp_group").val() || "";
-
-        // Combine colors with opacity (convert opacity percentage to hex)
-        var bgColor = $("#mtp_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_bg_opacity").val() / 100) * 255));
-        var evenBgColor = $("#mtp_even_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_even_bg_opacity").val() / 100) * 255));
-        var oddBgColor = $("#mtp_odd_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_odd_bg_opacity").val() / 100) * 255));
-        var hoverBgColor = $("#mtp_hover_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_hover_bg_opacity").val() / 100) * 255));
-        var headBgColor = $("#mtp_head_bg_color").val().replace("#", "") + opacityToHex(Math.round(($("#mtp_head_bg_opacity").val() / 100) * 255));
-
-        // Build complete shortcode (width and height removed for auto-sizing)
-        var newShortcode = '[mtp-table id="' + tournamentId + '" post_id="' + postId + '" lang="' + language + '"' +
-                          ' s-size="' + fontSize + '"' +
-                          ' s-sizeheader="' + headerFontSize + '"' +
-                          ' s-color="' + textColor + '"' +
-                          ' s-maincolor="' + mainColor + '"' +
-                          ' s-padding="' + tablePadding + '"' +
-                          ' s-innerpadding="' + innerPadding + '"' +
-                          ' s-bgcolor="' + bgColor + '"' +
-                          ' s-bcolor="' + borderColor + '"' +
-                          ' s-bbcolor="' + headBottomBorderColor + '"' +
-                          ' s-bgeven="' + evenBgColor + '"' +
-                          ' s-logosize="' + logoSize + '"' +
-                          ' s-bsizeh="' + bsizeh + '"' +
-                          ' s-bsizev="' + bsizev + '"' +
-                          ' s-bsizeoh="' + bsizeoh + '"' +
-                          ' s-bsizeov="' + bsizeov + '"' +
-                          ' s-bbsize="' + bbsize + '"' +
-                          ' s-bgodd="' + oddBgColor + '"' +
-                          ' s-bgover="' + hoverBgColor + '"' +
-                          ' s-bghead="' + headBgColor + '"';
-
-        // Add sw parameter if suppress_wins checkbox is checked
-        if ($("#mtp_suppress_wins").is(":checked")) {
-          newShortcode += ' sw="1"';
-        }
-
-        // Add sl parameter if suppress_logos checkbox is checked
-        if ($("#mtp_suppress_logos").is(":checked")) {
-          newShortcode += ' sl="1"';
-        }
-
-        // Add sn parameter if suppress_num_matches checkbox is checked
-        if ($("#mtp_suppress_num_matches").is(":checked")) {
-          newShortcode += ' sn="1"';
-        }
-
-        // Add bm parameter if projector_presentation checkbox is checked
-        if ($("#mtp_projector_presentation").is(":checked")) {
-          newShortcode += ' bm="1"';
-        }
-
-        // Add nav parameter if navigation_for_groups checkbox is checked
-        if ($("#mtp_navigation_for_groups").is(":checked")) {
-          newShortcode += ' nav="1"';
-        }
-
-        // Add group parameter if selected
-        if (group) {
-          newShortcode += ' group="' + group + '"';
-        }
-
-        // Add width and height parameters
-        newShortcode += ' width="' + width + '" height="' + height + '"';
-
-        newShortcode += ']';
-
-        $("#mtp_shortcode_field").val(newShortcode);
-      };
-
-      // Convert decimal opacity to hex (match PHP behavior)
-      function opacityToHex(opacity) {
-        var hex = Math.round(opacity).toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-      }
-
-      // Call updateShortcode initially to populate the field
-      if (typeof window.updateShortcode === 'function') {
-        window.updateShortcode();
-      }
-    });
-    </script>
-    <?php
+    // Localize script with configuration
+    wp_localize_script(
+      'mtp-admin-table-meta-boxes',
+      'mtpTableMetaBoxConfig',
+      array(
+        'postId' => intval(get_the_ID()),
+        'defaultWidth' => esc_js($meta_values['width']),
+        'defaultHeight' => esc_js($meta_values['height'])
+      )
+    );
   }
 
   /**
