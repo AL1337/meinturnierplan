@@ -12,7 +12,68 @@ Display tournament tables and match lists using custom post types, supporting Gu
 
 == Description ==
 
-MeinTurnierplan is a comprehensive WordPress plugin for displaying tournament tables and match lists. Perfect for sports clubs, leagues, and tournament organizers who want to showcase standings, rankings, and match schedules on their WordPress website.
+MeinTurnierplan allows you to display tournament tables and match schedules from meinturnierplan.de on your WordPress site. Perfect for sports clubs, leagues, and tournament organizers who want to showcase standings, rankings, and match schedules on their WordPress website.
+
+== Third-Party Services ==
+
+**MeinTurnierplan.de Service**
+
+This plugin embeds content from meinturnierplan.de using iframes to display tournament information.
+
+* **Service Used:** MeinTurnierplan.de (https://www.meinturnierplan.de/)
+* **What it does:** Displays tournament tables and match schedules
+* **Endpoints Used:**
+  - https://www.meinturnierplan.de/displayTable.php (for tournament standings)
+  - https://www.meinturnierplan.de/displayMatches.php (for match schedules)
+* **Data Sent:** Tournament ID only (when you explicitly add a tournament shortcode, block, or widget)
+* **When data is sent:** When a page with tournament content is loaded by a visitor
+* **Privacy Policy:** https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en
+* **Terms of Service:** https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en
+
+**What the Embedded Widgets Collect:**
+
+Based on technical analysis of the embedded widgets (as of December 2024):
+
+* **NO tracking scripts** - The embedded widgets do not use Google Analytics or any other analytics services
+* **NO cookies** - The widgets do not set any cookies in users' browsers
+* **NO third-party resources** - The widgets only load CSS styling from meinturnierplan.de (no Google Fonts, AdSense, or other external services)
+* **Communication:** The widgets only use JavaScript to send iframe dimensions to your page for proper display sizing (via postMessage API)
+
+**What Data May Be Collected:**
+
+When users view embedded tournament content, meinturnierplan.de's web server may automatically log:
+* IP addresses (standard web server logs)
+* Browser type and version (from User-Agent header)
+* Referrer URL (your website where the widget is embedded)
+* Access timestamp
+
+This is standard web server logging and does not involve cookies, tracking scripts, or persistent user identification.
+
+**Important:** While the embedded widgets themselves are clean and don't track users, the main meinturnierplan.de website uses Google Analytics according to their privacy policy. However, this tracking is NOT present in the embedded widget endpoints used by this plugin.
+
+== Privacy Notice ==
+
+**This plugin itself does not:**
+* Track users
+* Collect personal data
+* Use cookies or localStorage
+* Send personal or sensitive data to any server
+
+**Data Transmission:**
+The only data sent by this plugin is the Tournament ID to meinturnierplan.de when you explicitly add tournament content (via shortcode, block, or widget) to display on your pages.
+
+**Embedded Widget Behavior:**
+Based on technical analysis, the embedded widgets from meinturnierplan.de:
+* Do NOT use tracking scripts (no Google Analytics in widgets)
+* Do NOT set cookies
+* Do NOT load third-party services (no Google Fonts, AdSense, etc.)
+* Only communicate iframe dimensions back to your page for proper display
+
+**Standard Web Server Logging:**
+Like any web resource, meinturnierplan.de's servers may log standard HTTP request data (IP address, browser type, referrer, timestamp) when serving the embedded content. This is standard practice for all web servers and does not involve user tracking or cookies.
+
+**No Consent Required:**
+Because the embedded widgets do not use cookies, tracking scripts, or persistent user identification, no additional cookie consent is required beyond standard web server logging disclosure in your privacy policy.
 
 = Key Features =
 
