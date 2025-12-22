@@ -1,7 +1,7 @@
 /**
  * Admin Notices Styles
  *
- * Styles for the third-party service disclosure notice.
+ * Styles for the third-party service disclosure notice and admin utilities.
  *
  * @package MeinTurnierplan
  * @since   1.0.0
@@ -15,4 +15,9 @@
   list-style: disc;
   margin-left: 20px;
   margin-top: 0;
+}
+
+/* Admin Utilities - Conditional Field Visibility */
+.mtp-field-hidden {
+  display: none;
 }
