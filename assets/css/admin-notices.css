@@ -1,0 +1,18 @@
+/**
+ * Admin Notices Styles
+ *
+ * Styles for the third-party service disclosure notice.
+ *
+ * @package MeinTurnierplan
+ * @since   1.0.0
+ */
+
+#mtp-service-notice .mtp-notice-title {
+  margin-bottom: 0.5em;
+}
+
+#mtp-service-notice .mtp-notice-list {
+  list-style: disc;
+  margin-left: 20px;
+  margin-top: 0;
+}

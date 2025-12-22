@@ -37,20 +37,20 @@ function mtp_service_disclosure_notice() {
   $nonce = wp_create_nonce('mtp_dismiss_notice');
   ?>
   <div class="notice notice-info is-dismissible" id="mtp-service-notice">
-    <h3 style="margin-bottom: 0.5em;"><?php esc_html_e('Third-Party Service Information', 'meinturnierplan'); ?></h3>
+    <h3 class="mtp-notice-title"><?php esc_html_e('Third-Party Service Information', 'meinturnierplan'); ?></h3>
     
     <p>
       <?php esc_html_e('This plugin embeds tournament content from meinturnierplan.de. When you add tournament displays to your pages, users will connect directly to meinturnierplan.de servers.', 'meinturnierplan'); ?>
     </p>
 
     <p><strong><?php esc_html_e('What data is sent:', 'meinturnierplan'); ?></strong></p>
-    <ul style="list-style: disc; margin-left: 20px; margin-top: 0;">
+    <ul class="mtp-notice-list">
       <li><?php esc_html_e('Tournament ID only (when you add a tournament via shortcode, block, or widget)', 'meinturnierplan'); ?></li>
       <li><?php esc_html_e('No personal data or user tracking information is sent by this plugin', 'meinturnierplan'); ?></li>
     </ul>
 
     <p><strong><?php esc_html_e('Privacy & Tracking:', 'meinturnierplan'); ?></strong></p>
-    <ul style="list-style: disc; margin-left: 20px; margin-top: 0;">
+    <ul class="mtp-notice-list">
       <li><?php esc_html_e('This plugin does not track users or collect personal data', 'meinturnierplan'); ?></li>
       <li><?php esc_html_e('The embedded widgets do not use cookies or tracking scripts', 'meinturnierplan'); ?></li>
       <li><?php esc_html_e('Standard web server logging (IP, browser, referrer) may occur when serving content', 'meinturnierplan'); ?></li>
@@ -69,21 +69,54 @@ function mtp_service_disclosure_notice() {
       </button>
     </p>
   </div>
-  <script>
-  jQuery(document).ready(function($) {
-    $('#mtp-dismiss-notice, #mtp-service-notice .notice-dismiss').on('click', function() {
-      $.post(ajaxurl, {
-        action: 'mtp_dismiss_service_notice',
-        nonce: '<?php echo esc_js($nonce); ?>'
-      }, function() {
-        $('#mtp-service-notice').fadeOut();
-      });
-    });
-  });
-  </script>
   <?php
 }
 add_action('admin_notices', 'mtp_service_disclosure_notice');
+
+/**
+ * Enqueue admin notice styles and script
+ *
+ * Properly enqueues the CSS styles and jQuery script for the admin notice
+ * using WordPress best practices.
+ *
+ * @since 1.0.0
+ * @return void
+ */
+function mtp_enqueue_admin_notice_assets() {
+  // Only enqueue on admin pages where the notice might be shown
+  if (!current_user_can('manage_options') || get_option('mtp_service_notice_dismissed')) {
+    return;
+  }
+
+  // Register and enqueue admin notice styles
+  wp_register_style(
+    'mtp-admin-notices',
+    plugins_url('assets/css/admin-notices.css', dirname(__FILE__)),
+    array(),
+    '1.0.0'
+  );
+  wp_enqueue_style('mtp-admin-notices');
+
+  // Enqueue jQuery (WordPress default)
+  wp_enqueue_script('jquery');
+
+  // Add inline script for notice dismissal
+  $script = "
+    jQuery(document).ready(function($) {
+      $('#mtp-dismiss-notice, #mtp-service-notice .notice-dismiss').on('click', function() {
+        $.post(ajaxurl, {
+          action: 'mtp_dismiss_service_notice',
+          nonce: '" . wp_create_nonce('mtp_dismiss_notice') . "'
+        }, function() {
+          $('#mtp-service-notice').fadeOut();
+        });
+      });
+    });
+  ";
+
+  wp_add_inline_script('jquery', $script);
+}
+add_action('admin_enqueue_scripts', 'mtp_enqueue_admin_notice_assets');
 
 /**
  * Handle AJAX request to dismiss the service notice
