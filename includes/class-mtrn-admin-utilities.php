@@ -466,7 +466,7 @@ class MTRN_Admin_Utilities {
     }
 
     // Use WordPress HTTP API to fetch the JSON
-    $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+    $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
     $response = wp_remote_get($url, array(
       'timeout' => 10,
       'sslverify' => true
@@ -546,7 +546,7 @@ class MTRN_Admin_Utilities {
     }
 
     // Use WordPress HTTP API to fetch the JSON
-    $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+    $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
     $response = wp_remote_get($url, array(
       'timeout' => 10,
       'sslverify' => true
@@ -597,7 +597,7 @@ class MTRN_Admin_Utilities {
     $cached_data = get_transient($cache_key);
     if ($cached_data === false) {
       // Use WordPress HTTP API to fetch the JSON
-      $url = 'https://tournej.com/json/json.php?id=' . urlencode($tournament_id);
+      $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
       $response = wp_remote_get($url, array(
         'timeout' => 10,
         'sslverify' => true

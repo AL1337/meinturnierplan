@@ -2,7 +2,7 @@
 /**
  * Plugin Name: MeinTurnierplan
  * Plugin URI: https://www.meinturnierplan.de
- * Description: Display tournament tables and match lists from Tournej/MeinTurnierplan using shortcodes and blocks.
+ * Description: Display tournament tables and match lists from MeinTurnierplan using shortcodes and blocks.
  * Version: 1.0.0
  * Author: MeinTurnierplan
  * License: GPLv2 or later
@@ -12,22 +12,28 @@
  *
  * THIRD-PARTY SERVICE DISCLOSURE:
  * 
- * This plugin embeds content from meinturnierplan.de using iframes.
+ * This plugin uses MeinTurnierplan.de for both displaying tournament content
+ * and retrieving tournament configuration data.
  * 
  * Service: MeinTurnierplan.de
  * Website: https://www.meinturnierplan.de/
+ * 
+ * USAGE:
+ * 
+ * 1. Frontend Display (Public-Facing Content)
+ * ================================================================
+ * 
+ * Purpose: Displays tournament tables and match schedules to site visitors
+ * 
  * Endpoints Used:
  *   - https://www.meinturnierplan.de/displayTable.php (tournament standings)
  *   - https://www.meinturnierplan.de/displayMatches.php (match schedules)
  * 
  * Data Sent: Tournament ID only (when you explicitly add a tournament shortcode, block, or widget)
  * When: When a visitor loads a page with tournament content
- * 
- * Privacy Policy: https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en
- * Terms of Service: https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en
+ * Used on: Public-facing pages (frontend)
  * 
  * TRACKING & COOKIES:
- * 
  * The embedded widgets do NOT:
  *   - Use tracking scripts (no Google Analytics, Facebook Pixel, etc.)
  *   - Set cookies
@@ -41,6 +47,43 @@
  * Standard web server logging (IP address, browser, referrer, timestamp) may
  * occur when serving the embedded content, but this does not involve cookies
  * or user tracking.
+ * 
+ * 2. Admin Configuration (Admin Area Only)
+ * ================================================================
+ * 
+ * Purpose: Provides tournament structure data via JSON API to help administrators
+ *          configure displays
+ * 
+ * Endpoint Used:
+ *   - https://www.meinturnierplan.de/json/json.php (tournament structure data in JSON format)
+ * 
+ * Data Sent: Tournament ID only (no personal data, no user information)
+ * When: Only in WordPress admin area when:
+ *   - Administrator enters a Tournament ID in settings
+ *   - Administrator clicks "Refresh Groups" or similar refresh buttons
+ *   - Admin preview is loaded or refreshed
+ * 
+ * Used on: WordPress admin area ONLY (backend)
+ * NOT used on: Public-facing pages (frontend) - visitors never trigger this endpoint
+ * 
+ * What it retrieves:
+ *   - Tournament groups/divisions structure
+ *   - Team lists and names
+ *   - Tournament options (showCourts, showGroups, showReferees, finalMatches)
+ * 
+ * Purpose of retrieval:
+ *   - Auto-populate group selection dropdowns in admin interface
+ *   - Determine which features are available for the tournament
+ *   - Provide better admin user experience with automatic configuration
+ * 
+ * Data caching: Retrieved data is cached for 15 minutes to minimize API calls
+ * 
+ * Standard web server logging may apply (IP address, timestamp, browser type)
+ * 
+ * ================================================================
+ * 
+ * Privacy Policy: https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en
+ * Terms of Service: https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en
  * 
  * PRIVACY NOTICE:
  * 

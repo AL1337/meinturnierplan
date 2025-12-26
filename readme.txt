@@ -18,15 +18,39 @@ MeinTurnierplan allows you to display tournament tables and match schedules from
 
 **MeinTurnierplan.de Service**
 
-This plugin embeds content from meinturnierplan.de using iframes to display tournament information.
+This plugin uses meinturnierplan.de for both displaying tournament content and retrieving tournament configuration data.
 
 * **Service Used:** MeinTurnierplan.de (https://www.meinturnierplan.de/)
-* **What it does:** Displays tournament tables and match schedules
-* **Endpoints Used:**
-  - https://www.meinturnierplan.de/displayTable.php (for tournament standings)
-  - https://www.meinturnierplan.de/displayMatches.php (for match schedules)
-* **Data Sent:** Tournament ID only (when you explicitly add a tournament shortcode, block, or widget)
-* **When data is sent:** When a page with tournament content is loaded by a visitor
+
+**What it does:**
+
+1. **Frontend Display (Public-Facing):**
+   - Displays tournament tables and match schedules to site visitors via iframe embeds
+   - **Endpoints Used:**
+     * https://www.meinturnierplan.de/displayTable.php (for tournament standings)
+     * https://www.meinturnierplan.de/displayMatches.php (for match schedules)
+   - **When:** When a visitor loads a page with tournament content (shortcode, block, or widget)
+
+2. **Admin Configuration (Admin Area Only):**
+   - Provides tournament structure data via JSON API to help administrators configure displays
+   - **Endpoint Used:**
+     * https://www.meinturnierplan.de/json/json.php (tournament structure data)
+   - **When:** Only in WordPress admin area when:
+     * Administrator enters a Tournament ID in settings
+     * Administrator clicks "Refresh Groups" or similar refresh buttons
+     * Admin preview is loaded or refreshed
+   - **What it retrieves:**
+     * Tournament groups/divisions structure
+     * Team lists and names
+     * Tournament options (showCourts, showGroups, showReferees, finalMatches)
+   - **Purpose:**
+     * Auto-populate group selection dropdowns in admin interface
+     * Determine which features are available for the tournament
+     * Provide better admin user experience with automatic configuration
+   - **Data cached:** Retrieved data is cached for 15 minutes to minimize API calls
+   - **NOT used on frontend:** JSON API is only contacted from WordPress admin area, never from public-facing pages
+
+* **Data Sent:** Tournament ID only (no personal data, no user information)
 * **Privacy Policy:** https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en
 * **Terms of Service:** https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en
 
