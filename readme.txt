@@ -178,11 +178,6 @@ After activation, navigate to **Tournament Tables** or **Matches** in the admin 
 4. Use the preview section to see changes in real-time
 5. Publish and display using blocks, shortcodes, or widgets
 
-== Screenshots ==
-
-1. Add a new Tournament Table.
-1. Add a New Tournament Match List.
-
 == Frequently Asked Questions ==
 
 = How do I display a tournament table? =
@@ -256,14 +251,8 @@ Display Options:
 
 == Screenshots ==
 
-1. Tournament table display with customized styling
-2. Match list display showing scheduled games
-3. Admin interface for tournament table settings
-4. Admin interface for match list settings
-5. Gutenberg block editor integration
-6. Live preview in admin area
-7. Widget configuration
-8. Responsive mobile view
+1. Add a new Tournament Table.
+1. Add a New Tournament Match List.
 
 == Changelog ==
 
