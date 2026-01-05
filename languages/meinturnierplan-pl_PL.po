@@ -1,0 +1,1083 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MeinTurnierplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-16 18:07+0000\n"
+"PO-Revision-Date: 2026-01-05 17:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: Polish\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10 >= 2 && n%10<=4 "
+"&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.8.3; php-8.4.5\n"
+"X-Domain: meinturnierplan"
+
+#: includes/class-mtrn-admin-utilities.php:672
+msgid "(saved)"
+msgstr ""
+
+#: includes/class-mtrn-matches-widget.php:91
+msgid "-- Select Matches --"
+msgstr "-- Wybierz Mecze--"
+
+#: includes/class-mtrn-table-widget.php:93
+msgid "-- Select Table --"
+msgstr "-- Wybierz Tabelę--"
+
+#: includes/class-mtrn-matches-post-type.php:36
+#: includes/class-mtrn-table-post-type.php:36
+msgid "Add New"
+msgstr "Dodaj nowy"
+
+#: includes/class-mtrn-matches-post-type.php:35
+msgctxt "Add New on Toolbar"
+msgid "Tournament Match List"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:35
+msgctxt "Add New on Toolbar"
+msgid "Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:37
+msgid "Add New Tournament Match List"
+msgstr "Dodaj nową listę meczów turnieju"
+
+#: includes/class-mtrn-table-post-type.php:37
+msgid "Add New Tournament Table"
+msgstr "Dodaj nową tabelę turnieju"
+
+#: includes/class-mtrn-matches-post-type.php:34
+msgctxt "Admin Menu text"
+msgid "Tournament Match Lists"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:34
+msgctxt "Admin Menu text"
+msgid "Tournament Tables"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:676
+#: includes/class-mtrn-admin-utilities.php:907
+msgid "All"
+msgstr "Wszystkie"
+
+#: includes/class-mtrn-admin-utilities.php:667
+#: includes/class-mtrn-admin-utilities.php:807
+#: includes/class-mtrn-admin-utilities.php:835
+#: includes/class-mtrn-admin-utilities.php:849
+msgid "All Matches"
+msgstr "Wszystkie mecze"
+
+#: includes/class-mtrn-matches-post-type.php:41
+msgid "All Tournament Match Lists"
+msgstr "Wszystkie listy meczów turnieju"
+
+#: includes/class-mtrn-table-post-type.php:41
+msgid "All Tournament Tables"
+msgstr "Wszystkie tabele turniejowe"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:271
+#: includes/class-mtrn-table-admin-meta-boxes.php:196
+msgid "Background Color"
+msgstr "Kolor tła"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:270
+#: includes/class-mtrn-table-admin-meta-boxes.php:195
+msgid "Background Colors"
+msgstr "Kolory tła"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:161
+#: includes/class-mtrn-table-admin-meta-boxes.php:153
+msgid "Basic Settings"
+msgstr "Ustawienia podstawowe"
+
+#: blocks/tournament-table/block.json:1
+msgctxt "block description"
+msgid "Display a tournament table from your custom post types."
+msgstr "Wyświetl tabelę turnieju z własnych typów wpisów."
+
+#: blocks/tournament-matches/block.json:1
+msgctxt "block description"
+msgid "Display matches from your custom post types."
+msgstr "Wyświetl mecze z Twoich własnych typów wpisów."
+
+#: blocks/tournament-matches/block.json:1
+msgctxt "block title"
+msgid "Matches"
+msgstr "Mecze"
+
+#: blocks/tournament-table/block.json:1
+msgctxt "block title"
+msgid "Tournament Table"
+msgstr "Tabela turnieju"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:266
+#: includes/class-mtrn-table-admin-meta-boxes.php:191
+msgid "Border Color"
+msgstr "Kolor krawędzi"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:256
+#: includes/class-mtrn-table-admin-meta-boxes.php:181
+msgid "Border Horizontal Size (px)"
+msgstr "Pionowy rozmiar krawędzi (px)"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:255
+#: includes/class-mtrn-table-admin-meta-boxes.php:180
+msgid "Border Settings"
+msgstr "Ustawienia krawędzi"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:257
+#: includes/class-mtrn-table-admin-meta-boxes.php:182
+msgid "Border Vertical Size (px)"
+msgstr "Poziomy rozmiar krawędzi (px)"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:263
+#: includes/class-mtrn-table-admin-meta-boxes.php:188
+msgid "Colors"
+msgstr "Kolory"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:243
+#: includes/class-mtrn-table-admin-meta-boxes.php:170
+msgid "Content Font Size (pt)"
+msgstr "Rozmiar czcionki (pt)"
+
+#: includes/class-mtrn-admin-utilities.php:719
+msgid "Copy Shortcode"
+msgstr "Kopiuj skrót"
+
+#: includes/class-mtrn-admin-utilities.php:670
+#: includes/class-mtrn-admin-utilities.php:851
+msgid "Default"
+msgstr "Ustawienia domyślne"
+
+#: includes/class-mtrn-admin-utilities.php:341
+msgid "Deutsch / German"
+msgstr "Niemiecki / Niemcy"
+
+#: includes/class-mtrn-matches-widget.php:23
+msgid "Display a matches table."
+msgstr "Wyświetl tabelę meczów."
+
+#: includes/class-mtrn-table-widget.php:25
+msgid "Display a tournament table."
+msgstr "Wyświetl tabelę turnieju."
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:169
+#: includes/class-mtrn-table-admin-meta-boxes.php:160
+msgid "Display Options"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Display tournament tables and match lists from MeinTurnierplan using "
+"shortcodes and blocks."
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:39
+msgid "Edit Tournament Match List"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:39
+msgid "Edit Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:166
+msgid "Enable navigation for groups in the tournament table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:178
+msgid "Enable projector presentation mode for the matches table."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:165
+msgid "Enable projector presentation mode for the tournament table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:190
+msgid "Enable suppression of court information in the matches table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:220
+msgid "Enable suppression of extra time information in the final matches."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:198
+msgid "Enable suppression of group information in the matches table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:236
+msgid "Enable suppression of headlines in the final matches."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:184
+msgid "Enable suppression of match numbers in the matches table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:214
+msgid "Enable suppression of match times in the matches table."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:228
+msgid "Enable suppression of penalty information in the final matches."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:206
+msgid "Enable suppression of referee information in the matches table."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:340
+msgid "English"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:173
+msgid ""
+"Enter a single match number (e.g., \"8\") or a range (e.g., \"2-7\"). Leave "
+"empty to display all matches."
+msgstr ""
+
+#: includes/class-mtrn-matches-renderer.php:414
+msgid "Enter a Tournament ID above to display live matches data."
+msgstr ""
+
+#: includes/class-mtrn-table-renderer.php:250
+#: includes/class-mtrn-admin-utilities.php:730
+msgid "Enter a Tournament ID above to display live tournament data."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:162
+#: includes/class-mtrn-table-admin-meta-boxes.php:154
+msgid "Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:675
+msgid "Error refreshing groups. Please try again."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:682
+msgid "Error refreshing participants. Please try again."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:342
+msgid "Español / Spanish"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:273
+#: includes/class-mtrn-table-admin-meta-boxes.php:198
+msgid "Even Rows Background Color"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:668
+#: includes/class-mtrn-admin-utilities.php:830
+#: includes/class-mtrn-admin-utilities.php:857
+msgid "Final Round"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:674
+#: includes/class-mtrn-admin-utilities.php:840
+msgid "Final Round (saved)"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:343
+msgid "Français / French"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:713
+msgid "Generated Shortcode:"
+msgstr ""
+
+#: includes/class-mtrn-table-renderer.php:70
+#: includes/class-mtrn-matches-renderer.php:70
+msgid "Go to Tournament."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:671
+#: includes/class-mtrn-admin-utilities.php:798
+msgid "Group"
+msgstr ""
+
+#. %s is the group display name
+#: includes/class-mtrn-admin-utilities.php:824
+#, php-format
+msgid "Group %s"
+msgstr ""
+
+#. %s is the saved group name
+#: includes/class-mtrn-admin-utilities.php:843
+#, php-format
+msgid "Group %s (saved)"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:669
+msgid "Groups refreshed successfully!"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:272
+#: includes/class-mtrn-table-admin-meta-boxes.php:197
+msgid "Head Background Color"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:244
+#: includes/class-mtrn-table-admin-meta-boxes.php:171
+msgid "Header Font Size (pt)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:252
+msgid "Headlines Bottom Padding (px)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:245
+msgid "Headlines Font Size (pt)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:251
+msgid "Headlines Top Padding (px)"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:163
+msgid "Hide the logos from the tournament table."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:164
+msgid "Hide the number of matches from the tournament table."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:162
+msgid ""
+"Hide the number of wins, losses, and other statistical columns from the "
+"tournament table."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:344
+msgid "Hrvatski / Croatian"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://www.meinturnierplan.de"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:103
+msgid "I Understand"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:250
+#: includes/class-mtrn-table-admin-meta-boxes.php:177
+msgid "Inner Padding (px)"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:345
+msgid "Italiano / Italian"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:163
+#: includes/class-mtrn-table-admin-meta-boxes.php:155
+msgid "Language"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:265
+#: includes/class-mtrn-table-admin-meta-boxes.php:190
+msgid "Link & Navigation Color"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:666
+msgid "Loading groups..."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:678
+msgid "Loading participants..."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:172
+msgid "Logo Size (pt)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:173
+msgid "Match number (from-to)"
+msgstr ""
+
+#: includes/class-mtrn-matches-renderer.php:413
+msgid "Matches Preview"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:79
+msgid "Matches Settings"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:47
+msgid "Matches Settings & Preview"
+msgstr ""
+
+#: includes/class-mtrn-matches-widget.php:21
+#: includes/class-mtrn-matches-widget.php:71
+msgid "Matches Table"
+msgstr ""
+
+#. Name of the plugin
+#. Author of the plugin
+msgid "MeinTurnierplan"
+msgstr ""
+
+#: includes/class-mtrn-requirements-checker.php:78
+msgid "MeinTurnierplan Error:"
+msgstr ""
+
+#. 1: minimum PHP version, 2: current PHP version
+#: includes/class-mtrn-requirements-checker.php:44
+#, php-format
+msgid "MeinTurnierplan requires PHP %1$s or higher. You are running PHP %2$s."
+msgstr ""
+
+#. 1: minimum WordPress version, 2: current WordPress version
+#: includes/class-mtrn-requirements-checker.php:54
+#, php-format
+msgid ""
+"MeinTurnierplan requires WordPress %1$s or higher. You are running WordPress "
+"%2$s."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:166
+msgid "Navigation for Groups"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:38
+msgid "New Tournament Match List"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:38
+msgid "New Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:664
+msgid "No groups available"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:673
+msgid "No groups found for this tournament."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:681
+msgid "No participants found for this tournament."
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:84
+msgid "No personal data or user tracking information is sent by this plugin"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:45
+msgid "No tournament match lists found in Trash."
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:44
+msgid "No tournament match lists found."
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:45
+msgid "No tournament tables found in Trash."
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:44
+msgid "No tournament tables found."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:729
+msgid "Note:"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:274
+#: includes/class-mtrn-table-admin-meta-boxes.php:199
+msgid "Odd Rows Background Color"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:216
+msgid "Opacity:"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:47
+msgctxt "Overrides the \"Insert into post\"/\"Insert into page\" phrase"
+msgid "Insert into tournament match list"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:47
+msgctxt "Overrides the \"Insert into post\"/\"Insert into page\" phrase"
+msgid "Insert into tournament table"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:48
+msgctxt ""
+"Overrides the \"Uploaded to this post\"/\"Uploaded to this page\" phrase"
+msgid "Uploaded to this tournament match list"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:48
+msgctxt ""
+"Overrides the \"Uploaded to this post\"/\"Uploaded to this page\" phrase"
+msgid "Uploaded to this tournament table"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:43
+msgid "Parent Tournament Match Lists:"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:43
+msgid "Parent Tournament Tables:"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:900
+msgid "Participant"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:679
+msgid "Participants refreshed successfully!"
+msgstr ""
+
+#: includes/class-mtrn-matches-widget.php:60
+#: includes/class-mtrn-matches-block.php:76
+msgid "Please select a Matches Table."
+msgstr ""
+
+#: includes/class-mtrn-table-widget.php:62
+#: includes/class-mtrn-table-block.php:76
+msgid "Please select a Tournament Table."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:346
+msgid "Polski / Polish"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:32
+msgctxt "Post type general name"
+msgid "Tournament Match Lists"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:32
+msgctxt "Post type general name"
+msgid "Tournament Tables"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:33
+msgctxt "Post type singular name"
+msgid "Tournament Match List"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:33
+msgctxt "Post type singular name"
+msgid "Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:290
+#: includes/class-mtrn-table-admin-meta-boxes.php:215
+msgid "Preview"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:87
+msgid "Privacy & Tracking:"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:97
+msgid "Privacy Policy"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:176
+#: includes/class-mtrn-table-admin-meta-boxes.php:165
+msgid "Projector Presentation"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:862
+msgid "Refresh Groups"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:927
+msgid "Refresh Participants"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:665
+msgid "Refreshing groups..."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:677
+msgid "Refreshing participants..."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:275
+#: includes/class-mtrn-table-admin-meta-boxes.php:200
+msgid "Row Hover Background Color"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:49
+msgctxt "Screen reader text for the filter links"
+msgid "Filter tournament matches list"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:49
+msgctxt "Screen reader text for the filter links"
+msgid "Filter tournament tables list"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:51
+msgctxt "Screen reader text for the items list"
+msgid "Tournament matches list"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:51
+msgctxt "Screen reader text for the items list"
+msgid "Tournament tables list"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:50
+msgctxt "Screen reader text for the pagination"
+msgid "Tournament matches list navigation"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:50
+msgctxt "Screen reader text for the pagination"
+msgid "Tournament tables list navigation"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:42
+msgid "Search Tournament Match Lists"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:42
+msgid "Search Tournament Tables"
+msgstr ""
+
+#: includes/class-mtrn-table-block.php:190
+#: includes/class-mtrn-matches-block.php:195
+msgid "Security check failed"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:868
+msgid ""
+"Select a group to display from this tournament. Click refresh to update "
+"groups from server. Please note that some tournaments do not have groups."
+msgstr ""
+
+#: includes/class-mtrn-matches-block.php:209
+msgid "Select a Matches Table"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:933
+msgid ""
+"Select a participant (team) to filter matches. Select \"All\" to display "
+"matches for all participants. Click refresh to update participants from "
+"server."
+msgstr ""
+
+#: includes/class-mtrn-table-block.php:204
+msgid "Select a Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-matches-widget.php:89
+msgid "Select Matches Table:"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:163
+#: includes/class-mtrn-table-admin-meta-boxes.php:155
+msgid "Select the language for the tournament table display."
+msgstr ""
+
+#: includes/class-mtrn-table-widget.php:91
+msgid "Select Tournament Table:"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:95
+msgid "Service Information:"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:273
+#: includes/class-mtrn-table-admin-meta-boxes.php:198
+msgid ""
+"Set the background color and opacity for even-numbered table rows. Use "
+"opacity 0% for transparent background."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:274
+#: includes/class-mtrn-table-admin-meta-boxes.php:199
+msgid ""
+"Set the background color and opacity for odd-numbered table rows. Use "
+"opacity 0% for transparent background."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:272
+#: includes/class-mtrn-table-admin-meta-boxes.php:197
+msgid ""
+"Set the background color and opacity for table head. Use opacity 0% for "
+"transparent background."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:275
+#: includes/class-mtrn-table-admin-meta-boxes.php:200
+msgid ""
+"Set the background color and opacity for table rows hover. Use opacity 0% "
+"for transparent background."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:271
+#: includes/class-mtrn-table-admin-meta-boxes.php:196
+msgid ""
+"Set the background color and opacity of the tournament table. Use opacity 0% "
+"for transparent background."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:266
+#: includes/class-mtrn-table-admin-meta-boxes.php:191
+msgid ""
+"Set the border color of the tournament table. Light gray (#bbbbbb) is the "
+"default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:256
+msgid ""
+"Set the border horizontal size of the matches table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:181
+msgid ""
+"Set the border horizontal size of the tournament table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:257
+msgid ""
+"Set the border vertical size of the matches table. 1px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:182
+msgid ""
+"Set the border vertical size of the tournament table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:267
+#: includes/class-mtrn-table-admin-meta-boxes.php:192
+msgid ""
+"Set the bottom border color of the table header. Light gray (#bbbbbb) is the "
+"default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:252
+msgid "Set the bottom padding of the headlines. 3px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:265
+#: includes/class-mtrn-table-admin-meta-boxes.php:190
+msgid ""
+"Set the color for links (e.g., \"Show Full Tournament\") and navigation "
+"arrows between groups. Blue (#173f75) is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:264
+#: includes/class-mtrn-table-admin-meta-boxes.php:189
+msgid ""
+"Set the color of the tournament table text. Black (#000000) is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:243
+msgid ""
+"Set the font size of the matches table content. 9pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:244
+msgid ""
+"Set the font size of the matches table headers. 10pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:245
+msgid ""
+"Set the font size of the matches table headlines. 10pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:170
+msgid ""
+"Set the font size of the tournament table content. 9pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:171
+msgid ""
+"Set the font size of the tournament table headers. 10pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:172
+msgid ""
+"Set the font size of the tournament table logo. 20pt is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:260
+msgid ""
+"Set the head border bottom size of the matches table. 2px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:185
+msgid ""
+"Set the head border bottom size of the tournament table. 2px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:259
+msgid ""
+"Set the left and right border size of the matches table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:184
+msgid ""
+"Set the left and right border size of the tournament table. 1px is the "
+"default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:249
+msgid "Set the padding around the matches table. 2px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:176
+msgid "Set the padding around the tournament table. 2px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:250
+msgid ""
+"Set the padding inside the matches table cells. 5px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:177
+msgid ""
+"Set the padding inside the tournament table cells. 5px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:258
+msgid ""
+"Set the top and bottom border size of the matches table. 1px is the default "
+"value."
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:183
+msgid ""
+"Set the top and bottom border size of the tournament table. 1px is the "
+"default value."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:251
+msgid "Set the top padding of the headlines. 9px is the default value."
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:724
+msgid "Shortcode copied to clipboard!"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:56
+#: includes/class-mtrn-table-admin-meta-boxes.php:56
+msgid "Shortcode Generator"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:347
+msgid "Slovenščina / Slovenian"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:248
+#: includes/class-mtrn-table-admin-meta-boxes.php:175
+msgid "Spacing & Layout"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:91
+msgid ""
+"Standard web server logging (IP, browser, referrer) may occur when serving "
+"content"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:188
+msgid "Suppress Court"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:218
+msgid "Suppress Extra Time"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:196
+msgid "Suppress Group"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:234
+msgid "Suppress Headlines in Final Matches"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:163
+msgid "Suppress Logos"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:182
+msgid "Suppress Match Number"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:164
+msgid "Suppress Num Matches"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:162
+msgid "Suppress Num Wins, Losses, etc."
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:226
+msgid "Suppress Penalties"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:204
+msgid "Suppress Referee"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:212
+msgid "Suppress Times"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:260
+#: includes/class-mtrn-table-admin-meta-boxes.php:185
+msgid "Table Head Border Bottom Size (px)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:267
+#: includes/class-mtrn-table-admin-meta-boxes.php:192
+msgid "Table Head Bottom Border Color"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:259
+#: includes/class-mtrn-table-admin-meta-boxes.php:184
+msgid "Table Left and Right Border Size (px)"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:249
+#: includes/class-mtrn-table-admin-meta-boxes.php:176
+msgid "Table Padding (px)"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:79
+msgid "Table Settings"
+msgstr ""
+
+#: includes/class-mtrn-table-admin-meta-boxes.php:47
+msgid "Table Settings & Preview"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:258
+#: includes/class-mtrn-table-admin-meta-boxes.php:183
+msgid "Table Top and Bottom Border Size (px)"
+msgstr ""
+
+#: includes/class-mtrn-admin-utilities.php:680
+msgid "Team"
+msgstr ""
+
+#. %s is the saved team name
+#: includes/class-mtrn-admin-utilities.php:923
+#, php-format
+msgid "Team %s (saved)"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:98
+msgid "Terms of Service"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:264
+#: includes/class-mtrn-table-admin-meta-boxes.php:189
+msgid "Text Color"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:90
+msgid "The embedded widgets do not use cookies or tracking scripts"
+msgstr ""
+
+#: includes/class-mtrn-matches-post-type.php:46
+msgctxt "The post type archive label"
+msgid "Tournament Match List archives"
+msgstr ""
+
+#: includes/class-mtrn-table-post-type.php:46
+msgctxt "The post type archive label"
+msgid "Tournament Table archives"
+msgstr ""
+
+#: includes/class-mtrn-matches-widget.php:101
+msgid ""
+"The widget will use all styling settings configured for the selected Matches "
+"Table. Width and height are automatically determined."
+msgstr ""
+
+#: includes/class-mtrn-table-widget.php:103
+msgid ""
+"The widget will use all styling settings configured for the selected "
+"Tournament Table. Width and height are automatically determined."
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:75
+msgid "Third-Party Service Information"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:89
+msgid "This plugin does not track users or collect personal data"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:78
+msgid ""
+"This plugin embeds tournament content from meinturnierplan.de. When you add "
+"tournament displays to your pages, users will connect directly to "
+"meinturnierplan.de servers."
+msgstr ""
+
+#: includes/class-mtrn-table-widget.php:86
+#: includes/class-mtrn-matches-widget.php:84
+msgid "Title:"
+msgstr ""
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:162
+#: includes/class-mtrn-table-admin-meta-boxes.php:154
+msgid "Tournament ID"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:83
+msgid ""
+"Tournament ID only (when you add a tournament via shortcode, block, or "
+"widget)"
+msgstr ""
+
+#: includes/class-mtrn-table-widget.php:23
+#: includes/class-mtrn-table-widget.php:73
+msgid "Tournament Table"
+msgstr ""
+
+#: includes/class-mtrn-table-renderer.php:249
+msgid "Tournament Table Preview"
+msgstr "Podgląd tabeli turniejowej"
+
+#: includes/class-mtrn-matches-admin-meta-boxes.php:242
+#: includes/class-mtrn-table-admin-meta-boxes.php:169
+msgid "Typography"
+msgstr "Typografia"
+
+#: includes/class-mtrn-admin-utilities.php:348
+msgid "Türkçe / Turkish"
+msgstr "Turcja / turecki"
+
+#: includes/class-mtrn-matches-post-type.php:40
+msgid "View Tournament Match List"
+msgstr "Pokaż listę meczów turnieju"
+
+#: includes/class-mtrn-table-post-type.php:40
+msgid "View Tournament Table"
+msgstr "Zobacz tabelę turnieju"
+
+#: includes/class-mtrn-admin-notices.php:96
+msgid "Visit Website"
+msgstr ""
+
+#: includes/class-mtrn-admin-notices.php:81
+msgid "What data is sent:"
+msgstr ""
+
+#: includes/class-mtrn-table-renderer.php:68
+#: includes/class-mtrn-matches-renderer.php:68
+msgid "Your browser does not support the tournament widget."
+msgstr "Twoja przeglądarka nie obsługuje widżetu turnieju."
