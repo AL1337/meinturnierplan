@@ -259,6 +259,11 @@ Display Options:
 = 1.0.0 =
 * Initial release
 
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release of MeinTurnierplan. Display tournament tables and match schedules from meinturnierplan.de on your WordPress site.
+
 == Development ==
 
 The plugin follows WordPress coding standards and best practices:
