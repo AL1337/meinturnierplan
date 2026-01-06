@@ -98,6 +98,17 @@ Like any web resource, meinturnierplan.de's servers may log standard HTTP reques
 **No Consent Required:**
 Because the embedded widgets do not use cookies, tracking scripts, or persistent user identification, no additional cookie consent is required beyond standard web server logging disclosure in your privacy policy.
 
+= Available Languages =
+
+The plugin is available in the following languages:
+
+* English (default)
+* German (Deutsch)
+* Spanish (Español)
+* French (Français)
+* Italian (Italiano)
+* Polish (Polski)
+
 = Key Features =
 
 **Two Custom Post Types:**
