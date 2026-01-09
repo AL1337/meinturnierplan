@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-07 18:15+0000\n"
-"PO-Revision-Date: 2026-01-05 17:16+0000\n"
+"PO-Revision-Date: 2026-01-09 12:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -373,7 +373,7 @@ msgstr "https://www.meinturnierplan.de"
 
 #: includes/class-mtrn-admin-notices.php:103
 msgid "I Understand"
-msgstr ""
+msgstr "Verstanden"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:250
 #: includes/class-mtrn-table-admin-meta-boxes.php:177
@@ -479,6 +479,8 @@ msgstr "Für dieses Turnier wurden keine Teilnehmer gefunden."
 #: includes/class-mtrn-admin-notices.php:84
 msgid "No personal data or user tracking information is sent by this plugin"
 msgstr ""
+"Durch das Plugin werden keine persönlichen Informationen oder Trackindaten "
+"gesendet."
 
 #: includes/class-mtrn-matches-post-type.php:45
 msgid "No tournament match lists found in Trash."
@@ -590,11 +592,11 @@ msgstr "Vorschau"
 
 #: includes/class-mtrn-admin-notices.php:87
 msgid "Privacy & Tracking:"
-msgstr ""
+msgstr "Datenschutz und Tracking:"
 
 #: includes/class-mtrn-admin-notices.php:97
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Datenschutzbestimmungen"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:176
 #: includes/class-mtrn-table-admin-meta-boxes.php:165
@@ -707,7 +709,7 @@ msgstr "Turniertabelle auswählen:"
 
 #: includes/class-mtrn-admin-notices.php:95
 msgid "Service Information:"
-msgstr ""
+msgstr "Service Informationen:"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:273
 #: includes/class-mtrn-table-admin-meta-boxes.php:198
@@ -980,6 +982,7 @@ msgid ""
 "Standard web server logging (IP, browser, referrer) may occur when serving "
 "content"
 msgstr ""
+"Anonymisierte Analysedaten und Logging zum technischen Betrieb kann erfolgen."
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:188
 msgid "Suppress Court"
@@ -1071,7 +1074,7 @@ msgstr "Team %s (gespeichert)"
 
 #: includes/class-mtrn-admin-notices.php:98
 msgid "Terms of Service"
-msgstr ""
+msgstr "Allgemeine Geschäftsbedingungen"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:264
 #: includes/class-mtrn-table-admin-meta-boxes.php:189
@@ -1080,7 +1083,7 @@ msgstr "Textfarbe"
 
 #: includes/class-mtrn-admin-notices.php:90
 msgid "The embedded widgets do not use cookies or tracking scripts"
-msgstr ""
+msgstr "Die verwendeten Widgets verwenden keine Cookies oder Tracking Scripte"
 
 #: includes/class-mtrn-matches-post-type.php:46
 msgctxt "The post type archive label"
@@ -1110,11 +1113,11 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:75
 msgid "Third-Party Service Information"
-msgstr ""
+msgstr "Drittanbieterinformationen"
 
 #: includes/class-mtrn-admin-notices.php:89
 msgid "This plugin does not track users or collect personal data"
-msgstr ""
+msgstr "Dieses Plugin verwendet keine persönlichen Daten der Nutzer"
 
 #: includes/class-mtrn-admin-notices.php:78
 msgid ""
@@ -1122,6 +1125,9 @@ msgid ""
 "tournament displays to your pages, users will connect directly to "
 "meinturnierplan.de servers."
 msgstr ""
+"Dieses Plugin verwendet Turnierdaten von meinturnierplan.de. Wenn sie "
+"Turnierinhalte einbinden werden ihre Benutzer direkt mit den Servern von "
+"meinturnierplan.de verbunden, damit diese Inhalte ausgeliefert werden können."
 
 #: includes/class-mtrn-table-widget.php:86
 #: includes/class-mtrn-matches-widget.php:84
@@ -1138,6 +1144,8 @@ msgid ""
 "Tournament ID only (when you add a tournament via shortcode, block, or "
 "widget)"
 msgstr ""
+"Nur Turnier ID (wenn sie ein Turnier via Shortcode, Block oder Widget "
+"hinzufügen)"
 
 #: includes/class-mtrn-table-widget.php:23
 #: includes/class-mtrn-table-widget.php:73
@@ -1167,11 +1175,11 @@ msgstr "Turniertabelle anzeigen"
 
 #: includes/class-mtrn-admin-notices.php:96
 msgid "Visit Website"
-msgstr ""
+msgstr "Webseite besuchen"
 
 #: includes/class-mtrn-admin-notices.php:81
 msgid "What data is sent:"
-msgstr ""
+msgstr "Welche Daten gesendet werden:"
 
 #: includes/class-mtrn-table-renderer.php:68
 #: includes/class-mtrn-matches-renderer.php:68
