@@ -25,14 +25,14 @@ This plugin uses [MeinTurnierplan.de](https://www.meinturnierplan.de/) for both 
 1. **Frontend Display (Public-Facing):**
    - Displays tournament tables and match schedules to site visitors via iframe embeds
    - **Endpoints Used:**
-     * https://www.meinturnierplan.de/displayTable.php (for tournament standings)
-     * https://www.meinturnierplan.de/displayMatches.php (for match schedules)
+     * `https://www.meinturnierplan.de/displayTable.php` (for tournament standings)
+     * `https://www.meinturnierplan.de/displayMatches.php` (for match schedules)
    - **When:** When a visitor loads a page with tournament content (shortcode, block, or widget)
 
 2. **Admin Configuration (Admin Area Only):**
    - Provides tournament structure data via JSON API to help administrators configure displays
    - **Endpoint Used:**
-     * https://www.meinturnierplan.de/json/json.php (tournament structure data)
+     * `https://www.meinturnierplan.de/json/json.php` (tournament structure data)
    - **When:** Only in WordPress admin area when:
      * Administrator enters a Tournament ID in settings
      * Administrator clicks "Refresh Groups" or similar refresh buttons
@@ -49,8 +49,8 @@ This plugin uses [MeinTurnierplan.de](https://www.meinturnierplan.de/) for both 
    - **NOT used on frontend:** JSON API is only contacted from WordPress admin area, never from public-facing pages
 
 * **Data Sent:** Tournament ID only (no personal data, no user information)
-* **Privacy Policy:** https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en
-* **Terms of Service:** https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en
+* [Privacy Policy](https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en)
+* [Terms of Service](https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en)
 
 **What the Embedded Widgets Collect:**
 
@@ -102,7 +102,7 @@ Because the embedded widgets do not use cookies, tracking scripts, or persistent
 
 The plugin is available in the following languages:
 
-* English (default)
+* English
 * German (Deutsch)
 * Spanish (Español)
 * French (Français)
@@ -138,11 +138,11 @@ The plugin is available in the following languages:
 
 = Usage =
 
-After activation, navigate to **Tournament Tables** or **Matches** in the admin menu to create your first content. You can then display your content using:
+After activation, navigate to **Tournament Tables** or **Tournament Match Lists** in the admin menu to create your first content. You can then display your content using:
 
-1. **Gutenberg Blocks** - Add the Tournament Table or Matches block to any post or page
+1. **Gutenberg Blocks** - Add the Tournament Table or Tournament Match List block to any post or page
 2. **Shortcodes** - Use `[mtrn-table id="123"]` or `[mtrn-matches id="456"]`
-3. **Widgets** - Add the Tournament Table or Matches widget to any widget area
+3. **Widgets** - Add the Tournament Table or Tournament Match List widget to any widget area
 4. **Automatic Display** - Visit single tournament table or match list pages directly
 
 = Shortcode Examples =
@@ -169,7 +169,7 @@ After activation, navigate to **Tournament Tables** or **Matches** in the admin 
 = Automatic Installation =
 
 1. Log in to your WordPress admin panel
-2. Navigate to Plugins > Add New
+2. Navigate to **Plugins > Add New**
 3. Search for "MeinTurnierplan"
 4. Click "Install Now" and then "Activate"
 
@@ -177,9 +177,9 @@ After activation, navigate to **Tournament Tables** or **Matches** in the admin 
 
 1. Download the plugin zip file
 2. Log in to your WordPress admin panel
-3. Navigate to Plugins > Add New > Upload Plugin
+3. Navigate to **Plugins > Add New > Upload Plugin**
 4. Choose the downloaded zip file and click "Install Now"
-5. Activate the plugin through the 'Plugins' menu in WordPress
+5. Activate the plugin through the **Plugins** menu in WordPress
 
 = After Activation =
 
