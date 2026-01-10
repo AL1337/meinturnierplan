@@ -263,7 +263,9 @@ Display Options:
 == Screenshots ==
 
 1. Add a new Tournament Table.
-1. Add a New Tournament Match List.
+2. Add a New Tournament Match List.
+3. Preview of the Tournament Table in the backend.
+4. Preview of the Tournament Match List in the backend.
 
 == Changelog ==
 
