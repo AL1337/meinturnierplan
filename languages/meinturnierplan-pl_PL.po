@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-16 18:07+0000\n"
-"PO-Revision-Date: 2026-01-05 17:41+0000\n"
+"PO-Revision-Date: 2026-01-10 15:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.3; php-8.4.5\n"
+"X-Loco-Version: 2.8.1; wp-6.9; php-8.2.27\n"
 "X-Domain: meinturnierplan"
 
 #: includes/class-mtrn-admin-utilities.php:672
@@ -362,7 +362,7 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:103
 msgid "I Understand"
-msgstr ""
+msgstr "Rozumiem"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:250
 #: includes/class-mtrn-table-admin-meta-boxes.php:177
@@ -466,6 +466,8 @@ msgstr ""
 #: includes/class-mtrn-admin-notices.php:84
 msgid "No personal data or user tracking information is sent by this plugin"
 msgstr ""
+"Wtyczka nie wysyła żadnych danych osobowych ani informacji umożliwiających "
+"śledzenie użytkownika"
 
 #: includes/class-mtrn-matches-post-type.php:45
 msgid "No tournament match lists found in Trash."
@@ -575,11 +577,11 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:87
 msgid "Privacy & Tracking:"
-msgstr ""
+msgstr "Prywatność i śledzenie"
 
 #: includes/class-mtrn-admin-notices.php:97
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Polityka prywatności"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:176
 #: includes/class-mtrn-table-admin-meta-boxes.php:165
@@ -686,7 +688,7 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:95
 msgid "Service Information:"
-msgstr ""
+msgstr "Informacje o usłudze:"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:273
 #: includes/class-mtrn-table-admin-meta-boxes.php:198
@@ -889,6 +891,8 @@ msgid ""
 "Standard web server logging (IP, browser, referrer) may occur when serving "
 "content"
 msgstr ""
+"Standardowe logi serwera WWW (adres IP, przeglądarka, strona odsyłająca) "
+"mogą być rejestrowane podczas wyświetlania treści."
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:188
 msgid "Suppress Court"
@@ -979,7 +983,7 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:98
 msgid "Terms of Service"
-msgstr ""
+msgstr "Regulamin korzystania z usługi"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:264
 #: includes/class-mtrn-table-admin-meta-boxes.php:189
@@ -988,7 +992,7 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:90
 msgid "The embedded widgets do not use cookies or tracking scripts"
-msgstr ""
+msgstr "Osadzone widżety nie używają plików cookie ani skryptów śledzących"
 
 #: includes/class-mtrn-matches-post-type.php:46
 msgctxt "The post type archive label"
@@ -1014,11 +1018,11 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:75
 msgid "Third-Party Service Information"
-msgstr ""
+msgstr "Informacje o usługach zewnętrznych"
 
 #: includes/class-mtrn-admin-notices.php:89
 msgid "This plugin does not track users or collect personal data"
-msgstr ""
+msgstr "Ta wtyczka nie śledzi użytkowników ani nie gromadzi danych osobowych"
 
 #: includes/class-mtrn-admin-notices.php:78
 msgid ""
@@ -1026,6 +1030,9 @@ msgid ""
 "tournament displays to your pages, users will connect directly to "
 "meinturnierplan.de servers."
 msgstr ""
+"Ta wtyczka wstawia treści turnieju z serwisu meinturnierplan.de. Gdy "
+"dodajesz wyświetlanie turniejów na swoich stronach, użytkownicy łączą się "
+"bezpośrednio z serwerami meinturnierplan.de."
 
 #: includes/class-mtrn-table-widget.php:86
 #: includes/class-mtrn-matches-widget.php:84
@@ -1042,6 +1049,8 @@ msgid ""
 "Tournament ID only (when you add a tournament via shortcode, block, or "
 "widget)"
 msgstr ""
+"Tylko identyfikator turnieju (gdy dodajesz turniej za pomocą shortcode, "
+"bloku lub widżetu)"
 
 #: includes/class-mtrn-table-widget.php:23
 #: includes/class-mtrn-table-widget.php:73
@@ -1071,11 +1080,11 @@ msgstr "Zobacz tabelę turnieju"
 
 #: includes/class-mtrn-admin-notices.php:96
 msgid "Visit Website"
-msgstr ""
+msgstr "Odwiedź stronę internetową"
 
 #: includes/class-mtrn-admin-notices.php:81
 msgid "What data is sent:"
-msgstr ""
+msgstr "Jakie dane są przesyłane:"
 
 #: includes/class-mtrn-table-renderer.php:68
 #: includes/class-mtrn-matches-renderer.php:68

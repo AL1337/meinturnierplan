@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -267,6 +267,9 @@ Display Options:
 
 == Changelog ==
 
+= 1.0.2 =
+* Localization - Update Spanish, French, Polish and Italian translations
+
 = 1.0.1 =
 * Localization - Add German, Spanish, French, Polish and Italian translations
 
@@ -274,6 +277,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+* Updated Spanish, French, Polish and Italian translations
 
 = 1.0.1 =
 * Added translations for multiple languages

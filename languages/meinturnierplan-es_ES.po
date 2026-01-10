@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-16 18:07+0000\n"
-"PO-Revision-Date: 2026-01-05 17:42+0000\n"
+"PO-Revision-Date: 2026-01-10 15:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.2.27\n"
+"X-Loco-Version: 2.8.1; wp-6.9; php-8.2.27\n"
 "X-Domain: meinturnierplan"
 
 #: includes/class-mtrn-admin-utilities.php:672
@@ -370,11 +370,11 @@ msgstr "Croata"
 
 #. URI of the plugin
 msgid "https://www.meinturnierplan.de"
-msgstr ""
+msgstr "https://www.meinturnierplan.de"
 
 #: includes/class-mtrn-admin-notices.php:103
 msgid "I Understand"
-msgstr ""
+msgstr "Entendido"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:250
 #: includes/class-mtrn-table-admin-meta-boxes.php:177
@@ -480,6 +480,7 @@ msgstr ""
 #: includes/class-mtrn-admin-notices.php:84
 msgid "No personal data or user tracking information is sent by this plugin"
 msgstr ""
+"Este complemento no envía datos personales ni realiza ningún seguimiento\n"
 
 #: includes/class-mtrn-matches-post-type.php:45
 msgid "No tournament match lists found in Trash."
@@ -589,11 +590,12 @@ msgstr "Vista previa"
 
 #: includes/class-mtrn-admin-notices.php:87
 msgid "Privacy & Tracking:"
-msgstr ""
+msgstr "Privacidad y seguimiento:"
 
 #: includes/class-mtrn-admin-notices.php:97
 msgid "Privacy Policy"
 msgstr ""
+"Política de privacidad\n"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:176
 #: includes/class-mtrn-table-admin-meta-boxes.php:165
@@ -708,6 +710,7 @@ msgstr "Seleccionar clasificación del torneo:"
 #: includes/class-mtrn-admin-notices.php:95
 msgid "Service Information:"
 msgstr ""
+"Información del servicio:\n"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:273
 #: includes/class-mtrn-table-admin-meta-boxes.php:198
@@ -978,6 +981,8 @@ msgid ""
 "Standard web server logging (IP, browser, referrer) may occur when serving "
 "content"
 msgstr ""
+"El servidor web puede registrar información estándar (IP, navegador, origen) "
+"al mostrar el contenido"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:188
 msgid "Suppress Court"
@@ -1069,6 +1074,7 @@ msgstr "Equipo %s (guardado)"
 #: includes/class-mtrn-admin-notices.php:98
 msgid "Terms of Service"
 msgstr ""
+"Condiciones del servicio\n"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:264
 #: includes/class-mtrn-table-admin-meta-boxes.php:189
@@ -1077,7 +1083,7 @@ msgstr "Color del texto"
 
 #: includes/class-mtrn-admin-notices.php:90
 msgid "The embedded widgets do not use cookies or tracking scripts"
-msgstr ""
+msgstr "Los widgets no usan cookies ni scripts de seguimiento"
 
 #: includes/class-mtrn-matches-post-type.php:46
 msgctxt "The post type archive label"
@@ -1108,11 +1114,13 @@ msgstr ""
 
 #: includes/class-mtrn-admin-notices.php:75
 msgid "Third-Party Service Information"
-msgstr ""
+msgstr "Información sobre el servicio de terceros"
 
 #: includes/class-mtrn-admin-notices.php:89
 msgid "This plugin does not track users or collect personal data"
 msgstr ""
+"Este complemento no hace seguimiento de usuarios ni recopila datos "
+"personales\n"
 
 #: includes/class-mtrn-admin-notices.php:78
 msgid ""
@@ -1120,6 +1128,9 @@ msgid ""
 "tournament displays to your pages, users will connect directly to "
 "meinturnierplan.de servers."
 msgstr ""
+"Este complemento muestra contenido de torneos desde meinturnierplan.de. "
+"Cuando añades torneos a tus páginas, los usuarios se conectan directamente "
+"con los servidores de meinturnierplan.de.\n"
 
 #: includes/class-mtrn-table-widget.php:86
 #: includes/class-mtrn-matches-widget.php:84
@@ -1136,6 +1147,7 @@ msgid ""
 "Tournament ID only (when you add a tournament via shortcode, block, or "
 "widget)"
 msgstr ""
+"Solo el ID del torneo (al añadirlo mediante shortcode, bloque o widget)"
 
 #: includes/class-mtrn-table-widget.php:23
 #: includes/class-mtrn-table-widget.php:73
@@ -1165,11 +1177,11 @@ msgstr "Ver clasificación del torneo"
 
 #: includes/class-mtrn-admin-notices.php:96
 msgid "Visit Website"
-msgstr ""
+msgstr "Ir al sitio web"
 
 #: includes/class-mtrn-admin-notices.php:81
 msgid "What data is sent:"
-msgstr ""
+msgstr "Qué datos se envían:"
 
 #: includes/class-mtrn-table-renderer.php:68
 #: includes/class-mtrn-matches-renderer.php:68
