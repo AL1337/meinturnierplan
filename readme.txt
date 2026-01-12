@@ -161,7 +161,7 @@ After activation, navigate to **Tournament Tables** or **Tournament Match Lists*
 
 = Links =
 
-* [GitHub Repository](https://github.com/danfisher85/meinturnierplan)
+* [GitHub Repository](https://github.com/AL1337/meinturnierplan)
 * [Plugin Website](https://www.meinturnierplan.de)
 
 == Installation ==
@@ -310,7 +310,7 @@ The plugin follows WordPress coding standards and best practices:
 == Support ==
 
 For issues, feature requests, and contributions, please visit:
-[GitHub Repository](https://github.com/danfisher85/meinturnierplan)
+[GitHub Repository](https://github.com/AL1337/meinturnierplan)
 
 == Credits ==
 
