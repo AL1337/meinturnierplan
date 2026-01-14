@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -268,6 +268,9 @@ Display Options:
 4. Preview of the Tournament Match List in the backend.
 
 == Changelog ==
+
+= 1.0.5 =
+* Fix - Fixes German plugin description placement
 
 = 1.0.4 =
 * Tweak - Add German plugin description
