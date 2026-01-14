@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -269,6 +269,9 @@ Display Options:
 
 == Changelog ==
 
+= 1.0.4 =
+* Tweak - Add German plugin description
+
 = 1.0.3 =
 * Fix - Update plugin version
 
@@ -305,13 +308,8 @@ The plugin follows WordPress coding standards and best practices:
 * **Clean Architecture** - Separation of concerns with dedicated classes for each feature
 * **Object-Oriented** - Class-based structure with singleton pattern
 * **AJAX Integration** - Real-time preview functionality
-* **Responsive Design** - Mobile-first approach with CSS breakpoints
 
 == Support ==
 
 For issues, feature requests, and contributions, please visit:
 [GitHub Repository](https://github.com/AL1337/meinturnierplan)
-
-== Credits ==
-
-Developed by Roman Perevala
