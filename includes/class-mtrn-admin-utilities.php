@@ -210,12 +210,12 @@ class MTRN_Admin_Utilities {
     echo '<tr>';
     echo '<th scope="row"><label for="' . esc_attr($color_field) . '">' . esc_html($label) . '</label></th>';
     echo '<td>';
-    echo '<div style="display: flex; align-items: center; gap: 15px;">';
-    echo '<input type="text" id="' . esc_attr($color_field) . '" name="' . esc_attr($color_field) . '" value="#' . esc_attr($color_value) . '" class="mtrn-color-picker" style="width: 120px;" />';
-    echo '<div style="display: flex; align-items: center; gap: 8px;">';
-    echo '<label for="' . esc_attr($opacity_field) . '" style="margin: 0; font-weight: normal;">' . esc_html__('Opacity:', 'meinturnierplan') . '</label>';
-    echo '<input type="range" id="' . esc_attr($opacity_field) . '" name="' . esc_attr($opacity_field) . '" value="' . esc_attr($opacity_value) . '" min="0" max="100" step="1" style="width: 100px;" />';
-    echo '<span id="' . esc_attr($opacity_field) . '_value" style="min-width: 35px; font-size: 12px; color: #666;">' . esc_attr($opacity_value) . '%</span>';
+    echo '<div class="mtrn-color-opacity-field">';
+    echo '<input type="text" id="' . esc_attr($color_field) . '" name="' . esc_attr($color_field) . '" value="#' . esc_attr($color_value) . '" class="mtrn-color-picker mtrn-color-opacity-field__color" />';
+    echo '<div class="mtrn-color-opacity-field__controls">';
+    echo '<label for="' . esc_attr($opacity_field) . '" class="mtrn-color-opacity-field__label">' . esc_html__('Opacity:', 'meinturnierplan') . '</label>';
+    echo '<input type="range" id="' . esc_attr($opacity_field) . '" name="' . esc_attr($opacity_field) . '" value="' . esc_attr($opacity_value) . '" min="0" max="100" step="1" class="mtrn-color-opacity-field__range" />';
+    echo '<span id="' . esc_attr($opacity_field) . '_value" class="mtrn-color-opacity-field__value">' . esc_attr($opacity_value) . '%</span>';
     echo '</div>';
     echo '</div>';
     if ($description) {
@@ -764,7 +764,7 @@ class MTRN_Admin_Utilities {
     echo esc_html__('Copy Shortcode', 'meinturnierplan');
     echo '</button>';
 
-    echo '<div id="' . esc_attr($config['success_message_id']) . '" class="mtrn-generated-shortcode__copy-success" style="display: none;">';
+    echo '<div id="' . esc_attr($config['success_message_id']) . '" class="mtrn-generated-shortcode__copy-success">';
     echo '<span class="mtrn-generated-shortcode__copy-success-icon dashicons dashicons-yes-alt"></span> ';
     echo esc_html__('Shortcode copied to clipboard!', 'meinturnierplan');
     echo '</div>';
@@ -843,7 +843,7 @@ class MTRN_Admin_Utilities {
     echo '<tr id="' . esc_attr($group_field_row_id) . '"' . (!empty($row_classes) ? ' class="' . esc_attr(trim($row_classes)) . '"' : '') . '>';
     echo '<th scope="row"><label for="' . esc_attr($group_field_id) . '">' . esc_html__('Group', 'meinturnierplan') . '</label></th>';
     echo '<td>';
-    echo '<div style="display: flex; align-items: center; gap: 10px;">';
+    echo '<div class="mtrn-group-field-wrapper">';
     echo '<select id="' . esc_attr($group_field_id) . '" name="' . esc_attr($group_field_id) . '" class="regular-text">';
 
     if (!empty($groups)) {
@@ -905,8 +905,9 @@ class MTRN_Admin_Utilities {
     }
 
     echo '</select>';
-    echo '<button type="button" id="' . esc_attr($refresh_button_id) . '" class="button button-secondary" title="' . esc_attr(__('Refresh Groups', 'meinturnierplan')) . '">';
-    echo '<span class="dashicons dashicons-update-alt" style="vertical-align: middle;"></span>';
+    echo '<button type="button" id="' . esc_attr($refresh_button_id) . '" class="button button-secondary mtrn-refresh-button" aria-label="' . esc_attr__('Refresh Groups', 'meinturnierplan') . '" title="' . esc_attr__('Refresh Groups', 'meinturnierplan') . '">';
+    echo '<span class="dashicons dashicons-update-alt" aria-hidden="true"></span>';
+    echo '<span class="screen-reader-text">' . esc_html__('Refresh Groups', 'meinturnierplan') . '</span>';
     echo '</button>';
     echo '</div>';
 
@@ -946,7 +947,7 @@ class MTRN_Admin_Utilities {
     echo '<tr id="' . esc_attr($participant_field_row_id) . '">';
     echo '<th scope="row"><label for="' . esc_attr($participant_field_id) . '">' . esc_html__('Participant', 'meinturnierplan') . '</label></th>';
     echo '<td>';
-    echo '<div style="display: flex; align-items: center; gap: 10px;">';
+    echo '<div class="mtrn-group-field-wrapper">';
     echo '<select id="' . esc_attr($participant_field_id) . '" name="' . esc_attr($participant_field_id) . '" class="regular-text">';
 
     // Add "All" option first as default
@@ -971,8 +972,9 @@ class MTRN_Admin_Utilities {
     }
 
     echo '</select>';
-    echo '<button type="button" id="' . esc_attr($refresh_button_id) . '" class="button button-secondary" title="' . esc_attr(__('Refresh Participants', 'meinturnierplan')) . '">';
-    echo '<span class="dashicons dashicons-update-alt" style="vertical-align: middle;"></span>';
+    echo '<button type="button" id="' . esc_attr($refresh_button_id) . '" class="button button-secondary mtrn-refresh-button" aria-label="' . esc_attr__('Refresh Participants', 'meinturnierplan') . '" title="' . esc_attr__('Refresh Participants', 'meinturnierplan') . '">';
+    echo '<span class="dashicons dashicons-update-alt" aria-hidden="true"></span>';
+    echo '<span class="screen-reader-text">' . esc_html__('Refresh Participants', 'meinturnierplan') . '</span>';
     echo '</button>';
     echo '</div>';
 

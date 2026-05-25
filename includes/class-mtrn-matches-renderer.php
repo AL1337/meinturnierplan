@@ -60,7 +60,7 @@ class MTRN_Matches_Renderer {
 
     // Build the iframe HTML with auto-sizing styles and shortcode dimensions
     $iframe_html = sprintf(
-      '<iframe id="%s" src="%s" width="%d" height="%d" style="overflow:hidden; min-width: 300px; min-height: 150px; width: %dpx; height: %dpx; border: none; display: block;" allowtransparency="true" frameborder="0">
+      '<iframe id="%s" class="mtrn-embed-frame" src="%s" width="%d" height="%d" allowtransparency="true" frameborder="0">
         <p>%s <a href="%s/showit.php?id=%s">%s</a></p>
       </iframe>',
       esc_attr($iframe_id),

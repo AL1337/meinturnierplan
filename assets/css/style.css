@@ -104,6 +104,15 @@ input[type="number"].regular-text {
   min-height: 200px;
 }
 
+/* Frontend iframe embed styling */
+.mtrn-embed-frame {
+  overflow: hidden;
+  min-width: 300px;
+  min-height: 150px;
+  border: none;
+  display: block;
+}
+
 /* Adjust preview for smaller screens within the column */
 @media (max-width: 1400px) {
   .mtrn-admin-column-right #mtrn-preview {
@@ -149,11 +158,44 @@ input[type="number"].regular-text {
 
 .mtrn-generated-shortcode__copy-success {
   color: #46b450;
+  display: none;
   margin-top: 8px;
   text-align: center;
 }
 .mtrn-generated-shortcode__copy-success-icon {
   vertical-align: middle;
+}
+
+/* Color/opacity picker layout */
+.mtrn-color-opacity-field {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mtrn-color-opacity-field__color {
+  width: 120px;
+}
+
+.mtrn-color-opacity-field__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mtrn-color-opacity-field__label {
+  margin: 0;
+  font-weight: normal;
+}
+
+.mtrn-color-opacity-field__range {
+  width: 100px;
+}
+
+.mtrn-color-opacity-field__value {
+  min-width: 35px;
+  font-size: 12px;
+  color: #666;
 }
 
 .mtrn-generated-shortcode__message {
@@ -165,6 +207,40 @@ input[type="number"].regular-text {
   background-color: #fff3cd;
   border: 1px solid #ffeaa7;
   color: #856404;
+}
+
+/* Temporary notices shown after refresh actions */
+.mtrn-temporary-message-row td {
+  padding: 12px 0 0;
+}
+
+.mtrn-temporary-message {
+  margin: 0;
+}
+
+.mtrn-group-field-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icon-only refresh buttons for group/participant fields */
+.mtrn-refresh-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 0 8px;
+}
+
+.mtrn-refresh-button .dashicons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 1;
 }
 
 /* Rotating animation for update icon */
