@@ -6,7 +6,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -53,7 +53,7 @@ class MTRN_Admin_Notices {
    * Display admin notice about third-party service disclosure
    *
    * Shows a dismissible notice to administrators informing them about
-   * the use of meinturnierplan.de embedded content and data handling.
+  * the use of language-specific service domains for embedded content and data handling.
    *
    * @since 1.0.0
    * @return void
@@ -69,13 +69,17 @@ class MTRN_Admin_Notices {
       return;
     }
 
+    $service_language = MTRN_Admin_Utilities::get_default_language();
+    $service_base_url = MTRN_Admin_Utilities::get_api_base_url($service_language);
+    $legal_language = in_array($service_language, array('de', 'en', 'es', 'fr', 'it', 'pl'), true) ? $service_language : 'en';
+
     $nonce = wp_create_nonce($this->nonce_action);
     ?>
     <div class="notice notice-info is-dismissible" id="mtrn-service-notice">
       <h3 class="mtrn-notice-title"><?php esc_html_e('Third-Party Service Information', 'meinturnierplan'); ?></h3>
       
       <p>
-        <?php esc_html_e('This plugin embeds tournament content from meinturnierplan.de. When you add tournament displays to your pages, users will connect directly to meinturnierplan.de servers.', 'meinturnierplan'); ?>
+        <?php esc_html_e('This plugin embeds tournament content from language-specific service domains. When you add tournament displays to your pages, users will connect directly to the domain that matches the selected tournament language.', 'meinturnierplan'); ?>
       </p>
 
       <p><strong><?php esc_html_e('What data is sent:', 'meinturnierplan'); ?></strong></p>
@@ -93,9 +97,9 @@ class MTRN_Admin_Notices {
 
       <p>
         <strong><?php esc_html_e('Service Information:', 'meinturnierplan'); ?></strong><br>
-        <a href="https://www.meinturnierplan.de/" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Visit Website', 'meinturnierplan'); ?></a>
-        | <a href="https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Privacy Policy', 'meinturnierplan'); ?></a>
-        | <a href="https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Terms of Service', 'meinturnierplan'); ?></a>
+        <a href="<?php echo esc_url($service_base_url . '/'); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Visit Website', 'meinturnierplan'); ?></a>
+        | <a href="<?php echo esc_url($service_base_url . '/legal.php?t=privacy&v=2019-04-20&l=' . $legal_language); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Privacy Policy', 'meinturnierplan'); ?></a>
+        | <a href="<?php echo esc_url($service_base_url . '/legal.php?t=tou&v=2019-04-20&l=' . $legal_language); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Terms of Service', 'meinturnierplan'); ?></a>
       </p>
 
       <p>

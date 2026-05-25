@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -125,13 +125,13 @@ class MTRN_Admin_Utilities {
    * @param string $tournament_id The tournament ID to check
    * @param string $json_field The JSON field to check (e.g., 'showCourts')
    */
-  public static function render_conditional_checkbox_field($field_name, $label, $value, $description, $tournament_id, $json_field) {
+  public static function render_conditional_checkbox_field($field_name, $label, $value, $description, $tournament_id, $json_field, $language = 'en') {
     $field_row_id = $field_name . '_row';
     $show_field = false;
 
     // Check if the JSON field is true
     if (!empty($tournament_id)) {
-      $json_value = self::fetch_tournament_option($tournament_id, $json_field);
+      $json_value = self::fetch_tournament_option($tournament_id, $json_field, $language);
       $show_field = ($json_value === true);
     }
 
@@ -432,18 +432,59 @@ class MTRN_Admin_Utilities {
   }
 
   /**
+   * Get API base URL for a given language.
+   *
+   * @param string $language The language code.
+   * @return string The API domain base URL.
+   */
+  public static function get_api_base_url($language = 'en') {
+    $language = sanitize_text_field((string) $language);
+
+    $domain_map = array(
+      'de' => 'https://www.meinturnierplan.de',
+      'en' => 'https://tournamentbase.com',
+      'fr' => 'https://tournoiplus.fr',
+      'pl' => 'https://turniej.pl',
+      'es' => 'https://torneo.es',
+      'it' => 'https://torneo.it',
+      // Slovenian and Turkish should fall back to the German domain.
+      'sl' => 'https://www.meinturnierplan.de',
+      'tr' => 'https://www.meinturnierplan.de',
+    );
+
+    if (isset($domain_map[$language])) {
+      return $domain_map[$language];
+    }
+
+    return 'https://www.meinturnierplan.de';
+  }
+
+  /**
+   * Build JSON endpoint URL for a tournament and language.
+   *
+   * @param string $tournament_id The tournament ID.
+   * @param string $language The language code.
+   * @return string The full JSON endpoint URL.
+   */
+  public static function build_tournament_json_url($tournament_id, $language = 'en') {
+    return self::get_api_base_url($language) . '/json/json.php?id=' . urlencode($tournament_id);
+  }
+
+  /**
    * Fetch tournament groups from external API
    *
    * @param string $tournament_id The tournament ID
    * @param bool $force_refresh Whether to force refresh the cache
    * @return array Array containing groups and hasFinalRound data
    */
-  public static function fetch_tournament_groups($tournament_id, $force_refresh = false) {
+  public static function fetch_tournament_groups($tournament_id, $force_refresh = false, $language = 'en') {
     if (empty($tournament_id)) {
       return array('groups' => array(), 'hasFinalRound' => false);
     }
 
-    $cache_key = 'mtrn_groups_' . $tournament_id;
+    $language = sanitize_text_field((string) $language);
+
+    $cache_key = 'mtrn_groups_' . $language . '_' . $tournament_id;
     $cache_expiry = 15 * MINUTE_IN_SECONDS; // Cache for 15 minutes
 
     // Try to get cached data first (unless force refresh is requested)
@@ -466,7 +507,7 @@ class MTRN_Admin_Utilities {
     }
 
     // Use WordPress HTTP API to fetch the JSON
-    $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
+    $url = self::build_tournament_json_url($tournament_id, $language);
     $response = wp_remote_get($url, array(
       'timeout' => 10,
       'sslverify' => true
@@ -526,12 +567,14 @@ class MTRN_Admin_Utilities {
    * @param bool $force_refresh Whether to force refresh the cache
    * @return array Array of teams
    */
-  public static function fetch_tournament_teams($tournament_id, $force_refresh = false) {
+  public static function fetch_tournament_teams($tournament_id, $force_refresh = false, $language = 'en') {
     if (empty($tournament_id)) {
       return array();
     }
 
-    $cache_key = 'mtrn_teams_' . $tournament_id;
+    $language = sanitize_text_field((string) $language);
+
+    $cache_key = 'mtrn_teams_' . $language . '_' . $tournament_id;
     $cache_expiry = 15 * MINUTE_IN_SECONDS; // Cache for 15 minutes
 
     // Try to get cached data first (unless force refresh is requested)
@@ -546,7 +589,7 @@ class MTRN_Admin_Utilities {
     }
 
     // Use WordPress HTTP API to fetch the JSON
-    $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
+    $url = self::build_tournament_json_url($tournament_id, $language);
     $response = wp_remote_get($url, array(
       'timeout' => 10,
       'sslverify' => true
@@ -585,19 +628,21 @@ class MTRN_Admin_Utilities {
    * @param string $option_name The option to check (e.g., 'showCourts')
    * @return mixed The value of the option or null if not found
    */
-  public static function fetch_tournament_option($tournament_id, $option_name) {
+  public static function fetch_tournament_option($tournament_id, $option_name, $language = 'en') {
     if (empty($tournament_id) || empty($option_name)) {
       return null;
     }
 
-    $cache_key = 'mtrn_data_' . $tournament_id;
+    $language = sanitize_text_field((string) $language);
+
+    $cache_key = 'mtrn_data_' . $language . '_' . $tournament_id;
     $cache_expiry = 15 * MINUTE_IN_SECONDS; // Cache for 15 minutes
 
     // Try to get cached data first
     $cached_data = get_transient($cache_key);
     if ($cached_data === false) {
       // Use WordPress HTTP API to fetch the JSON
-      $url = 'https://www.meinturnierplan.de/json/json.php?id=' . urlencode($tournament_id);
+      $url = self::build_tournament_json_url($tournament_id, $language);
       $response = wp_remote_get($url, array(
         'timeout' => 10,
         'sslverify' => true
@@ -771,6 +816,7 @@ class MTRN_Admin_Utilities {
    */
   public static function render_conditional_group_field($meta_values, $field_prefix = 'mtrn_', $context = 'tables') {
     $tournament_id = $meta_values['tournament_id'];
+    $language = isset($meta_values['language']) ? $meta_values['language'] : 'en';
     $saved_group = $meta_values['group'];
     $groups = array();
     $has_final_round = false;
@@ -778,7 +824,7 @@ class MTRN_Admin_Utilities {
 
     // Only fetch groups if tournament ID is provided
     if (!empty($tournament_id)) {
-      $tournament_data = self::fetch_tournament_groups($tournament_id);
+      $tournament_data = self::fetch_tournament_groups($tournament_id, false, $language);
       $groups = $tournament_data['groups'];
       $has_final_round = $tournament_data['hasFinalRound'];
     }
@@ -882,12 +928,13 @@ class MTRN_Admin_Utilities {
    */
   public static function render_conditional_participant_field($meta_values, $field_prefix = 'mtrn_') {
     $tournament_id = $meta_values['tournament_id'];
+    $language = isset($meta_values['language']) ? $meta_values['language'] : 'en';
     $saved_participant = isset($meta_values['participant']) ? $meta_values['participant'] : '-1';
     $teams = array();
 
     // Only fetch teams if tournament ID is provided
     if (!empty($tournament_id)) {
-      $teams = self::fetch_tournament_teams($tournament_id);
+      $teams = self::fetch_tournament_teams($tournament_id, false, $language);
     }
 
     $participant_field_id = $field_prefix . 'participant';

@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -48,8 +48,12 @@ class MTRN_Table_Renderer {
     // Build URL parameters array
     $params = $this->build_url_params($tournament_id, $table_id, $atts);
 
+    // Resolve embed domain from selected language.
+    $language = $this->resolve_language($table_id, $atts);
+    $base_url = $this->get_embed_base_url($language);
+
     // Build the iframe URL
-    $iframe_url = 'https://www.meinturnierplan.de/displayTable.php?' . $this->build_query_string($params);
+    $iframe_url = $base_url . '/displayTable.php?' . $this->build_query_string($params);
 
     // Generate unique ID for this iframe instance
     $iframe_id = 'mtrn-table-' . $tournament_id . '-' . substr(md5(serialize($atts)), 0, 8);
@@ -57,7 +61,7 @@ class MTRN_Table_Renderer {
     // Build the iframe HTML with auto-sizing styles and shortcode dimensions
     $iframe_html = sprintf(
       '<iframe id="%s" src="%s" width="%d" height="%d" style="overflow:hidden; min-width: 300px; min-height: 150px; width: %dpx; height: %dpx; border: none; display: block;" allowtransparency="true" frameborder="0">
-        <p>%s <a href="https://www.meinturnierplan.de/showit.php?id=%s">%s</a></p>
+        <p>%s <a href="%s/showit.php?id=%s">%s</a></p>
       </iframe>',
       esc_attr($iframe_id),
       esc_url($iframe_url),
@@ -66,6 +70,7 @@ class MTRN_Table_Renderer {
       $width,
       $height,
       __('Your browser does not support the tournament widget.', 'meinturnierplan'),
+      esc_url($base_url),
       esc_attr($tournament_id),
       __('Go to Tournament.', 'meinturnierplan')
     );
@@ -273,5 +278,34 @@ class MTRN_Table_Renderer {
     }
 
     return implode('&', $query_parts);
+  }
+
+  /**
+   * Resolve language from shortcode attrs or post meta.
+   */
+  private function resolve_language($table_id, $atts) {
+    if (!empty($atts['setlang'])) {
+      return sanitize_text_field($atts['setlang']);
+    }
+
+    if (!empty($table_id)) {
+      $saved_language = get_post_meta($table_id, '_mtrn_language', true);
+      if (!empty($saved_language)) {
+        return sanitize_text_field($saved_language);
+      }
+    }
+
+    return 'en';
+  }
+
+  /**
+   * Get embed base URL for a language using shared admin utilities mapping.
+   */
+  private function get_embed_base_url($language) {
+    if (class_exists('MTRN_Admin_Utilities')) {
+      return MTRN_Admin_Utilities::get_api_base_url($language);
+    }
+
+    return 'https://www.meinturnierplan.de';
   }
 }

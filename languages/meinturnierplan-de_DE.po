@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MeinTurnierplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-07 18:15+0000\n"
-"PO-Revision-Date: 2026-01-09 12:02+0000\n"
+"PO-Revision-Date: 2026-05-25 17:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Domain: meinturnierplan\n"
 "Plural-Forms: nplurals=2; plural=n != 1;"
 
-#: includes/class-mtrn-admin-utilities.php:672
+#: includes/class-mtrn-admin-utilities.php:717
 msgid "(saved)"
 msgstr "(gespeichert)"
 
@@ -60,15 +60,15 @@ msgctxt "Admin Menu text"
 msgid "Tournament Tables"
 msgstr "Turniertabelle"
 
-#: includes/class-mtrn-admin-utilities.php:676
-#: includes/class-mtrn-admin-utilities.php:907
+#: includes/class-mtrn-admin-utilities.php:721
+#: includes/class-mtrn-admin-utilities.php:954
 msgid "All"
 msgstr "Alles"
 
-#: includes/class-mtrn-admin-utilities.php:667
-#: includes/class-mtrn-admin-utilities.php:807
-#: includes/class-mtrn-admin-utilities.php:835
-#: includes/class-mtrn-admin-utilities.php:849
+#: includes/class-mtrn-admin-utilities.php:712
+#: includes/class-mtrn-admin-utilities.php:853
+#: includes/class-mtrn-admin-utilities.php:881
+#: includes/class-mtrn-admin-utilities.php:895
 msgid "All Matches"
 msgstr "Alle Spiele"
 
@@ -80,12 +80,12 @@ msgstr "Alle Spielpläne"
 msgid "All Tournament Tables"
 msgstr "Turniertabelle"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:271
+#: includes/class-mtrn-matches-admin-meta-boxes.php:277
 #: includes/class-mtrn-table-admin-meta-boxes.php:196
 msgid "Background Color"
 msgstr "Hintergrundfarbe"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:270
+#: includes/class-mtrn-matches-admin-meta-boxes.php:276
 #: includes/class-mtrn-table-admin-meta-boxes.php:195
 msgid "Background Colors"
 msgstr "Hintergrundfarben"
@@ -115,42 +115,42 @@ msgctxt "block title"
 msgid "Tournament Table"
 msgstr "Turniertabelle"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:266
+#: includes/class-mtrn-matches-admin-meta-boxes.php:272
 #: includes/class-mtrn-table-admin-meta-boxes.php:191
 msgid "Border Color"
 msgstr "Rahmenfarbe"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:256
+#: includes/class-mtrn-matches-admin-meta-boxes.php:262
 #: includes/class-mtrn-table-admin-meta-boxes.php:181
 msgid "Border Horizontal Size (px)"
 msgstr "Horizontale Rahmenbreite (px)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:255
+#: includes/class-mtrn-matches-admin-meta-boxes.php:261
 #: includes/class-mtrn-table-admin-meta-boxes.php:180
 msgid "Border Settings"
 msgstr "Rahmeneinstellungen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:257
+#: includes/class-mtrn-matches-admin-meta-boxes.php:263
 #: includes/class-mtrn-table-admin-meta-boxes.php:182
 msgid "Border Vertical Size (px)"
 msgstr "Vertikale Rahmenbreite (px)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:263
+#: includes/class-mtrn-matches-admin-meta-boxes.php:269
 #: includes/class-mtrn-table-admin-meta-boxes.php:188
 msgid "Colors"
 msgstr "Farben"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:243
+#: includes/class-mtrn-matches-admin-meta-boxes.php:249
 #: includes/class-mtrn-table-admin-meta-boxes.php:170
 msgid "Content Font Size (pt)"
 msgstr "Inhaltsschriftgröße (pt)"
 
-#: includes/class-mtrn-admin-utilities.php:719
+#: includes/class-mtrn-admin-utilities.php:764
 msgid "Copy Shortcode"
 msgstr "Shortcode kopieren"
 
-#: includes/class-mtrn-admin-utilities.php:670
-#: includes/class-mtrn-admin-utilities.php:851
+#: includes/class-mtrn-admin-utilities.php:715
+#: includes/class-mtrn-admin-utilities.php:897
 msgid "Default"
 msgstr "Standard"
 
@@ -206,16 +206,16 @@ msgstr "Beamer Präsentationsmodus für die Turniertabelle aktivieren"
 msgid "Enable suppression of court information in the matches table."
 msgstr "Anzeige der Spielfeldinformationen in der Spieletabelle unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:220
+#: includes/class-mtrn-matches-admin-meta-boxes.php:223
 msgid "Enable suppression of extra time information in the final matches."
 msgstr ""
 "Anzeige der Verlängerungsinformationen in den Finalspielen unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:198
+#: includes/class-mtrn-matches-admin-meta-boxes.php:199
 msgid "Enable suppression of group information in the matches table."
 msgstr "Anzeige der Gruppeninformationen in der Spieletabelle unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:236
+#: includes/class-mtrn-matches-admin-meta-boxes.php:241
 msgid "Enable suppression of headlines in the final matches."
 msgstr "Anzeige der Überschriften in den Finalspielen unterdrücken"
 
@@ -223,16 +223,16 @@ msgstr "Anzeige der Überschriften in den Finalspielen unterdrücken"
 msgid "Enable suppression of match numbers in the matches table."
 msgstr "Anzeige der Spielnummern in der Spieletabelle unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:214
+#: includes/class-mtrn-matches-admin-meta-boxes.php:217
 msgid "Enable suppression of match times in the matches table."
 msgstr "Anzeige der Spielzeiten in der Spieletabelle unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:228
+#: includes/class-mtrn-matches-admin-meta-boxes.php:232
 msgid "Enable suppression of penalty information in the final matches."
 msgstr ""
 "Anzeige der Elfmeterschießen-Informationen in den Finalspielen unterdrücken"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:206
+#: includes/class-mtrn-matches-admin-meta-boxes.php:208
 msgid "Enable suppression of referee information in the matches table."
 msgstr ""
 "Anzeige der Schiedsrichterinformationen in der Spieletabelle unterdrücken"
@@ -249,25 +249,25 @@ msgstr ""
 "Gib eine einzelne Spielnummer ein (z. B. „8“) oder einen Bereich (z. B. „2–"
 "7“) ein. Leer lassen, um alle Spiele anzuzeigen"
 
-#: includes/class-mtrn-matches-renderer.php:414
+#: includes/class-mtrn-matches-renderer.php:419
 msgid "Enter a Tournament ID above to display live matches data."
 msgstr "Gib oben eine Turnier-ID ein, um Live-Spieldaten anzuzeigen"
 
-#: includes/class-mtrn-table-renderer.php:250
-#: includes/class-mtrn-admin-utilities.php:730
+#: includes/class-mtrn-table-renderer.php:255
+#: includes/class-mtrn-admin-utilities.php:775
 msgid "Enter a Tournament ID above to display live tournament data."
 msgstr "Gib oben eine Turnier-ID ein, um Live-Turnierdaten anzuzeigen"
 
 #: includes/class-mtrn-matches-admin-meta-boxes.php:162
 #: includes/class-mtrn-table-admin-meta-boxes.php:154
-msgid "Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)"
-msgstr "Gib die Turnier-ID von meinturnierplan.de ein (z. B. 1753883027)"
+msgid "Enter the tournament ID from your language domain (e.g., 1753883027)"
+msgstr ""
 
-#: includes/class-mtrn-admin-utilities.php:675
+#: includes/class-mtrn-admin-utilities.php:720
 msgid "Error refreshing groups. Please try again."
 msgstr "Fehler beim Aktualisieren der Gruppen. Bitte versuche es erneut."
 
-#: includes/class-mtrn-admin-utilities.php:682
+#: includes/class-mtrn-admin-utilities.php:727
 msgid "Error refreshing participants. Please try again."
 msgstr "Fehler beim Aktualisieren der Teilnehmer. Bitte versuche es erneut."
 
@@ -275,19 +275,19 @@ msgstr "Fehler beim Aktualisieren der Teilnehmer. Bitte versuche es erneut."
 msgid "Español / Spanish"
 msgstr "Spanisch"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:273
+#: includes/class-mtrn-matches-admin-meta-boxes.php:279
 #: includes/class-mtrn-table-admin-meta-boxes.php:198
 msgid "Even Rows Background Color"
 msgstr "Hintergrundfarbe für gerade Zeilen"
 
-#: includes/class-mtrn-admin-utilities.php:668
-#: includes/class-mtrn-admin-utilities.php:830
-#: includes/class-mtrn-admin-utilities.php:857
+#: includes/class-mtrn-admin-utilities.php:713
+#: includes/class-mtrn-admin-utilities.php:876
+#: includes/class-mtrn-admin-utilities.php:903
 msgid "Final Round"
 msgstr "Finalrunde"
 
-#: includes/class-mtrn-admin-utilities.php:674
-#: includes/class-mtrn-admin-utilities.php:840
+#: includes/class-mtrn-admin-utilities.php:719
+#: includes/class-mtrn-admin-utilities.php:886
 msgid "Final Round (saved)"
 msgstr "Finalrunde (gespeichert)"
 
@@ -295,55 +295,55 @@ msgstr "Finalrunde (gespeichert)"
 msgid "Français / French"
 msgstr "Französisch"
 
-#: includes/class-mtrn-admin-utilities.php:713
+#: includes/class-mtrn-admin-utilities.php:758
 msgid "Generated Shortcode:"
 msgstr "Generierter Shortcode:"
 
-#: includes/class-mtrn-table-renderer.php:70
-#: includes/class-mtrn-matches-renderer.php:70
+#: includes/class-mtrn-table-renderer.php:75
+#: includes/class-mtrn-matches-renderer.php:75
 msgid "Go to Tournament."
 msgstr "Zum Turnier gehen"
 
-#: includes/class-mtrn-admin-utilities.php:671
-#: includes/class-mtrn-admin-utilities.php:798
+#: includes/class-mtrn-admin-utilities.php:716
+#: includes/class-mtrn-admin-utilities.php:844
 msgid "Group"
 msgstr "Gruppe"
 
 #. %s is the group display name
-#: includes/class-mtrn-admin-utilities.php:824
+#: includes/class-mtrn-admin-utilities.php:870
 #, php-format
 msgid "Group %s"
 msgstr "Gruppe %s"
 
 #. %s is the saved group name
-#: includes/class-mtrn-admin-utilities.php:843
+#: includes/class-mtrn-admin-utilities.php:889
 #, php-format
 msgid "Group %s (saved)"
 msgstr "Gruppe %s (gespeichert)"
 
-#: includes/class-mtrn-admin-utilities.php:669
+#: includes/class-mtrn-admin-utilities.php:714
 msgid "Groups refreshed successfully!"
 msgstr "Gruppen erfolgreich aktualisiert!"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:272
+#: includes/class-mtrn-matches-admin-meta-boxes.php:278
 #: includes/class-mtrn-table-admin-meta-boxes.php:197
 msgid "Head Background Color"
 msgstr "Hintergrundfarbe des Tabellenkopfs"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:244
+#: includes/class-mtrn-matches-admin-meta-boxes.php:250
 #: includes/class-mtrn-table-admin-meta-boxes.php:171
 msgid "Header Font Size (pt)"
 msgstr "Schriftgröße der Kopfzeile (pt)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:252
+#: includes/class-mtrn-matches-admin-meta-boxes.php:258
 msgid "Headlines Bottom Padding (px)"
 msgstr "Abstand unter den Überschriften (px)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:245
+#: includes/class-mtrn-matches-admin-meta-boxes.php:251
 msgid "Headlines Font Size (pt)"
 msgstr "Schriftgröße der Überschriften (pt)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:251
+#: includes/class-mtrn-matches-admin-meta-boxes.php:257
 msgid "Headlines Top Padding (px)"
 msgstr "Abstand oberhalb der Überschriften (px)"
 
@@ -371,11 +371,11 @@ msgstr "Kroatisch"
 msgid "https://www.meinturnierplan.de"
 msgstr "https://www.meinturnierplan.de"
 
-#: includes/class-mtrn-admin-notices.php:103
+#: includes/class-mtrn-admin-notices.php:107
 msgid "I Understand"
 msgstr "Verstanden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:250
+#: includes/class-mtrn-matches-admin-meta-boxes.php:256
 #: includes/class-mtrn-table-admin-meta-boxes.php:177
 msgid "Inner Padding (px)"
 msgstr "Zelleninnenabstand (px)"
@@ -389,16 +389,16 @@ msgstr "Italienisch"
 msgid "Language"
 msgstr "Sprache"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:265
+#: includes/class-mtrn-matches-admin-meta-boxes.php:271
 #: includes/class-mtrn-table-admin-meta-boxes.php:190
 msgid "Link & Navigation Color"
 msgstr "Link- & Navigationsfarbe"
 
-#: includes/class-mtrn-admin-utilities.php:666
+#: includes/class-mtrn-admin-utilities.php:711
 msgid "Loading groups..."
 msgstr "Gruppen werden geladen …"
 
-#: includes/class-mtrn-admin-utilities.php:678
+#: includes/class-mtrn-admin-utilities.php:723
 msgid "Loading participants..."
 msgstr "Teilnehmer werden geladen …"
 
@@ -410,7 +410,7 @@ msgstr "Logogröße (pt)"
 msgid "Match number (from-to)"
 msgstr "Spielnummer (von–bis)"
 
-#: includes/class-mtrn-matches-renderer.php:413
+#: includes/class-mtrn-matches-renderer.php:418
 msgid "Matches Preview"
 msgstr "Spielvorschau"
 
@@ -464,19 +464,19 @@ msgstr "Neue Turnierspielliste"
 msgid "New Tournament Table"
 msgstr "Neue Turniertabelle"
 
-#: includes/class-mtrn-admin-utilities.php:664
+#: includes/class-mtrn-admin-utilities.php:709
 msgid "No groups available"
 msgstr "Keine Gruppen verfügbar"
 
-#: includes/class-mtrn-admin-utilities.php:673
+#: includes/class-mtrn-admin-utilities.php:718
 msgid "No groups found for this tournament."
 msgstr "Für dieses Turnier wurden keine Gruppen gefunden."
 
-#: includes/class-mtrn-admin-utilities.php:681
+#: includes/class-mtrn-admin-utilities.php:726
 msgid "No participants found for this tournament."
 msgstr "Für dieses Turnier wurden keine Teilnehmer gefunden."
 
-#: includes/class-mtrn-admin-notices.php:84
+#: includes/class-mtrn-admin-notices.php:88
 msgid "No personal data or user tracking information is sent by this plugin"
 msgstr ""
 "Durch das Plugin werden keine persönlichen Informationen oder Trackindaten "
@@ -500,11 +500,11 @@ msgstr ""
 msgid "No tournament tables found."
 msgstr "Keine Turniertabellen gefunden"
 
-#: includes/class-mtrn-admin-utilities.php:729
+#: includes/class-mtrn-admin-utilities.php:774
 msgid "Note:"
 msgstr "Hinweis:"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:274
+#: includes/class-mtrn-matches-admin-meta-boxes.php:280
 #: includes/class-mtrn-table-admin-meta-boxes.php:199
 msgid "Odd Rows Background Color"
 msgstr "Hintergrundfarbe für ungerade Zeilen"
@@ -543,11 +543,11 @@ msgstr "Übergeordnete Turnierspiellisten:"
 msgid "Parent Tournament Tables:"
 msgstr "Übergeordnete Turniertabellen:"
 
-#: includes/class-mtrn-admin-utilities.php:900
+#: includes/class-mtrn-admin-utilities.php:947
 msgid "Participant"
 msgstr "Teilnehmer"
 
-#: includes/class-mtrn-admin-utilities.php:679
+#: includes/class-mtrn-admin-utilities.php:724
 msgid "Participants refreshed successfully!"
 msgstr "Teilnehmer erfolgreich aktualisiert!"
 
@@ -585,16 +585,16 @@ msgctxt "Post type singular name"
 msgid "Tournament Table"
 msgstr "Turniertabelle"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:290
+#: includes/class-mtrn-matches-admin-meta-boxes.php:296
 #: includes/class-mtrn-table-admin-meta-boxes.php:215
 msgid "Preview"
 msgstr "Vorschau"
 
-#: includes/class-mtrn-admin-notices.php:87
+#: includes/class-mtrn-admin-notices.php:91
 msgid "Privacy & Tracking:"
 msgstr "Datenschutz und Tracking:"
 
-#: includes/class-mtrn-admin-notices.php:97
+#: includes/class-mtrn-admin-notices.php:101
 msgid "Privacy Policy"
 msgstr "Datenschutzbestimmungen"
 
@@ -603,23 +603,23 @@ msgstr "Datenschutzbestimmungen"
 msgid "Projector Presentation"
 msgstr "Präsentation für Beamer"
 
-#: includes/class-mtrn-admin-utilities.php:862
+#: includes/class-mtrn-admin-utilities.php:908
 msgid "Refresh Groups"
 msgstr "Gruppen aktualisieren"
 
-#: includes/class-mtrn-admin-utilities.php:927
+#: includes/class-mtrn-admin-utilities.php:974
 msgid "Refresh Participants"
 msgstr "Refresh Participants"
 
-#: includes/class-mtrn-admin-utilities.php:665
+#: includes/class-mtrn-admin-utilities.php:710
 msgid "Refreshing groups..."
 msgstr "Gruppen werden aktualisiert …"
 
-#: includes/class-mtrn-admin-utilities.php:677
+#: includes/class-mtrn-admin-utilities.php:722
 msgid "Refreshing participants..."
 msgstr "Teilnehmer werden aktualisiert …"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:275
+#: includes/class-mtrn-matches-admin-meta-boxes.php:281
 #: includes/class-mtrn-table-admin-meta-boxes.php:200
 msgid "Row Hover Background Color"
 msgstr "Hintergrundfarbe beim Überfahren einer Zeile"
@@ -667,7 +667,7 @@ msgstr "Turniertabellen durchsuchen"
 msgid "Security check failed"
 msgstr "Sicherheitsüberprüfung fehlgeschlagen"
 
-#: includes/class-mtrn-admin-utilities.php:868
+#: includes/class-mtrn-admin-utilities.php:914
 msgid ""
 "Select a group to display from this tournament. Click refresh to update "
 "groups from server. Please note that some tournaments do not have groups."
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Select a Matches Table"
 msgstr "Eine Spieletabelle auswählen"
 
-#: includes/class-mtrn-admin-utilities.php:933
+#: includes/class-mtrn-admin-utilities.php:980
 msgid ""
 "Select a participant (team) to filter matches. Select \"All\" to display "
 "matches for all participants. Click refresh to update participants from "
@@ -707,11 +707,11 @@ msgstr "Wähle die Sprache für die Anzeige der Turniertabelle aus"
 msgid "Select Tournament Table:"
 msgstr "Turniertabelle auswählen:"
 
-#: includes/class-mtrn-admin-notices.php:95
+#: includes/class-mtrn-admin-notices.php:99
 msgid "Service Information:"
 msgstr "Service Informationen:"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:273
+#: includes/class-mtrn-matches-admin-meta-boxes.php:279
 #: includes/class-mtrn-table-admin-meta-boxes.php:198
 msgid ""
 "Set the background color and opacity for even-numbered table rows. Use "
@@ -720,7 +720,7 @@ msgstr ""
 "Lege die Hintergrundfarbe und Deckkraft für gerade Tabellenzeilen fest. "
 "Verwende eine Deckkraft von 0%, um den Hintergrund transparent zu machen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:274
+#: includes/class-mtrn-matches-admin-meta-boxes.php:280
 #: includes/class-mtrn-table-admin-meta-boxes.php:199
 msgid ""
 "Set the background color and opacity for odd-numbered table rows. Use "
@@ -729,7 +729,7 @@ msgstr ""
 "Lege die Hintergrundfarbe und Deckkraft für ungerade Tabellenzeilen fest. "
 "Verwende eine Deckkraft von 0%, um den Hintergrund transparent zu machen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:272
+#: includes/class-mtrn-matches-admin-meta-boxes.php:278
 #: includes/class-mtrn-table-admin-meta-boxes.php:197
 msgid ""
 "Set the background color and opacity for table head. Use opacity 0% for "
@@ -738,7 +738,7 @@ msgstr ""
 "Lege die Hintergrundfarbe und Deckkraft für den Tabellenkopf fest. Verwende "
 "eine Deckkraft von 0%, um den Hintergrund transparent zu machen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:275
+#: includes/class-mtrn-matches-admin-meta-boxes.php:281
 #: includes/class-mtrn-table-admin-meta-boxes.php:200
 msgid ""
 "Set the background color and opacity for table rows hover. Use opacity 0% "
@@ -748,7 +748,7 @@ msgstr ""
 "fest. Verwende eine Deckkraft von 0%, um den Hintergrund transparent zu "
 "machen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:271
+#: includes/class-mtrn-matches-admin-meta-boxes.php:277
 #: includes/class-mtrn-table-admin-meta-boxes.php:196
 msgid ""
 "Set the background color and opacity of the tournament table. Use opacity 0% "
@@ -757,7 +757,7 @@ msgstr ""
 "Lege die Hintergrundfarbe und Deckkraft der Turniertabelle fest. Verwende "
 "eine Deckkraft von 0%, um den Hintergrund transparent zu machen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:266
+#: includes/class-mtrn-matches-admin-meta-boxes.php:272
 #: includes/class-mtrn-table-admin-meta-boxes.php:191
 msgid ""
 "Set the border color of the tournament table. Light gray (#bbbbbb) is the "
@@ -766,7 +766,7 @@ msgstr ""
 "Lege die Rahmenfarbe der Turniertabelle fest. Hellgrau (#bbbbbb) ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:256
+#: includes/class-mtrn-matches-admin-meta-boxes.php:262
 msgid ""
 "Set the border horizontal size of the matches table. 1px is the default "
 "value."
@@ -782,7 +782,7 @@ msgstr ""
 "Lege die horizontale Rahmenbreite der Turniertabelle fest. 1 px ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:257
+#: includes/class-mtrn-matches-admin-meta-boxes.php:263
 msgid ""
 "Set the border vertical size of the matches table. 1px is the default value."
 msgstr ""
@@ -797,7 +797,7 @@ msgstr ""
 "Lege die vertikale Rahmenbreite der Turniertabelle fest. 1 px ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:267
+#: includes/class-mtrn-matches-admin-meta-boxes.php:273
 #: includes/class-mtrn-table-admin-meta-boxes.php:192
 msgid ""
 "Set the bottom border color of the table header. Light gray (#bbbbbb) is the "
@@ -806,13 +806,13 @@ msgstr ""
 "Lege die Farbe des unteren Rahmens des Tabellenkopfs fest. Hellgrau (#bbbbbb)"
 " ist der Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:252
+#: includes/class-mtrn-matches-admin-meta-boxes.php:258
 msgid "Set the bottom padding of the headlines. 3px is the default value."
 msgstr ""
 "Lege den unteren Innenabstand der Überschriften fest. 3 px ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:265
+#: includes/class-mtrn-matches-admin-meta-boxes.php:271
 #: includes/class-mtrn-table-admin-meta-boxes.php:190
 msgid ""
 "Set the color for links (e.g., \"Show Full Tournament\") and navigation "
@@ -822,7 +822,7 @@ msgstr ""
 "Navigationspfeile zwischen den Gruppen fest. Blau (#173f75) ist der "
 "Standardwert."
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:264
+#: includes/class-mtrn-matches-admin-meta-boxes.php:270
 #: includes/class-mtrn-table-admin-meta-boxes.php:189
 msgid ""
 "Set the color of the tournament table text. Black (#000000) is the default "
@@ -831,21 +831,21 @@ msgstr ""
 "Lege die Textfarbe der Turniertabelle fest. Schwarz (#000000) ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:243
+#: includes/class-mtrn-matches-admin-meta-boxes.php:249
 msgid ""
 "Set the font size of the matches table content. 9pt is the default value."
 msgstr ""
 "Lege die Schriftgröße des Inhalts der Spieletabelle fest. 9 pt ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:244
+#: includes/class-mtrn-matches-admin-meta-boxes.php:250
 msgid ""
 "Set the font size of the matches table headers. 10pt is the default value."
 msgstr ""
 "Lege die Schriftgröße der Kopfzeilen der Spieletabelle fest. 10 pt ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:245
+#: includes/class-mtrn-matches-admin-meta-boxes.php:251
 msgid ""
 "Set the font size of the matches table headlines. 10pt is the default value."
 msgstr ""
@@ -873,7 +873,7 @@ msgstr ""
 "Lege die Schriftgröße des Logos der Turniertabelle fest. 20 pt ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:260
+#: includes/class-mtrn-matches-admin-meta-boxes.php:266
 msgid ""
 "Set the head border bottom size of the matches table. 2px is the default "
 "value."
@@ -889,7 +889,7 @@ msgstr ""
 "Lege die untere Rahmenbreite des Tabellenkopfs der Turniertabelle fest. 2 px "
 "ist der Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:259
+#: includes/class-mtrn-matches-admin-meta-boxes.php:265
 #| msgid ""
 #| "Set the inline border size of the matches table. 1px is the default value."
 msgid ""
@@ -910,7 +910,7 @@ msgstr ""
 "Lege die innere Rahmenbreite der Turniertabelle fest. 1 px ist der "
 "Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:249
+#: includes/class-mtrn-matches-admin-meta-boxes.php:255
 msgid "Set the padding around the matches table. 2px is the default value."
 msgstr ""
 "Lege den Außenabstand um die Spieletabelle fest. 2 px ist der Standardwert"
@@ -920,7 +920,7 @@ msgid "Set the padding around the tournament table. 2px is the default value."
 msgstr ""
 "Lege den Außenabstand um die Turniertabelle fest. 2 px ist der Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:250
+#: includes/class-mtrn-matches-admin-meta-boxes.php:256
 msgid ""
 "Set the padding inside the matches table cells. 5px is the default value."
 msgstr ""
@@ -934,7 +934,7 @@ msgstr ""
 "Lege den Innenabstand innerhalb der Zellen der Turniertabelle fest. 5 px ist "
 "der Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:258
+#: includes/class-mtrn-matches-admin-meta-boxes.php:264
 #| msgid ""
 #| "Set the block border size of the matches table. 1px is the default value."
 msgid ""
@@ -953,13 +953,13 @@ msgid ""
 msgstr ""
 "Lege die Rahmenbreite der Turniertabelle fest. 1 px ist der Standardwert"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:251
+#: includes/class-mtrn-matches-admin-meta-boxes.php:257
 msgid "Set the top padding of the headlines. 9px is the default value."
 msgstr ""
 "Lege den oberen Innenabstand der Überschriften fest. 9 px ist der "
 "Standardwert"
 
-#: includes/class-mtrn-admin-utilities.php:724
+#: includes/class-mtrn-admin-utilities.php:769
 msgid "Shortcode copied to clipboard!"
 msgstr "Shortcode in die Zwischenablage kopiert!"
 
@@ -972,12 +972,12 @@ msgstr "Shortcode-Generator"
 msgid "Slovenščina / Slovenian"
 msgstr "Slowenisch"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:248
+#: includes/class-mtrn-matches-admin-meta-boxes.php:254
 #: includes/class-mtrn-table-admin-meta-boxes.php:175
 msgid "Spacing & Layout"
 msgstr "Abstände & Layout"
 
-#: includes/class-mtrn-admin-notices.php:91
+#: includes/class-mtrn-admin-notices.php:95
 msgid ""
 "Standard web server logging (IP, browser, referrer) may occur when serving "
 "content"
@@ -988,15 +988,15 @@ msgstr ""
 msgid "Suppress Court"
 msgstr "Spielfeld ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:218
+#: includes/class-mtrn-matches-admin-meta-boxes.php:221
 msgid "Suppress Extra Time"
 msgstr "Verlängerung ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:196
+#: includes/class-mtrn-matches-admin-meta-boxes.php:197
 msgid "Suppress Group"
 msgstr "Gruppe ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:234
+#: includes/class-mtrn-matches-admin-meta-boxes.php:239
 msgid "Suppress Headlines in Final Matches"
 msgstr "Überschriften in Finalspielen ausblenden"
 
@@ -1016,34 +1016,34 @@ msgstr "Anzahl der Spiele ausblenden"
 msgid "Suppress Num Wins, Losses, etc."
 msgstr "Anzahl der Siege, Niederlagen usw. ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:226
+#: includes/class-mtrn-matches-admin-meta-boxes.php:230
 msgid "Suppress Penalties"
 msgstr "Elfmeterschießen ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:204
+#: includes/class-mtrn-matches-admin-meta-boxes.php:206
 msgid "Suppress Referee"
 msgstr "Schiedsrichter ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:212
+#: includes/class-mtrn-matches-admin-meta-boxes.php:215
 msgid "Suppress Times"
 msgstr "Zeiten ausblenden"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:260
+#: includes/class-mtrn-matches-admin-meta-boxes.php:266
 #: includes/class-mtrn-table-admin-meta-boxes.php:185
 msgid "Table Head Border Bottom Size (px)"
 msgstr "Untere Rahmenbreite des Tabellenkopfs (px)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:267
+#: includes/class-mtrn-matches-admin-meta-boxes.php:273
 #: includes/class-mtrn-table-admin-meta-boxes.php:192
 msgid "Table Head Bottom Border Color"
 msgstr "Farbe des unteren Rahmens des Tabellenkopfs"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:259
+#: includes/class-mtrn-matches-admin-meta-boxes.php:265
 #: includes/class-mtrn-table-admin-meta-boxes.php:184
 msgid "Table Left and Right Border Size (px)"
 msgstr "Größe des linken und rechten Tabellenrandes (px)"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:249
+#: includes/class-mtrn-matches-admin-meta-boxes.php:255
 #: includes/class-mtrn-table-admin-meta-boxes.php:176
 msgid "Table Padding (px)"
 msgstr "Tabellenaußenabstand (px)"
@@ -1056,32 +1056,32 @@ msgstr "Tabelleneinstellungen"
 msgid "Table Settings & Preview"
 msgstr "Tabelleneinstellungen & Vorschau"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:258
+#: includes/class-mtrn-matches-admin-meta-boxes.php:264
 #: includes/class-mtrn-table-admin-meta-boxes.php:183
 msgid "Table Top and Bottom Border Size (px)"
 msgstr "Größe des oberen und unteren Tabellenrandes (px)"
 
-#: includes/class-mtrn-admin-utilities.php:680
+#: includes/class-mtrn-admin-utilities.php:725
 #| msgid "Team "
 msgid "Team"
 msgstr "Team"
 
 #. %s is the saved team name
-#: includes/class-mtrn-admin-utilities.php:923
+#: includes/class-mtrn-admin-utilities.php:970
 #, php-format
 msgid "Team %s (saved)"
 msgstr "Team %s (gespeichert)"
 
-#: includes/class-mtrn-admin-notices.php:98
+#: includes/class-mtrn-admin-notices.php:102
 msgid "Terms of Service"
 msgstr "Allgemeine Geschäftsbedingungen"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:264
+#: includes/class-mtrn-matches-admin-meta-boxes.php:270
 #: includes/class-mtrn-table-admin-meta-boxes.php:189
 msgid "Text Color"
 msgstr "Textfarbe"
 
-#: includes/class-mtrn-admin-notices.php:90
+#: includes/class-mtrn-admin-notices.php:94
 msgid "The embedded widgets do not use cookies or tracking scripts"
 msgstr "Die verwendeten Widgets verwenden keine Cookies oder Tracking Scripte"
 
@@ -1111,23 +1111,20 @@ msgstr ""
 "Das Widget verwendet alle Stil-Einstellungen, die für die ausgewählte "
 "Turniertabelle konfiguriert sind. Breite und Höhe werden automatisch bestimmt"
 
-#: includes/class-mtrn-admin-notices.php:75
+#: includes/class-mtrn-admin-notices.php:79
 msgid "Third-Party Service Information"
 msgstr "Drittanbieterinformationen"
 
-#: includes/class-mtrn-admin-notices.php:89
+#: includes/class-mtrn-admin-notices.php:93
 msgid "This plugin does not track users or collect personal data"
 msgstr "Dieses Plugin verwendet keine persönlichen Daten der Nutzer"
 
-#: includes/class-mtrn-admin-notices.php:78
+#: includes/class-mtrn-admin-notices.php:82
 msgid ""
-"This plugin embeds tournament content from meinturnierplan.de. When you add "
-"tournament displays to your pages, users will connect directly to "
-"meinturnierplan.de servers."
+"This plugin embeds tournament content from language-specific service domains."
+" When you add tournament displays to your pages, users will connect directly "
+"to the domain that matches the selected tournament language."
 msgstr ""
-"Dieses Plugin verwendet Turnierdaten von meinturnierplan.de. Wenn sie "
-"Turnierinhalte einbinden werden ihre Benutzer direkt mit den Servern von "
-"meinturnierplan.de verbunden, damit diese Inhalte ausgeliefert werden können."
 
 #: includes/class-mtrn-table-widget.php:86
 #: includes/class-mtrn-matches-widget.php:84
@@ -1139,7 +1136,7 @@ msgstr "Überschrift:"
 msgid "Tournament ID"
 msgstr "Turnier-ID"
 
-#: includes/class-mtrn-admin-notices.php:83
+#: includes/class-mtrn-admin-notices.php:87
 msgid ""
 "Tournament ID only (when you add a tournament via shortcode, block, or "
 "widget)"
@@ -1152,11 +1149,11 @@ msgstr ""
 msgid "Tournament Table"
 msgstr "Turniertabelle"
 
-#: includes/class-mtrn-table-renderer.php:249
+#: includes/class-mtrn-table-renderer.php:254
 msgid "Tournament Table Preview"
 msgstr "Vorschau der Turniertabelle"
 
-#: includes/class-mtrn-matches-admin-meta-boxes.php:242
+#: includes/class-mtrn-matches-admin-meta-boxes.php:248
 #: includes/class-mtrn-table-admin-meta-boxes.php:169
 msgid "Typography"
 msgstr "Typografie"
@@ -1173,15 +1170,15 @@ msgstr "Turnierspielliste anzeigen"
 msgid "View Tournament Table"
 msgstr "Turniertabelle anzeigen"
 
-#: includes/class-mtrn-admin-notices.php:96
+#: includes/class-mtrn-admin-notices.php:100
 msgid "Visit Website"
 msgstr "Webseite besuchen"
 
-#: includes/class-mtrn-admin-notices.php:81
+#: includes/class-mtrn-admin-notices.php:85
 msgid "What data is sent:"
 msgstr "Welche Daten gesendet werden:"
 
-#: includes/class-mtrn-table-renderer.php:68
-#: includes/class-mtrn-matches-renderer.php:68
+#: includes/class-mtrn-table-renderer.php:72
+#: includes/class-mtrn-matches-renderer.php:72
 msgid "Your browser does not support the tournament widget."
 msgstr "Dein Browser unterstützt das Turnier-Widget nicht"

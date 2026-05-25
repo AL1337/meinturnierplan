@@ -3,6 +3,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
+ * @version 1.1.0
  */
 
 (function($) {
@@ -12,6 +13,7 @@
   function checkConditionalFields(tournamentId) {
     var config = window.mtrnMatchesPreviewConfig || {};
     var nonce = config.checkOptionNonce || '';
+    var selectedLanguage = $('#mtrn_language').val() || 'en';
 
     if (!tournamentId) {
       // Hide all conditional fields if no tournament ID
@@ -31,6 +33,7 @@
       data: {
         action: 'mtrn_check_tournament_option',
         tournament_id: tournamentId,
+        language: selectedLanguage,
         option_name: 'showCourts',
         nonce: nonce
       },
@@ -61,6 +64,7 @@
       data: {
         action: 'mtrn_check_tournament_option',
         tournament_id: tournamentId,
+        language: selectedLanguage,
         option_name: 'showGroups',
         nonce: nonce
       },
@@ -91,6 +95,7 @@
       data: {
         action: 'mtrn_check_tournament_option',
         tournament_id: tournamentId,
+        language: selectedLanguage,
         option_name: 'showReferees',
         nonce: nonce
       },
@@ -121,6 +126,7 @@
       data: {
         action: 'mtrn_check_tournament_option',
         tournament_id: tournamentId,
+        language: selectedLanguage,
         option_name: 'finalMatches',
         nonce: nonce
       },

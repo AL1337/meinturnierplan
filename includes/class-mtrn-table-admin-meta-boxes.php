@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -151,7 +151,7 @@ class MTRN_Admin_Table_Meta_Boxes {
 
     // Basic Settings Group
     MTRN_Admin_Utilities::render_group_header(__('Basic Settings', 'meinturnierplan'));
-    MTRN_Admin_Utilities::render_text_field('mtrn_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
+    MTRN_Admin_Utilities::render_text_field('mtrn_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from your language domain (e.g., 1753883027)', 'meinturnierplan'));
     MTRN_Admin_Utilities::render_select_field('mtrn_language', __('Language', 'meinturnierplan'), $meta_values['language'], MTRN_Admin_Utilities::get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
 
     // Note: Width and height are now automatically determined by the iframe content via postMessage

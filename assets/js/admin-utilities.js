@@ -5,6 +5,7 @@
  * 
  * @package MeinTurnierplan
  * @since   1.0.0
+ * @version 1.1.0
  */
 
 (function($) {
@@ -155,10 +156,12 @@
       }
 
       var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
+      var selectedLanguage = $("#" + config.fieldPrefix + "language").val() || 'en';
 
       $.post(ajaxurl, {
         action: ajaxAction,
         tournament_id: tournamentId,
+        language: selectedLanguage,
         force_refresh: options.forceRefresh,
         nonce: options.nonce
       }, function(response) {
@@ -334,10 +337,12 @@
       }
 
       var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
+      var selectedLanguage = $("#" + config.fieldPrefix + "language").val() || 'en';
 
       $.post(ajaxurl, {
         action: ajaxAction,
         tournament_id: tournamentId,
+        language: selectedLanguage,
         force_refresh: options.forceRefresh,
         nonce: options.nonce
       }, function(response) {
