@@ -5,6 +5,7 @@
  * 
  * @package MeinTurnierplan
  * @since   1.0.0
+ * @version 1.1.0
  */
 
 (function($) {
@@ -91,10 +92,17 @@
     // Show temporary notification messages
     showTemporaryMessage: function(message, type, targetElement) {
       var messageClass = type === 'success' ? 'notice-success' : type === 'error' ? 'notice-error' : 'notice-info';
-      var $message = $('<div class="notice ' + messageClass + ' is-dismissible" style="margin: 10px 0;"><p>' + message + '</p></div>');
+      var $message = $('<div class="notice ' + messageClass + ' is-dismissible mtrn-temporary-message"><p>' + message + '</p></div>');
+      var $target = targetElement ? $(targetElement) : $();
+      var $tableRow = $target.length ? $target.closest('tr') : $();
+      var $messageRow = $();
 
-      if (targetElement) {
-        $(targetElement).after($message);
+      if ($tableRow.length) {
+        $messageRow = $('<tr class="mtrn-temporary-message-row"><td colspan="2"></td></tr>');
+        $messageRow.find('td').append($message);
+        $tableRow.after($messageRow);
+      } else if (targetElement) {
+        $target.after($message);
       } else {
         // Default to showing after the first form table
         $('.form-table').first().after($message);
@@ -103,7 +111,11 @@
       // Auto-dismiss after 3 seconds
       setTimeout(function() {
         $message.fadeOut(function() {
-          $message.remove();
+          if ($messageRow.length) {
+            $messageRow.remove();
+          } else {
+            $message.remove();
+          }
         });
       }, 3000);
     },
@@ -155,10 +167,12 @@
       }
 
       var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
+      var selectedLanguage = $("#" + config.fieldPrefix + "language").val() || 'en';
 
       $.post(ajaxurl, {
         action: ajaxAction,
         tournament_id: tournamentId,
+        language: selectedLanguage,
         force_refresh: options.forceRefresh,
         nonce: options.nonce
       }, function(response) {
@@ -334,10 +348,12 @@
       }
 
       var ajaxAction = options.forceRefresh ? options.ajaxActions[1] : options.ajaxActions[0];
+      var selectedLanguage = $("#" + config.fieldPrefix + "language").val() || 'en';
 
       $.post(ajaxurl, {
         action: ajaxAction,
         tournament_id: tournamentId,
+        language: selectedLanguage,
         force_refresh: options.forceRefresh,
         nonce: options.nonce
       }, function(response) {

@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -175,6 +175,7 @@ class MTRN_Matches_Ajax_Handler {
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
     $force_refresh = isset($_POST['force_refresh']) ? (bool)$_POST['force_refresh'] : false;
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
@@ -182,7 +183,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     // Fetch groups from external API (with caching)
-    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, $force_refresh);
+    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, $force_refresh, $language);
 
     wp_send_json_success($groups_data);
   }
@@ -197,6 +198,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
@@ -204,7 +206,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     // Force refresh groups from external API
-    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, true);
+    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, true, $language);
 
     // Add refreshed flag to the response
     $groups_data['refreshed'] = true;
@@ -222,6 +224,7 @@ class MTRN_Matches_Ajax_Handler {
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
     $force_refresh = isset($_POST['force_refresh']) ? (bool)$_POST['force_refresh'] : false;
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('teams' => array()));
@@ -229,7 +232,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     // Fetch teams from external API (with caching)
-    $teams = MTRN_Admin_Utilities::fetch_tournament_teams($tournament_id, $force_refresh);
+    $teams = MTRN_Admin_Utilities::fetch_tournament_teams($tournament_id, $force_refresh, $language);
 
     wp_send_json_success(array('teams' => $teams));
   }
@@ -244,6 +247,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('teams' => array()));
@@ -251,7 +255,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     // Force refresh teams from external API
-    $teams = MTRN_Admin_Utilities::fetch_tournament_teams($tournament_id, true);
+    $teams = MTRN_Admin_Utilities::fetch_tournament_teams($tournament_id, true, $language);
 
     // Add refreshed flag to the response
     wp_send_json_success(array('teams' => $teams, 'refreshed' => true));
@@ -315,6 +319,7 @@ class MTRN_Matches_Ajax_Handler {
     // Get parameters
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
     $option_name = isset($_POST['option_name']) ? sanitize_text_field(wp_unslash($_POST['option_name'])) : '';
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id) || empty($option_name)) {
       wp_send_json_error(array('message' => 'Missing required parameters'));
@@ -322,7 +327,7 @@ class MTRN_Matches_Ajax_Handler {
     }
 
     // Use the utility function to fetch the option
-    $option_value = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, $option_name);
+    $option_value = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, $option_name, $language);
 
     // Return the value
     wp_send_json_success(array(

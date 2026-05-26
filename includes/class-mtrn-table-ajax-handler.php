@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -134,6 +134,7 @@ class MTRN_Table_Ajax_Handler {
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
     $force_refresh = isset($_POST['force_refresh']) ? (bool)$_POST['force_refresh'] : false;
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
@@ -141,7 +142,7 @@ class MTRN_Table_Ajax_Handler {
     }
 
     // Fetch groups from external API (with caching)
-    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, $force_refresh);
+    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, $force_refresh, $language);
 
     wp_send_json_success($groups_data);
   }
@@ -156,6 +157,7 @@ class MTRN_Table_Ajax_Handler {
     }
 
     $tournament_id = isset($_POST['tournament_id']) ? sanitize_text_field(wp_unslash($_POST['tournament_id'])) : '';
+    $language = isset($_POST['language']) ? sanitize_text_field(wp_unslash($_POST['language'])) : 'en';
 
     if (empty($tournament_id)) {
       wp_send_json_success(array('groups' => array(), 'hasFinalRound' => false));
@@ -163,7 +165,7 @@ class MTRN_Table_Ajax_Handler {
     }
 
     // Force refresh groups from external API
-    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, true);
+    $groups_data = MTRN_Admin_Utilities::fetch_tournament_groups($tournament_id, true, $language);
 
     // Add refreshed flag to the response
     $groups_data['refreshed'] = true;

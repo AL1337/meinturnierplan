@@ -2,9 +2,9 @@
 Contributors: meinturnierplan, ramzesimus
 Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,27 +12,39 @@ Display tournament tables and match lists using custom post types, supporting Gu
 
 == Description ==
 
-MeinTurnierplan allows you to display tournament tables and match schedules from meinturnierplan.de on your WordPress site. Perfect for sports clubs, leagues, and tournament organizers who want to showcase standings, rankings, and match schedules on their WordPress website.
+MeinTurnierplan allows you to display tournament tables and match schedules from the MeinTurnierplan language-specific service domains on your WordPress site. Perfect for sports clubs, leagues, and tournament organizers who want to showcase standings, rankings, and match schedules on their WordPress website.
 
 == External Services ==
 
-**MeinTurnierplan.de Service**
+**MeinTurnierplan Service (Language Mirrors)**
 
-This plugin uses [MeinTurnierplan.de](https://www.meinturnierplan.de/) for both displaying tournament content and retrieving tournament configuration data.
+This plugin uses language-specific service domains for both displaying tournament content and retrieving tournament configuration data.
+
+**Domain selection by language:**
+
+* German (`de`) -> `https://www.meinturnierplan.de`
+* English (`en`) -> `https://tournamentbase.com`
+* French (`fr`) -> `https://tournoiplus.fr`
+* Polish (`pl`) -> `https://turniej.pl`
+* Spanish (`es`) -> `https://torneo.es`
+* Italian (`it`) -> `https://torneo.it`
+* Slovenian (`sl`) -> fallback `https://www.meinturnierplan.de`
+* Croatian (`hr`) -> fallback `https://www.meinturnierplan.de`
+* Turkish (`tr`) -> fallback `https://www.meinturnierplan.de`
 
 **What it does:**
 
 1. **Frontend Display (Public-Facing):**
    - Displays tournament tables and match schedules to site visitors via iframe embeds
    - **Endpoints Used:**
-     * `https://www.meinturnierplan.de/displayTable.php` (for tournament standings)
-     * `https://www.meinturnierplan.de/displayMatches.php` (for match schedules)
+    * `https://{language-domain}/displayTable.php` (for tournament standings)
+    * `https://{language-domain}/displayMatches.php` (for match schedules)
    - **When:** When a visitor loads a page with tournament content (shortcode, block, or widget)
 
 2. **Admin Configuration (Admin Area Only):**
    - Provides tournament structure data via JSON API to help administrators configure displays
    - **Endpoint Used:**
-     * `https://www.meinturnierplan.de/json/json.php` (tournament structure data)
+    * `https://{language-domain}/json/json.php` (tournament structure data)
    - **When:** Only in WordPress admin area when:
      * Administrator enters a Tournament ID in settings
      * Administrator clicks "Refresh Groups" or similar refresh buttons
@@ -49,8 +61,7 @@ This plugin uses [MeinTurnierplan.de](https://www.meinturnierplan.de/) for both 
    - **NOT used on frontend:** JSON API is only contacted from WordPress admin area, never from public-facing pages
 
 * **Data Sent:** Tournament ID only (no personal data, no user information)
-* [Privacy Policy](https://www.meinturnierplan.de/legal.php?t=privacy&v=2019-04-20&l=en)
-* [Terms of Service](https://www.meinturnierplan.de/legal.php?t=tou&v=2019-04-20&l=en)
+* Privacy Policy and Terms are available on the selected language domain under `/legal.php`, e.g. `https://www.meinturnierplan.de/legal.php`
 
 **What the Embedded Widgets Collect:**
 
@@ -58,12 +69,12 @@ The embedded widgets:
 
 * **NO tracking scripts** - The embedded widgets do not use Google Analytics or any other analytics services
 * **NO cookies** - The widgets do not set any cookies in users' browsers
-* **NO third-party resources** - The widgets only load CSS styling from meinturnierplan.de (no Google Fonts, AdSense, or other external services)
+* **NO third-party resources** - The widgets only load CSS styling from the selected service domain (no Google Fonts, AdSense, or other external services)
 * **Communication:** The widgets only use JavaScript to send iframe dimensions to your page for proper display sizing (via postMessage API)
 
 **What Data May Be Collected:**
 
-When users view embedded tournament content, meinturnierplan.de's web server may automatically log:
+When users view embedded tournament content, the selected service domain's web server may automatically log:
 
 * IP addresses (standard web server logs)
 * Browser type and version (from User-Agent header)
@@ -82,10 +93,10 @@ This is standard web server logging and does not involve cookies, tracking scrip
 * Send personal or sensitive data to any server
 
 **Data Transmission:**
-The only data sent by this plugin is the Tournament ID to meinturnierplan.de when you explicitly add tournament content (via shortcode, block, or widget) to display on your pages.
+The only data sent by this plugin is the Tournament ID to the selected service domain when you explicitly add tournament content (via shortcode, block, or widget) to display on your pages.
 
 **Embedded Widget Behavior:**
-The embedded widgets from meinturnierplan.de:
+The embedded widgets from the selected service domain:
 
 * Do NOT use tracking scripts (no Google Analytics in widgets)
 * Do NOT set cookies
@@ -93,7 +104,7 @@ The embedded widgets from meinturnierplan.de:
 * Only communicate iframe dimensions back to your page for proper display
 
 **Standard Web Server Logging:**
-Like any web resource, meinturnierplan.de's servers may log standard HTTP request data (IP address, browser type, referrer, timestamp) when serving the embedded content. This is standard practice for all web servers and does not involve user tracking or cookies.
+Like any web resource, the selected service domain's servers may log standard HTTP request data (IP address, browser type, referrer, timestamp) when serving the embedded content. This is standard practice for all web servers and does not involve user tracking or cookies.
 
 **No Consent Required:**
 Because the embedded widgets do not use cookies, tracking scripts, or persistent user identification, no additional cookie consent is required beyond standard web server logging disclosure in your privacy policy.
@@ -108,6 +119,9 @@ The plugin is available in the following languages:
 * French (Français)
 * Italian (Italiano)
 * Polish (Polski)
+* Croatian (Hrvatski)
+* Slovenian (Slovenščina)
+* Turkish (Türkçe)
 
 = Key Features =
 
@@ -269,6 +283,12 @@ Display Options:
 
 == Changelog ==
 
+= 1.1.0 =
+* Tweak - WordPress 7.0 compatibility updates
+* Tweak - Use language-specific domains for embeds and API requests
+* Tweak - Update plugin description and readme with new features and external service information
+* Tweak - Update translations
+
 = 1.0.5 =
 * Fix - Fixes German plugin description placement
 
@@ -289,6 +309,10 @@ Display Options:
 
 == Upgrade Notice ==
 
+= 1.1.0 =
+* WordPress 7.0 compatibility improvements, language-specific service domains, and updated documentation/translations.
+
+
 = 1.0.3 =
 * Fixes incorrect plugin version
 
@@ -299,7 +323,7 @@ Display Options:
 * Added translations for multiple languages
 
 = 1.0.0 =
-Initial release of MeinTurnierplan. Display tournament tables and match schedules from meinturnierplan.de on your WordPress site.
+Initial release of MeinTurnierplan. Display tournament tables and match schedules on your WordPress site.
 
 == Development ==
 

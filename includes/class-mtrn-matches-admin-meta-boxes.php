@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -159,7 +159,7 @@ class MTRN_Admin_Matches_Meta_Boxes {
 
     // Basic Settings Group
     MTRN_Admin_Utilities::render_group_header(__('Basic Settings', 'meinturnierplan'));
-    MTRN_Admin_Utilities::render_text_field('mtrn_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from meinturnierplan.de (e.g., 1753883027)', 'meinturnierplan'));
+    MTRN_Admin_Utilities::render_text_field('mtrn_tournament_id', __('Tournament ID', 'meinturnierplan'), $meta_values['tournament_id'], __('Enter the tournament ID from your language domain (e.g., 1753883027)', 'meinturnierplan'));
     MTRN_Admin_Utilities::render_select_field('mtrn_language', __('Language', 'meinturnierplan'), $meta_values['language'], MTRN_Admin_Utilities::get_language_options(), __('Select the language for the tournament table display.', 'meinturnierplan'));
 
     // Note: Width and height are now automatically determined by the iframe content via postMessage
@@ -189,7 +189,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['sf'],
       __('Enable suppression of court information in the matches table.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'showCourts'
+      'showCourts',
+      $meta_values['language']
     );
     MTRN_Admin_Utilities::render_conditional_checkbox_field(
       'mtrn_sg',
@@ -197,7 +198,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['sg'],
       __('Enable suppression of group information in the matches table.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'showGroups'
+      'showGroups',
+      $meta_values['language']
     );
     MTRN_Admin_Utilities::render_conditional_checkbox_field(
       'mtrn_sr',
@@ -205,7 +207,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['sr'],
       __('Enable suppression of referee information in the matches table.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'showReferees'
+      'showReferees',
+      $meta_values['language']
     );
     MTRN_Admin_Utilities::render_checkbox_field(
       'mtrn_st',
@@ -219,7 +222,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['se'],
       __('Enable suppression of extra time information in the final matches.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'finalMatches'
+      'finalMatches',
+      $meta_values['language']
     );
     MTRN_Admin_Utilities::render_conditional_checkbox_field(
       'mtrn_sp',
@@ -227,7 +231,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['sp'],
       __('Enable suppression of penalty information in the final matches.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'finalMatches'
+      'finalMatches',
+      $meta_values['language']
     );
     MTRN_Admin_Utilities::render_conditional_checkbox_field(
       'mtrn_sh',
@@ -235,7 +240,8 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $meta_values['sh'],
       __('Enable suppression of headlines in the final matches.', 'meinturnierplan'),
       $meta_values['tournament_id'],
-      'finalMatches'
+      'finalMatches',
+      $meta_values['language']
     );
 
     // Typography Group
@@ -310,12 +316,12 @@ class MTRN_Admin_Matches_Meta_Boxes {
     $has_final_matches = false;
 
     if (!empty($tournament_id)) {
-      $show_courts = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showCourts') === true;
-      $show_groups = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showGroups') === true;
-      $show_referees = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showReferees') === true;
+      $show_courts = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showCourts', $meta_values['language']) === true;
+      $show_groups = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showGroups', $meta_values['language']) === true;
+      $show_referees = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'showReferees', $meta_values['language']) === true;
 
       // Check if finalMatches exists (not null and not undefined)
-      $final_matches = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'finalMatches');
+      $final_matches = MTRN_Admin_Utilities::fetch_tournament_option($tournament_id, 'finalMatches', $meta_values['language']);
       $has_final_matches = ($final_matches !== null);
     }
 
