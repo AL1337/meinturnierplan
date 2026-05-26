@@ -283,6 +283,12 @@ Display Options:
 
 == Changelog ==
 
+= 1.1.0 =
+* Tweak - WordPress 7.0 compatibility updates
+* Tweak - Use language-specific domains for embeds and API requests
+* Tweak - Update plugin description and readme with new features and external service information
+* Tweak - Update translations
+
 = 1.0.5 =
 * Fix - Fixes German plugin description placement
 
@@ -302,6 +308,10 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* WordPress 7.0 compatibility improvements, language-specific service domains, and updated documentation/translations.
+
 
 = 1.0.3 =
 * Fixes incorrect plugin version
