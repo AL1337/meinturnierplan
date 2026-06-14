@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 // Prevent direct access
@@ -543,9 +543,9 @@ class MTRN_Admin_Utilities {
 
     // Check if finalRankTable exists and has valid final ranking data
     if (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && count($data['finalRankTable']) > 0) {
-      // Verify it contains valid ranking objects with rank and teamId
+      // Verify it contains valid ranking objects with rank and participant (schema v5)
       $first_entry = $data['finalRankTable'][0];
-      if (is_array($first_entry) && isset($first_entry['rank']) && isset($first_entry['teamId'])) {
+      if (is_array($first_entry) && isset($first_entry['rank']) && isset($first_entry['participant'])) {
         $has_final_round = true;
       }
     }
@@ -610,9 +610,9 @@ class MTRN_Admin_Utilities {
 
     $teams = array();
 
-    // Check if teams exist and are not empty
-    if (isset($data['teams']) && is_array($data['teams']) && !empty($data['teams'])) {
-      $teams = $data['teams'];
+    // participants is a keyed object {id: {id, name, displayId, ...}} in schema v5
+    if (isset($data['participants']) && is_array($data['participants']) && !empty($data['participants'])) {
+      $teams = array_values($data['participants']);
     }
 
     // Cache the result (even if empty)
