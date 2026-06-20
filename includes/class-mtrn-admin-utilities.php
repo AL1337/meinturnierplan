@@ -541,9 +541,19 @@ class MTRN_Admin_Utilities {
       $groups = $data['groups'];
     }
 
-    // Check if finalRankTable exists and has valid final ranking data
-    if (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && count($data['finalRankTable']) > 0) {
-      // Verify it contains valid ranking objects with rank and participant (schema v5)
+    // Determine whether the tournament has a final round (schema v5).
+    //
+    // finalMatches is the most reliable signal: it is present in winner/loser
+    // mode and in every other final-phase mode, regardless of the hideRanks
+    // setting. finalRankTable / finalRankTables are only emitted when
+    // hideRanks == "none", so they are checked as a fallback for older data.
+    if (isset($data['finalMatches']) && is_array($data['finalMatches']) && count($data['finalMatches']) > 0) {
+      $has_final_round = true;
+    } elseif (isset($data['finalRankTables']) && is_array($data['finalRankTables']) && count($data['finalRankTables']) > 0) {
+      // Winner/loser mode (Modus 6) emits a finalRankTables array of tables.
+      $has_final_round = true;
+    } elseif (isset($data['finalRankTable']) && is_array($data['finalRankTable']) && count($data['finalRankTable']) > 0) {
+      // Verify it contains valid ranking objects with rank and participant.
       $first_entry = $data['finalRankTable'][0];
       if (is_array($first_entry) && isset($first_entry['rank']) && isset($first_entry['participant'])) {
         $has_final_round = true;

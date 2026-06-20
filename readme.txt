@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,10 @@ Display Options:
 
 == Changelog ==
 
+= 1.1.1 =
+* Tweak - Add compatibility with MeinTurnierplan tournament JSON schema v5 (keyed participants object, updated final ranking fields)
+* Tweak - Improve detection of the final round in the admin widget settings across all tournament modes
+
 = 1.1.0 =
 * Tweak - WordPress 7.0 compatibility updates
 * Tweak - Use language-specific domains for embeds and API requests
@@ -308,6 +312,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+* Adds support for the updated tournament data format (schema v5) and improves final-round detection in the widget settings.
 
 = 1.1.0 =
 * WordPress 7.0 compatibility improvements, language-specific service domains, and updated documentation/translations.
