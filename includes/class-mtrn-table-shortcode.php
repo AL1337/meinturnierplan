@@ -71,7 +71,8 @@ class MTRN_Table_Shortcode {
       'sl' => '0', // Suppress logos
       'sn' => '0', // Suppress num matches
       'bm' => '0', // Projector presentation
-      'nav' => '0' // Navigation for groups
+      'nav' => '0', // Navigation for groups
+      's-wrap' => 'false' // Wrap long names; also makes the embed horizontally scrollable on small screens
     ), $atts, 'mtrn-table');
 
     // Map lang to setlang for internal processing

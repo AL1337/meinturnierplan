@@ -104,14 +104,9 @@ input[type="number"].regular-text {
   min-height: 200px;
 }
 
-/* Frontend iframe embed styling */
-.mtrn-embed-frame {
-  overflow: hidden;
-  min-width: 300px;
-  min-height: 150px;
-  border: none;
-  display: block;
-}
+/* Frontend embed styles (.mtrn-embed-frame / .mtrn-embed-responsive) live in
+   frontend.css, which is loaded both here in the admin (for the preview) and on
+   the public site. */
 
 /* Adjust preview for smaller screens within the column */
 @media (max-width: 1400px) {

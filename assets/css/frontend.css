@@ -1,0 +1,32 @@
+/**
+ * Frontend embed styles
+ * Mein Turnierplan Plugin
+ *
+ * Loaded on the public site and inside the admin preview. Keep this limited to
+ * what the rendered iframe embed needs; admin UI styles live in style.css.
+ */
+
+/* Frontend iframe embed styling */
+.mtrn-embed-frame {
+  overflow: hidden;
+  min-width: 300px;
+  min-height: 150px;
+  border: none;
+  display: block;
+}
+
+/* Responsive embed wrapper: lets a wide table scroll horizontally on small
+   screens instead of being clipped. The iframe fills the wrapper (min-width)
+   yet can grow to its content width, in which case the wrapper scrolls. */
+.mtrn-embed-responsive {
+  overflow-x: auto;
+  /* Only ever scroll horizontally. Without an explicit value here, setting
+     overflow-x to auto promotes overflow-y to auto too, producing a spurious
+     vertical scrollbar. */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mtrn-embed-responsive .mtrn-embed-frame {
+  min-width: 100%;
+}

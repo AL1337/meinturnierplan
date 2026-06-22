@@ -75,7 +75,27 @@ class MTRN_Table_Renderer {
       __('Go to Tournament.', 'meinturnierplan')
     );
 
+    // When wrapping is enabled, wrap the iframe in a horizontally scrollable
+    // container. The iframe keeps its content-derived pixel width (set via
+    // postMessage), so the full table renders without internal clipping while
+    // the wrapper provides a single clean horizontal scroll on screens narrower
+    // than the table.
+    if ($this->is_wrap_enabled($atts)) {
+      $iframe_html = '<div class="mtrn-embed-responsive">' . $iframe_html . '</div>';
+    }
+
     return $iframe_html;
+  }
+
+  /**
+   * Whether the s-wrap shortcode attribute is enabled
+   */
+  private function is_wrap_enabled($atts) {
+    if (!isset($atts['s-wrap'])) {
+      return false;
+    }
+    $value = strtolower((string) $atts['s-wrap']);
+    return $value === 'true' || $value === '1';
   }
 
   /**
@@ -95,8 +115,10 @@ class MTRN_Table_Renderer {
       }
     }
 
-    // Add wrap=false parameter
-    $params['s[wrap]'] = 'false';
+    // Add wrap parameter. Off by default for backward compatibility. When on,
+    // long team names reflow instead of forcing a wide, clipped layout, and the
+    // embed is wrapped in a horizontally scrollable container (see render above).
+    $params['s[wrap]'] = $this->is_wrap_enabled($atts) ? 'true' : 'false';
 
     // Add sw parameter if suppress_wins is enabled
     $suppress_wins = '';

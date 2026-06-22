@@ -55,6 +55,14 @@ class MTRN_Assets {
           MTRN_PLUGIN_VERSION
         );
 
+        // Enqueue frontend embed styles so the admin preview matches the site
+        wp_enqueue_style(
+          'mtrn-frontend-styles',
+          MTRN_PLUGIN_URL . 'assets/css/frontend.css',
+          array(),
+          MTRN_PLUGIN_VERSION
+        );
+
         // Enqueue jQuery (already available in admin)
         wp_enqueue_script('jquery');
 
@@ -92,6 +100,15 @@ class MTRN_Assets {
    * Enqueue frontend scripts and styles
    */
   public function enqueue_frontend_scripts() {
+    // Enqueue frontend embed styles (e.g. the responsive embed wrapper). Admin
+    // UI styles in style.css are intentionally not loaded on the frontend.
+    wp_enqueue_style(
+      'mtrn-frontend-styles',
+      MTRN_PLUGIN_URL . 'assets/css/frontend.css',
+      array(),
+      MTRN_PLUGIN_VERSION
+    );
+
     // Debug: Always enqueue for testing (remove this later)
     wp_enqueue_script(
       'mtrn-frontend-scripts',
