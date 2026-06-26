@@ -80,6 +80,7 @@ class MTRN_Matches_Shortcode {
       'sp' => '0',
       'sh' => '0',
       'gamenumbers' => '',
+      's-wrap' => 'false', // Wrap long names; also makes the embed horizontally scrollable on small screens
     ), $atts, 'mtrn-matches');
 
     // Map lang to setlang for internal processing

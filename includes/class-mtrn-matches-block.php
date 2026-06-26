@@ -171,6 +171,11 @@ class MTRN_Matches_Gutenberg_Block {
       }
     }
 
+    // Responsive layout maps to the s-wrap attribute
+    if (get_post_meta($table_id, '_mtrn_responsive', true) === '1') {
+      $attributes['s-wrap'] = 'true';
+    }
+
     // Get language setting
     $language = get_post_meta($table_id, '_mtrn_language', true);
     if (!empty($language)) {

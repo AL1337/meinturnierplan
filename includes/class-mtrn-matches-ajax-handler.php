@@ -159,6 +159,9 @@ class MTRN_Matches_Ajax_Handler {
       $atts['sh'] = '0';
     }
 
+    // Add s-wrap parameter (always send to prevent post meta fallback)
+    $atts['s-wrap'] = (!empty($data['responsive']) && $data['responsive'] === '1') ? 'true' : 'false';
+
     $html = $this->matches_renderer->render_matches_html($post_id, $atts);
 
     wp_send_json_success($html);
@@ -299,6 +302,7 @@ class MTRN_Matches_Ajax_Handler {
       'se' => isset($data['se']) ? sanitize_text_field($data['se']) : '0',
       'sp' => isset($data['sp']) ? sanitize_text_field($data['sp']) : '0',
       'sh' => isset($data['sh']) ? sanitize_text_field($data['sh']) : '0',
+      'responsive' => isset($data['responsive']) ? sanitize_text_field($data['responsive']) : '0',
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
       'participant' => isset($data['participant']) ? sanitize_text_field($data['participant']) : '-1',
