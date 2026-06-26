@@ -129,6 +129,7 @@ class MTRN_Admin_Table_Meta_Boxes {
       'suppress_num_matches' => '0',
       'projector_presentation' => '0',
       'navigation_for_groups' => '0',
+      'responsive' => '0',
       'language' => MTRN_Admin_Utilities::get_default_language(),
       'group' => '',
     );
@@ -164,6 +165,10 @@ class MTRN_Admin_Table_Meta_Boxes {
     MTRN_Admin_Utilities::render_checkbox_field('mtrn_suppress_num_matches', __('Suppress Num Matches', 'meinturnierplan'), $meta_values['suppress_num_matches'], __('Hide the number of matches from the tournament table.', 'meinturnierplan'));
     MTRN_Admin_Utilities::render_checkbox_field('mtrn_projector_presentation', __('Projector Presentation', 'meinturnierplan'), $meta_values['projector_presentation'], __('Enable projector presentation mode for the tournament table.', 'meinturnierplan'));
     MTRN_Admin_Utilities::render_checkbox_field('mtrn_navigation_for_groups', __('Navigation for Groups', 'meinturnierplan'), $meta_values['navigation_for_groups'], __('Enable navigation for groups in the tournament table.', 'meinturnierplan'));
+
+    // Responsive Group
+    MTRN_Admin_Utilities::render_group_header(__('Responsive', 'meinturnierplan'));
+    MTRN_Admin_Utilities::render_checkbox_field('mtrn_responsive', __('Responsive Layout', 'meinturnierplan'), $meta_values['responsive'], __('Wrap long team names and let the table scroll horizontally instead of being clipped on narrow screens (e.g. mobile).', 'meinturnierplan'));
 
     // Typography Group
     MTRN_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
@@ -290,6 +295,11 @@ class MTRN_Admin_Table_Meta_Boxes {
       $atts_array['nav'] = '1';
     }
 
+    // Add s-wrap parameter if responsive layout is enabled
+    if (!empty($meta_values['responsive']) && $meta_values['responsive'] === '1') {
+      $atts_array['s-wrap'] = 'true';
+    }
+
     return $atts_array;
   }
 
@@ -304,7 +314,7 @@ class MTRN_Admin_Table_Meta_Boxes {
       'mtrn_bg_color', 'mtrn_logo_size', 'mtrn_bg_opacity', 'mtrn_border_color',
       'mtrn_head_bottom_border_color', 'mtrn_even_bg_color', 'mtrn_even_bg_opacity',
       'mtrn_odd_bg_color', 'mtrn_odd_bg_opacity', 'mtrn_hover_bg_color', 'mtrn_hover_bg_opacity',
-      'mtrn_head_bg_color', 'mtrn_head_bg_opacity', 'mtrn_suppress_wins', 'mtrn_suppress_logos', 'mtrn_suppress_num_matches', 'mtrn_projector_presentation', 'mtrn_navigation_for_groups', 'mtrn_language', 'mtrn_group'
+      'mtrn_head_bg_color', 'mtrn_head_bg_opacity', 'mtrn_suppress_wins', 'mtrn_suppress_logos', 'mtrn_suppress_num_matches', 'mtrn_projector_presentation', 'mtrn_navigation_for_groups', 'mtrn_responsive', 'mtrn_language', 'mtrn_group'
     );
 
     // Include reusable admin JavaScript utilities
@@ -382,6 +392,11 @@ class MTRN_Admin_Table_Meta_Boxes {
     // Add nav parameter if navigation_for_groups is enabled
     if (!empty($meta_values['navigation_for_groups']) && $meta_values['navigation_for_groups'] === '1') {
       $shortcode .= ' nav="1"';
+    }
+
+    // Add s-wrap parameter if responsive layout is enabled
+    if (!empty($meta_values['responsive']) && $meta_values['responsive'] === '1') {
+      $shortcode .= ' s-wrap="true"';
     }
 
     // Add width and height parameters for iframe sizing
@@ -463,14 +478,14 @@ class MTRN_Admin_Table_Meta_Boxes {
       'inner_padding', 'text_color', 'main_color', 'bg_color', 'bg_opacity',
       'border_color', 'head_bottom_border_color', 'even_bg_color', 'even_bg_opacity',
       'odd_bg_color', 'odd_bg_opacity', 'hover_bg_color', 'hover_bg_opacity',
-      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups', 'language', 'group'
+      'head_bg_color', 'head_bg_opacity', 'logo_size', 'suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups', 'responsive', 'language', 'group'
     );
 
     foreach ($meta_fields as $field) {
       $post_field = 'mtrn_' . $field;
       $meta_key = '_mtrn_' . $field;
 
-      if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups'))) {
+      if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups', 'responsive'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);

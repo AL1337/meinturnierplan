@@ -118,6 +118,9 @@ class MTRN_Table_Ajax_Handler {
       $atts['nav'] = '0';
     }
 
+    // Add s-wrap parameter (always send to prevent post meta fallback)
+    $atts['s-wrap'] = (!empty($data['responsive']) && $data['responsive'] === '1') ? 'true' : 'false';
+
     $html = $this->table_renderer->render_table_html($post_id, $atts);
 
     wp_send_json_success($html);
@@ -204,6 +207,7 @@ class MTRN_Table_Ajax_Handler {
       'suppress_num_matches' => isset($data['suppress_num_matches']) ? sanitize_text_field($data['suppress_num_matches']) : '0',
       'projector_presentation' => isset($data['projector_presentation']) ? sanitize_text_field($data['projector_presentation']) : '0',
       'navigation_for_groups' => isset($data['navigation_for_groups']) ? sanitize_text_field($data['navigation_for_groups']) : '0',
+      'responsive' => isset($data['responsive']) ? sanitize_text_field($data['responsive']) : '0',
       'language' => isset($data['language']) ? sanitize_text_field($data['language']) : 'en',
       'group' => isset($data['group']) ? sanitize_text_field($data['group']) : '',
     );
