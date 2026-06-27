@@ -48,6 +48,7 @@
       suppress_num_matches: $("#mtrn_suppress_num_matches").is(":checked") ? "1" : "0",
       projector_presentation: $("#mtrn_projector_presentation").is(":checked") ? "1" : "0",
       navigation_for_groups: $("#mtrn_navigation_for_groups").is(":checked") ? "1" : "0",
+      responsive: $("#mtrn_responsive").is(":checked") ? "1" : "0",
       language: $("#mtrn_language").val(),
       group: $("#mtrn_group").val(),
       action: "mtrn_preview_table",

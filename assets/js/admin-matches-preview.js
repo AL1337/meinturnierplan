@@ -204,6 +204,7 @@
       se: ($("#mtrn_se").length && $("#mtrn_se").is(":visible") && $("#mtrn_se").is(":checked")) ? "1" : "0",
       sp: ($("#mtrn_sp").length && $("#mtrn_sp").is(":visible") && $("#mtrn_sp").is(":checked")) ? "1" : "0",
       sh: ($("#mtrn_sh").length && $("#mtrn_sh").is(":visible") && $("#mtrn_sh").is(":checked")) ? "1" : "0",
+      responsive: $("#mtrn_responsive").is(":checked") ? "1" : "0",
       language: $("#mtrn_language").val(),
       group: $("#mtrn_group").val(),
       participant: $("#mtrn_participant").val(),

@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 // Prevent direct access
@@ -135,6 +135,7 @@ class MTRN_Admin_Matches_Meta_Boxes {
       'se' => '0',
       'sp' => '0',
       'sh' => '0',
+      'responsive' => '0',
       'language' => MTRN_Admin_Utilities::get_default_language(),
       'group' => '',
       'participant' => '-1',
@@ -243,6 +244,10 @@ class MTRN_Admin_Matches_Meta_Boxes {
       'finalMatches',
       $meta_values['language']
     );
+
+    // Responsive Group
+    MTRN_Admin_Utilities::render_group_header(__('Responsive', 'meinturnierplan'));
+    MTRN_Admin_Utilities::render_checkbox_field('mtrn_responsive', __('Responsive Layout', 'meinturnierplan'), $meta_values['responsive'], __('Wrap long names and let the table scroll horizontally instead of being clipped on narrow screens (e.g. mobile).', 'meinturnierplan'));
 
     // Typography Group
     MTRN_Admin_Utilities::render_group_header(__('Typography', 'meinturnierplan'));
@@ -420,6 +425,11 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $atts_array['sh'] = '1';
     }
 
+    // Add s-wrap parameter if responsive layout is enabled
+    if (!empty($meta_values['responsive']) && $meta_values['responsive'] === '1') {
+      $atts_array['s-wrap'] = 'true';
+    }
+
     return $atts_array;
   }
 
@@ -537,6 +547,11 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $shortcode .= ' sh="1"';
     }
 
+    // Add s-wrap parameter if responsive layout is enabled
+    if (!empty($meta_values['responsive']) && $meta_values['responsive'] === '1') {
+      $shortcode .= ' s-wrap="true"';
+    }
+
     // Add width and height parameters for iframe sizing
     $shortcode .= ' width="' . esc_attr($meta_values['width']) . '" height="' . esc_attr($meta_values['height']) . '"';
 
@@ -649,6 +664,7 @@ class MTRN_Admin_Matches_Meta_Boxes {
       'se',
       'sp',
       'sh',
+      'responsive',
       'language',
       'group',
       'participant',
@@ -659,7 +675,7 @@ class MTRN_Admin_Matches_Meta_Boxes {
       $post_field = 'mtrn_' . $field;
       $meta_key = '_mtrn_' . $field;
 
-      if (in_array($field, array('projector_presentation', 'si', 'sf', 'st', 'sg', 'sr', 'se', 'sp', 'sh'))) {
+      if (in_array($field, array('projector_presentation', 'si', 'sf', 'st', 'sg', 'sr', 'se', 'sp', 'sh', 'responsive'))) {
         // Handle checkbox: if not checked, it won't be in $_POST
         $value = isset($_POST[$post_field]) ? '1' : '0';
         update_post_meta($post_id, $meta_key, $value);
