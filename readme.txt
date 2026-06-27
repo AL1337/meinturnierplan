@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -253,6 +253,7 @@ Display Options:
 * `sn` - Suppress number of matches (1 to hide)
 * `bm` - Projector/presentation mode (1 to enable)
 * `nav` - Enable group navigation (1 to enable)
+* `s-wrap` - Responsive layout: wrap long names and allow horizontal scrolling on narrow screens (true to enable)
 
 **Matches Shortcode Attributes:**
 
@@ -273,6 +274,7 @@ Display Options:
 * `sp` - Show participants (1 to show)
 * `sh` - Show headers (1 to show)
 * `bm` - Projector/presentation mode (1 to enable)
+* `s-wrap` - Responsive layout: wrap long names and allow horizontal scrolling on narrow screens (true to enable)
 
 == Screenshots ==
 
@@ -282,6 +284,11 @@ Display Options:
 4. Preview of the Tournament Match List in the backend.
 
 == Changelog ==
+
+= 1.2.0 =
+* Feature - Add responsive layout option for tournament tables and match lists. When enabled, long names wrap and the embed scrolls horizontally instead of being clipped on narrow screens (e.g. mobile)
+* Feature - Add new `s-wrap` shortcode attribute and a "Responsive" settings group with live preview for both post types
+* Tweak - Load frontend embed styles on the public site (previously only enqueued in the admin)
 
 = 1.1.1 =
 * Tweak - Add compatibility with MeinTurnierplan tournament JSON schema v5 (keyed participants object, updated final ranking fields)
@@ -312,6 +319,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+* Adds an optional responsive layout for tables and match lists so embeds adapt to mobile screens via the new `s-wrap` attribute / "Responsive" setting.
 
 = 1.1.1 =
 * Adds support for the updated tournament data format (schema v5) and improves final-round detection in the widget settings.
