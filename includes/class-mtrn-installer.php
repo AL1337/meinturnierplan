@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.0.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -121,11 +121,29 @@ class MTRN_Installer {
    * Clean up temporary data
    */
   private static function cleanup_temporary_data() {
-    // Clean up any transients or temporary data
-    delete_transient('mtrn_temporary_data');
+    // Clear cached tournament data fetched from the JSON API
+    self::delete_cached_tournament_data();
 
     // Note: We don't delete user data on deactivation
     // Only clean up temporary/cache data
+  }
+
+  /**
+   * Delete the cached tournament data (groups, teams, options) fetched from
+   * the MeinTurnierplan JSON API. Transient names are mtrn_groups_{lang}_{id},
+   * mtrn_teams_{lang}_{id} and mtrn_data_{lang}_{id}.
+   */
+  private static function delete_cached_tournament_data() {
+    global $wpdb;
+
+    foreach (array('mtrn_groups_', 'mtrn_teams_', 'mtrn_data_') as $prefix) {
+      // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Transients are removed by prefix; there is no API for that
+      $wpdb->query($wpdb->prepare(
+        "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+        $wpdb->esc_like('_transient_' . $prefix) . '%',
+        $wpdb->esc_like('_transient_timeout_' . $prefix) . '%'
+      ));
+    }
   }
 
   /**
@@ -146,7 +164,7 @@ class MTRN_Installer {
       $posts = get_posts(array(
         'post_type' => $post_type,
         'numberposts' => -1,
-        'post_status' => 'any'
+        'post_status' => array_keys(get_post_stati()) // 'any' would skip trashed posts
       ));
 
       foreach ($posts as $post) {
@@ -157,10 +175,11 @@ class MTRN_Installer {
     // Remove all meta data associated with our post types
     global $wpdb;
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query acceptable during uninstall for cleanup
-    $wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '_mtrn_%'");
+    $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_mtrn_') . '%'));
 
-    // Clean up any remaining transients
-    delete_transient('mtrn_temporary_data');
+    // Remove cached tournament data and the service notice flag
+    self::delete_cached_tournament_data();
+    delete_option('mtrn_service_notice_dismissed');
 
     // Flush rewrite rules
     flush_rewrite_rules();

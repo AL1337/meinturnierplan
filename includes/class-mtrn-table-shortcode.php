@@ -44,7 +44,7 @@ class MTRN_Table_Shortcode {
     $atts = shortcode_atts(array(
       'id' => '',
       'post_id' => '', // Internal WordPress post ID (optional)
-      'lang' => 'en',
+      'lang' => '', // Language code; empty falls back to the language saved on post_id, then to English
       'group' => '',
       's-size' => '9',
       's-sizeheader' => '10',
@@ -72,10 +72,11 @@ class MTRN_Table_Shortcode {
       'sn' => '0', // Suppress num matches
       'bm' => '0', // Projector presentation
       'nav' => '0', // Navigation for groups
-      's-wrap' => 'false' // Wrap long names; also makes the embed horizontally scrollable on small screens
+      's-wrap' => '' // Wrap long names; also makes the embed horizontally scrollable on small screens. Empty falls back to the Responsive setting saved on post_id
     ), $atts, 'mtrn-table');
 
-    // Map lang to setlang for internal processing
+    // Map lang to setlang for internal processing. An empty value lets the
+    // renderer fall back to the language saved on the post (post_id).
     $atts['setlang'] = $atts['lang'];
 
     // Use post_id if provided for getting width from meta, otherwise use null

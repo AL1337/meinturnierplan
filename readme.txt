@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,7 +61,7 @@ This plugin uses language-specific service domains for both displaying tournamen
    - **NOT used on frontend:** JSON API is only contacted from WordPress admin area, never from public-facing pages
 
 * **Data Sent:** Tournament ID only (no personal data, no user information)
-* Privacy Policy and Terms are available on the selected language domain under `/legal.php`, e.g. `https://www.meinturnierplan.de/legal.php`
+* Legal notice and privacy policy of the service: German service at `https://hilfe.meinturnierplan.de/impressum/` and `https://hilfe.meinturnierplan.de/datenschutzbestimmungen/`, English service at `https://help.tournamentbase.com/legal-notice/` and `https://help.tournamentbase.com/privacy-policy/` (every service domain links there from `/imprint.php`)
 
 **What the Embedded Widgets Collect:**
 
@@ -165,13 +165,13 @@ After activation, navigate to **Tournament Tables** or **Tournament Match Lists*
 
 * `[mtrn-table id="external-id"]`
 * `[mtrn-table post_id="123"]`
-* `[mtrn-table id="external-id" lang="de" group="A"]`
+* `[mtrn-table id="external-id" lang="de" group="1"]`
 
 **Matches:**
 
 * `[mtrn-matches id="external-id"]`
 * `[mtrn-matches post_id="456"]`
-* `[mtrn-matches id="external-id" lang="de" group="A"]`
+* `[mtrn-matches id="external-id" lang="de" group="1"]`
 
 = Links =
 
@@ -229,8 +229,8 @@ Each tournament table and match list has extensive customization options in the 
 Common:
 * `id` - External tournament ID
 * `post_id` - WordPress post ID
-* `lang` - Language code (en, de, etc.)
-* `group` - Filter by group name
+* `lang` - Language code (en, de, etc.); defaults to the language saved on `post_id`, otherwise en
+* `group` - Group to display: 1 for the first group, 2 for the second and so on, or 90 for the final round
 * `width` - Override table width
 * `height` - Override table height
 
@@ -260,19 +260,20 @@ Display Options:
 Common:
 * `id` - External tournament ID
 * `post_id` - WordPress post ID
-* `lang` - Language code
-* `group` - Filter by group
-* `gamenumbers` - Comma-separated list of match numbers
+* `lang` - Language code (en, de, etc.); defaults to the language saved on `post_id`, otherwise en
+* `group` - Group to display: 1 for the first group, 2 for the second and so on, or 90 for the final round (omit for all matches)
+* `participant` - Number of a participant (team) as shown in the tournament, to list only that team's matches (omit or -1 for all)
+* `gamenumbers` - Single match number (e.g. 8) or a range (e.g. 2-7)
 
 Display Options:
-* `si` - Show icons (1 to show)
-* `sf` - Show flags (1 to show)
-* `st` - Show times (1 to show)
-* `sg` - Show groups (1 to show)
-* `sr` - Show rounds (1 to show)
-* `se` - Show extra info (1 to show)
-* `sp` - Show participants (1 to show)
-* `sh` - Show headers (1 to show)
+* `si` - Suppress match numbers (1 to hide)
+* `sf` - Suppress court information (1 to hide)
+* `st` - Suppress match times (1 to hide)
+* `sg` - Suppress group information (1 to hide)
+* `sr` - Suppress referee information (1 to hide)
+* `se` - Suppress extra-time results in final matches (1 to hide)
+* `sp` - Suppress penalty-shootout results in final matches (1 to hide)
+* `sh` - Suppress headlines in final matches (1 to hide)
 * `bm` - Projector/presentation mode (1 to enable)
 * `s-wrap` - Responsive layout: wrap long names and allow horizontal scrolling on narrow screens (true to enable)
 
@@ -284,6 +285,20 @@ Display Options:
 4. Preview of the Tournament Match List in the backend.
 
 == Changelog ==
+
+= 1.2.2 =
+* Fix - The "Responsive Layout" setting is now included in generated shortcodes and applied by the Tournament Table and Matches widgets
+* Fix - `participant` is now an accepted `[mtrn-matches]` attribute, so copied shortcodes keep their participant filter
+* Fix - Shortcodes that only pass `post_id` now use the language (and service domain) and the Responsive setting saved on that post
+* Fix - Embeds no longer jump to the fallback height when another iframe (cookie banner, chat widget, ad) is added to the page later
+* Fix - Corrected the iframe fallback text shown by clients that cannot render iframes
+* Fix - Live preview no longer triggers PHP warnings for missing width/height fields
+* Fix - Tournament data responses with an error status are no longer cached as empty results
+* Fix - Dismissing the service notice via its close button is now remembered
+* Fix - Conditional editor fields stay hidden after the service notice has been dismissed
+* Tweak - Removed debug console output from the frontend and admin scripts
+* Tweak - Uninstall now also removes cached tournament data, the service notice flag and trashed tables / match lists
+* Docs - Corrected the matches display option descriptions (they suppress columns), the `group` attribute format and the service's legal / privacy links
 
 = 1.2.1 =
 * Tweak - WordPress 7.1 compatibility confirmed, bump "Tested up to" to 7.1
@@ -323,6 +338,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+* Bug fixes: responsive setting in shortcodes and widgets, `participant` shortcode attribute, embed height jumps when other iframes load, and several admin fixes.
 
 = 1.2.1 =
 * WordPress 7.1 compatibility and the new tournamentbase.co.uk domain for English-language embeds and API requests.

@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.2.1
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -513,8 +513,8 @@ class MTRN_Admin_Utilities {
       'sslverify' => true
     ));
 
-    // Check for errors
-    if (is_wp_error($response)) {
+    // Check for transport errors and non-200 responses (e.g. "tournament not found")
+    if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
       // Return cached data if available, even if expired
       $cached_data = get_transient($cache_key);
       if ($cached_data !== false) {
@@ -605,8 +605,8 @@ class MTRN_Admin_Utilities {
       'sslverify' => true
     ));
 
-    // Check for errors
-    if (is_wp_error($response)) {
+    // Check for transport errors and non-200 responses (e.g. "tournament not found")
+    if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
       // Return cached data if available, even if expired
       $cached_data = get_transient($cache_key);
       if ($cached_data !== false) {
@@ -658,8 +658,8 @@ class MTRN_Admin_Utilities {
         'sslverify' => true
       ));
 
-      // Check for errors
-      if (is_wp_error($response)) {
+      // Check for transport errors and non-200 responses (e.g. "tournament not found")
+      if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
         return null;
       }
 
@@ -705,7 +705,7 @@ class MTRN_Admin_Utilities {
       'mtrn-admin-utilities',
       plugins_url('assets/js/admin-utilities.js', dirname(__FILE__)),
       array('jquery', 'wp-color-picker'),
-      '1.0.0',
+      MTRN_PLUGIN_VERSION,
       true
     );
     
@@ -803,7 +803,7 @@ class MTRN_Admin_Utilities {
       'mtrn-shortcode-generator',
       plugins_url('assets/js/shortcode-generator.js', dirname(__FILE__)),
       array('jquery'),
-      '1.0.0',
+      MTRN_PLUGIN_VERSION,
       true
     );
     

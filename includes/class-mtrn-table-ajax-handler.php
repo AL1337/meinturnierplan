@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.2.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -180,28 +180,28 @@ class MTRN_Table_Ajax_Handler {
    */
   private function sanitize_ajax_data($data) {
     return array(
-      'tournament_id' => sanitize_text_field($data['tournament_id']),
-      'width' => sanitize_text_field($data['width']),
-      'height' => sanitize_text_field($data['height']),
-      'font_size' => sanitize_text_field($data['font_size']),
-      'header_font_size' => sanitize_text_field($data['header_font_size']),
-      'bsizeh' => sanitize_text_field($data['bsizeh']),
-      'bsizev' => sanitize_text_field($data['bsizev']),
-      'bsizeoh' => sanitize_text_field($data['bsizeoh']),
-      'bsizeov' => sanitize_text_field($data['bsizeov']),
-      'bbsize' => sanitize_text_field($data['bbsize']),
-      'table_padding' => sanitize_text_field($data['table_padding']),
-      'inner_padding' => sanitize_text_field($data['inner_padding']),
-      'text_color' => sanitize_text_field($data['text_color']),
-      'main_color' => sanitize_text_field($data['main_color']),
-      'bg_color' => sanitize_text_field($data['bg_color']),
+      'tournament_id' => isset($data['tournament_id']) ? sanitize_text_field($data['tournament_id']) : '',
+      'width' => isset($data['width']) ? sanitize_text_field($data['width']) : '',
+      'height' => isset($data['height']) ? sanitize_text_field($data['height']) : '',
+      'font_size' => isset($data['font_size']) ? sanitize_text_field($data['font_size']) : '',
+      'header_font_size' => isset($data['header_font_size']) ? sanitize_text_field($data['header_font_size']) : '',
+      'bsizeh' => isset($data['bsizeh']) ? sanitize_text_field($data['bsizeh']) : '',
+      'bsizev' => isset($data['bsizev']) ? sanitize_text_field($data['bsizev']) : '',
+      'bsizeoh' => isset($data['bsizeoh']) ? sanitize_text_field($data['bsizeoh']) : '',
+      'bsizeov' => isset($data['bsizeov']) ? sanitize_text_field($data['bsizeov']) : '',
+      'bbsize' => isset($data['bbsize']) ? sanitize_text_field($data['bbsize']) : '',
+      'table_padding' => isset($data['table_padding']) ? sanitize_text_field($data['table_padding']) : '',
+      'inner_padding' => isset($data['inner_padding']) ? sanitize_text_field($data['inner_padding']) : '',
+      'text_color' => isset($data['text_color']) ? sanitize_text_field($data['text_color']) : '',
+      'main_color' => isset($data['main_color']) ? sanitize_text_field($data['main_color']) : '',
+      'bg_color' => isset($data['bg_color']) ? sanitize_text_field($data['bg_color']) : '',
       'border_color' => isset($data['border_color']) ? sanitize_text_field($data['border_color']) : 'bbbbbb',
       'head_bottom_border_color' => isset($data['head_bottom_border_color']) ? sanitize_text_field($data['head_bottom_border_color']) : 'bbbbbb',
       'even_bg_color' => isset($data['even_bg_color']) ? sanitize_text_field($data['even_bg_color']) : 'f0f8ffb0',
       'odd_bg_color' => isset($data['odd_bg_color']) ? sanitize_text_field($data['odd_bg_color']) : 'ffffffb0',
       'hover_bg_color' => isset($data['hover_bg_color']) ? sanitize_text_field($data['hover_bg_color']) : 'eeeeffb0',
       'head_bg_color' => isset($data['head_bg_color']) ? sanitize_text_field($data['head_bg_color']) : 'eeeeffff',
-      'logo_size' => sanitize_text_field($data['logo_size']),
+      'logo_size' => isset($data['logo_size']) ? sanitize_text_field($data['logo_size']) : '',
       'suppress_wins' => isset($data['suppress_wins']) ? sanitize_text_field($data['suppress_wins']) : '0',
       'suppress_logos' => isset($data['suppress_logos']) ? sanitize_text_field($data['suppress_logos']) : '0',
       'suppress_num_matches' => isset($data['suppress_num_matches']) ? sanitize_text_field($data['suppress_num_matches']) : '0',

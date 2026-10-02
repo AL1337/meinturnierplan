@@ -140,6 +140,11 @@
       newShortcode += ' nav="1"';
     }
 
+    // Add s-wrap parameter if responsive layout checkbox is checked
+    if ($("#mtrn_responsive").is(":checked")) {
+      newShortcode += ' s-wrap="true"';
+    }
+
     // Add group parameter if selected
     if (group) {
       newShortcode += ' group="' + group + '"';
