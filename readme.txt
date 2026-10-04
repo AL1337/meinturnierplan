@@ -205,6 +205,15 @@ After activation, navigate to **Tournament Tables** or **Tournament Match Lists*
 
 == Frequently Asked Questions ==
 
+= Where do I find my Tournament ID? =
+
+The tournament pages on the MeinTurnierplan service no longer show the Tournament ID in the page address (a tournament URL now looks like `https://www.meinturnierplan.de/c/{code}/{tournament-name}/`, which does not contain the ID). To get the ID:
+
+1. Open your tournament page on the service website (e.g. meinturnierplan.de)
+2. Click the **Share on...** button
+3. In the dialog that opens, find the **Tournament ID – Copy ID** entry at the bottom — it shows the ID
+4. Click the copy icon to copy the ID, then paste it into the Tournament ID field in the plugin settings or use it as the `id` shortcode attribute
+
 = How do I display a tournament table? =
 
 You have several options:
