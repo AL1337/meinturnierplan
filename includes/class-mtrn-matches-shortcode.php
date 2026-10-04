@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.2.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -44,7 +44,7 @@ class MTRN_Matches_Shortcode {
     $atts = shortcode_atts(array(
       'id' => '',
       'post_id' => '', // Internal WordPress post ID (optional)
-      'lang' => 'en',
+      'lang' => '', // Language code; empty falls back to the language saved on post_id, then to English
       'group' => '',
       's-size' => '9',
       's-sizeheader' => '10',
@@ -80,10 +80,12 @@ class MTRN_Matches_Shortcode {
       'sp' => '0',
       'sh' => '0',
       'gamenumbers' => '',
-      's-wrap' => 'false', // Wrap long names; also makes the embed horizontally scrollable on small screens
+      'participant' => '', // Participant (team) number; empty or -1 shows all participants
+      's-wrap' => '', // Wrap long names; also makes the embed horizontally scrollable on small screens. Empty falls back to the Responsive setting saved on post_id
     ), $atts, 'mtrn-matches');
 
-    // Map lang to setlang for internal processing
+    // Map lang to setlang for internal processing. An empty value lets the
+    // renderer fall back to the language saved on the post (post_id).
     $atts['setlang'] = $atts['lang'];
 
     // Use post_id if provided for getting width from meta, otherwise use null

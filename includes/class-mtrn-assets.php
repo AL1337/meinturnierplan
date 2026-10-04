@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.2.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -89,9 +89,6 @@ class MTRN_Assets {
           'ajax_url' => admin_url('admin-ajax.php'),
           'preview_nonce' => wp_create_nonce('mtrn_preview_nonce')
         ));
-
-        // Add debug info for admin
-        wp_add_inline_script('mtrn-frontend-scripts', 'console.log("[MTRN] Frontend script loaded in admin for preview functionality");', 'before');
       }
     }
   }
@@ -109,7 +106,11 @@ class MTRN_Assets {
       MTRN_PLUGIN_VERSION
     );
 
-    // Debug: Always enqueue for testing (remove this later)
+    // The resize script is loaded unconditionally: embeds can come from
+    // shortcodes, blocks, widgets, single post views, templates and page
+    // builders, so sniffing the post content would miss cases and leave
+    // embeds at the fallback height. The script is small and does nothing
+    // on pages without an embed.
     wp_enqueue_script(
       'mtrn-frontend-scripts',
       MTRN_PLUGIN_URL . 'assets/js/frontend.js',
@@ -117,46 +118,6 @@ class MTRN_Assets {
       MTRN_PLUGIN_VERSION,
       true
     );
-
-    // Also check if we have tournament tables or matches on the page
-    if ($this->page_has_tournament_tables()) {
-      // Add debug info to the page
-      wp_add_inline_script('mtrn-frontend-scripts', 'console.log("[MTRN] Tournament content detected on page");', 'before');
-    } else {
-      wp_add_inline_script('mtrn-frontend-scripts', 'console.log("[MTRN] No tournament content detected on page");', 'before');
-    }
-  }
-
-  /**
-   * Check if current page has tournament tables or matches
-   */
-  private function page_has_tournament_tables() {
-    global $post;
-
-    // Check if we're on a page/post with tournament table or matches shortcodes or blocks
-    if ($post && ($post->post_content)) {
-      // Check for shortcodes
-      if (has_shortcode($post->post_content, 'mtrn_table') || has_shortcode($post->post_content, 'mtrn-matches')) {
-        return true;
-      }
-
-      // Check for Gutenberg blocks
-      if (has_block('meinturnierplan/tournament-table', $post) || has_block('meinturnierplan/tournament-matches', $post)) {
-        return true;
-      }
-
-      // Check if this is a tournament table or matches post type
-      if ($post->post_type === 'mtrn_table' || $post->post_type === 'mtrn_match_list') {
-        return true;
-      }
-    }
-
-    // Also check if any widgets are displaying tournament tables or matches
-    if (is_active_widget(false, false, 'mtrn_table_widget') || is_active_widget(false, false, 'mtrn_matches_widget')) {
-      return true;
-    }
-
-    return false;
   }
 
   /**

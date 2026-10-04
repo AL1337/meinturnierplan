@@ -6,7 +6,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -131,7 +131,7 @@ class MTRN_Admin_Notices {
       'mtrn-admin-notices',
       plugins_url('assets/css/admin-notices.css', dirname(__FILE__)),
       array(),
-      '1.0.0'
+      MTRN_PLUGIN_VERSION
     );
     wp_enqueue_style('mtrn-admin-notices');
 
@@ -141,7 +141,7 @@ class MTRN_Admin_Notices {
     // Add inline script for notice dismissal
     $script = "
       jQuery(document).ready(function($) {
-        $('#mtrn-dismiss-notice, #mtrn-service-notice .notice-dismiss').on('click', function() {
+        $(document).on('click', '#mtrn-dismiss-notice, #mtrn-service-notice .notice-dismiss', function() {
           $.post(ajaxurl, {
             action: 'mtrn_dismiss_service_notice',
             nonce: '" . wp_create_nonce($this->nonce_action) . "'

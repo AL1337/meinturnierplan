@@ -279,3 +279,8 @@ input[type="number"].regular-text {
 .mtrn-admin-column-right #mtrn-preview .mtrn-empty-preview strong {
   color: #343a40;
 }
+
+/* Conditional field visibility (group row, conditional checkboxes) */
+.mtrn-field-hidden {
+  display: none;
+}

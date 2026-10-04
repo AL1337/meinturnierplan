@@ -189,7 +189,7 @@
 
           $.each(response.data.groups, function(index, group) {
             var groupNumber = index + 1;
-            var groupLabel = "Group " + group.displayId;
+            var groupLabel = (config.i18n?.group || 'Group') + ' ' + group.displayId;
             var isSelected = false;
 
             if (currentSelection && currentSelection == groupNumber) {

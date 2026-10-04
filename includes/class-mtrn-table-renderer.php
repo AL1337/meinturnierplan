@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.2.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -67,8 +67,6 @@ class MTRN_Table_Renderer {
       esc_url($iframe_url),
       $width,
       $height,
-      $width,
-      $height,
       __('Your browser does not support the tournament widget.', 'meinturnierplan'),
       esc_url($base_url),
       esc_attr($tournament_id),
@@ -94,7 +92,7 @@ class MTRN_Table_Renderer {
    * _mtrn_responsive post meta (mirrors how sw/sl/nav resolve).
    */
   private function is_wrap_enabled($table_id, $atts) {
-    if (isset($atts['s-wrap'])) {
+    if (isset($atts['s-wrap']) && $atts['s-wrap'] !== '') {
       $value = strtolower((string) $atts['s-wrap']);
       return $value === 'true' || $value === '1';
     }

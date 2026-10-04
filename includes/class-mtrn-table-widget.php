@@ -4,7 +4,7 @@
  * 
  * @package MeinTurnierplan
  * @since   0.3.0
- * @version 1.0.0
+ * @version 1.2.2
  */
 
 // Prevent direct access
@@ -190,6 +190,11 @@ class MTRN_Table_Widget extends WP_Widget {
       if ($value === '1') {
         $attributes[$attr_name] = '1';
       }
+    }
+
+    // Responsive layout maps to the s-wrap attribute
+    if (get_post_meta($table_id, '_mtrn_responsive', true) === '1') {
+      $attributes['s-wrap'] = 'true';
     }
 
     // Get language setting

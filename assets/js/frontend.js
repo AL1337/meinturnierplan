@@ -1,6 +1,6 @@
 /**
  * Frontend JavaScript for MeinTurnierplan Plugin
- * Handles auto-resizing of tournament table iframes
+ * Handles auto-resizing of tournament table and match list iframes
  */
 
 (function() {
@@ -16,9 +16,15 @@
     maxWidth: null, // No max width limit
     maxHeight: 9999, // Reasonable max height
     fallbackHeight: 200,
-    resizeTimeout: 5000,
-    debugMode: false
+    resizeTimeout: 5000
   };
+
+  // Selector matching every embed rendered by the plugin
+  const EMBED_SELECTOR = 'iframe[id^="mtrn-table-"], iframe[id^="mtrn-matches-"]';
+
+  function isEmbed(node) {
+    return !!node && node.nodeType === 1 && typeof node.matches === 'function' && node.matches(EMBED_SELECTOR);
+  }
 
   /**
    * Validate and constrain dimensions
@@ -73,62 +79,120 @@
   }
 
   /**
+   * Apply the fallback height to an embed that never reported its size
+   */
+  function applyFallbackHeight(iframe) {
+    iframe.style.height = config.fallbackHeight + 'px';
+    iframe.setAttribute('height', config.fallbackHeight);
+  }
+
+  /**
    * Handle postMessage events for iframe resizing
    */
   function handlePostMessage(event) {
-    // Verify the message is for tournament table or matches sizing
+    // Only handle the size messages sent by the tournament table / matches embeds
     if (!event.data || (event.data.type !== "iframeSizeMtpTable" && event.data.type !== "iframeSizeMtpMatches")) {
       return;
     }
 
-    // Find all tournament table and matches iframes
-    const iframes = document.querySelectorAll('iframe[id^="mtrn-table-"], iframe[id^="mtrn-matches-"]');
-
-    let resized = false;
-    iframes.forEach(function(iframe) {
-      // Check if this iframe matches the source of the message
+    document.querySelectorAll(EMBED_SELECTOR).forEach(function(iframe) {
       if (iframe.contentWindow === event.source) {
-        // Clear any pending fallback timeout for this iframe
+        // The embed reported its size, so the fallback is no longer needed
         iframe.removeAttribute('data-mtrn-fallback-pending');
 
         resizeIframe(iframe, {
           width: event.data.width,
           height: event.data.height
         });
-        resized = true;
       }
     });
   }
 
   /**
-   * Set up fallback resize behavior
+   * Arm the fallback for a single embed.
+   *
+   * Runs once per iframe (and again only when its src changes, see
+   * rearmFallback). Embeds that already received their size are never
+   * re-armed, so iframes added elsewhere on the page later (cookie banners,
+   * chat widgets, ads) cannot collapse them to the fallback height.
+   */
+  function armFallback(iframe) {
+    if (iframe.getAttribute('data-mtrn-armed') === 'true') {
+      return;
+    }
+
+    iframe.setAttribute('data-mtrn-armed', 'true');
+    iframe.setAttribute('data-mtrn-fallback-pending', 'true');
+
+    if (!iframe.mtrnErrorHandlerBound) {
+      iframe.mtrnErrorHandlerBound = true;
+      iframe.addEventListener('error', function() {
+        applyFallbackHeight(iframe);
+      });
+    }
+
+    // Fall back to a fixed height if the embed never reports its size
+    setTimeout(function() {
+      if (iframe.getAttribute('data-mtrn-fallback-pending') === 'true') {
+        applyFallbackHeight(iframe);
+        iframe.removeAttribute('data-mtrn-fallback-pending');
+      }
+    }, config.resizeTimeout);
+  }
+
+  /**
+   * Re-arm the fallback for an embed whose src changed: it loads a new
+   * document and will report its size again.
+   */
+  function rearmFallback(iframe) {
+    iframe.removeAttribute('data-mtrn-armed');
+    armFallback(iframe);
+  }
+
+  /**
+   * Arm the fallback for every embed that is not armed yet
    */
   function setupFallbacks() {
-    const iframes = document.querySelectorAll('iframe[id^="mtrn-table-"], iframe[id^="mtrn-matches-"]');
+    document.querySelectorAll(EMBED_SELECTOR).forEach(armFallback);
+  }
 
-    iframes.forEach(function(iframe) {
-      // Mark iframe as needing fallback
-      iframe.setAttribute('data-mtrn-fallback-pending', 'true');
+  /**
+   * Watch for embeds added later (e.g. the admin preview or AJAX-loaded
+   * content) and for embeds whose src changes. Other iframes are ignored.
+   */
+  function observeEmbeds() {
+    if (!window.MutationObserver || !document.body) {
+      return;
+    }
 
-      // Set up load event listener
-      iframe.addEventListener('load', function() {
-        // Don't remove fallback pending flag immediately - wait for postMessage
-      });
+    const observer = new MutationObserver(function(mutations) {
+      let hasNewEmbeds = false;
 
-      // Set up error event listener
-      iframe.addEventListener('error', function() {
-        iframe.style.height = config.fallbackHeight + 'px';
-        iframe.setAttribute('height', config.fallbackHeight);
-      });
-
-      // Set a fallback timeout - but allow postMessage to cancel it
-      setTimeout(function() {
-        if (iframe.getAttribute('data-mtrn-fallback-pending') === 'true') {
-          iframe.style.height = config.fallbackHeight + 'px';
-          iframe.setAttribute('height', config.fallbackHeight);
-          iframe.removeAttribute('data-mtrn-fallback-pending');
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType !== 1) {
+              return;
+            }
+            if (isEmbed(node) || (typeof node.querySelector === 'function' && node.querySelector(EMBED_SELECTOR))) {
+              hasNewEmbeds = true;
+            }
+          });
+        } else if (mutation.type === 'attributes' && mutation.attributeName === 'src' && isEmbed(mutation.target)) {
+          rearmFallback(mutation.target);
         }
-      }, config.resizeTimeout);
+      });
+
+      if (hasNewEmbeds) {
+        setTimeout(setupFallbacks, 100); // Small delay to ensure DOM is settled
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src']
     });
   }
 
@@ -139,43 +203,15 @@
     // Set up postMessage listener
     window.addEventListener("message", handlePostMessage, false);
 
-    // Set up fallbacks when DOM is ready
+    // Set up fallbacks and the observer when DOM is ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setupFallbacks);
+      document.addEventListener('DOMContentLoaded', function() {
+        setupFallbacks();
+        observeEmbeds();
+      });
     } else {
       setupFallbacks();
-    }
-
-    // Set up mutation observer to watch for new iframes or changes
-    if (window.MutationObserver) {
-      const observer = new MutationObserver(function(mutations) {
-        let shouldReset = false;
-        mutations.forEach(function(mutation) {
-          // Check for new iframes or src changes
-          if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1 && (node.tagName === 'IFRAME' || node.querySelector('iframe[id^="mtrn-table-"], iframe[id^="mtrn-matches-"]'))) {
-                shouldReset = true;
-              }
-            });
-          } else if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
-            if (mutation.target.id && (mutation.target.id.startsWith('mtrn-table-') || mutation.target.id.startsWith('mtrn-matches-'))) {
-              shouldReset = true;
-            }
-          }
-        });
-
-        if (shouldReset) {
-          setTimeout(setupFallbacks, 100); // Small delay to ensure DOM is settled
-        }
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['src']
-      });
+      observeEmbeds();
     }
   }
 
