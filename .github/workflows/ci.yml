@@ -96,7 +96,10 @@ jobs:
       # repository checkout: dev files and dotfiles are excluded via .distignore,
       # exactly as the deploy workflow does.
       - name: Build the release directory
-        run: rsync -a --exclude=/build --exclude-from=.distignore ./ build/meinturnierplan/
+        run: |
+          mkdir -p build/meinturnierplan
+          rsync -a --exclude=/build --exclude-from=.distignore ./ build/meinturnierplan/
+          ls -A build/meinturnierplan
       - uses: WordPress/plugin-check-action@v1
         with:
           build-dir: build/meinturnierplan
