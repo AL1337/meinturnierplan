@@ -699,7 +699,7 @@ class MTRN_Admin_Utilities {
       'field_prefix' => 'mtrn_'
     );
     $config = array_merge($defaults, $config);
-    
+
     // Enqueue the admin utilities script
     wp_enqueue_script(
       'mtrn-admin-utilities',
@@ -708,7 +708,7 @@ class MTRN_Admin_Utilities {
       MTRN_PLUGIN_VERSION,
       true
     );
-    
+
     // Localize script with configuration and i18n strings
     wp_localize_script('mtrn-admin-utilities', 'mtrnAdminUtilsConfig', array(
       'fieldPrefix' => $config['field_prefix'],
@@ -806,7 +806,7 @@ class MTRN_Admin_Utilities {
       MTRN_PLUGIN_VERSION,
       true
     );
-    
+
     // Localize script with configuration
     wp_localize_script('mtrn-shortcode-generator', 'mtrnShortcodeConfig', array(
       'fieldId' => $config['field_id'],
@@ -871,7 +871,7 @@ class MTRN_Admin_Utilities {
         if (!empty($saved_group)) {
           // Use saved selection
           $is_selected = ($saved_group == $group_number);
-        } else if (!$show_all_option && $index == 0) {
+        } elseif (!$show_all_option && $index == 0) {
           // Auto-select first group as default for tables (when no "All Matches" option)
           $is_selected = true;
         }
@@ -885,7 +885,7 @@ class MTRN_Admin_Utilities {
         $is_final_selected = (!empty($saved_group) && $saved_group == '90');
         echo '<option value="90"' . selected($is_final_selected, true, false) . '>' . esc_html__('Final Round', 'meinturnierplan') . '</option>';
       }
-    } else if (!empty($saved_group) && !empty($tournament_id)) {
+    } elseif (!empty($saved_group) && !empty($tournament_id)) {
       // Add "All Matches" option first (only for matches context)
       if ($show_all_option) {
         echo '<option value="">' . esc_html__('All Matches', 'meinturnierplan') . '</option>';
@@ -975,7 +975,7 @@ class MTRN_Admin_Utilities {
           echo '<option value="' . esc_attr($team_id) . '"' . selected($is_selected, true, false) . '>' . esc_html($team_name) . '</option>';
         }
       }
-    } else if (!empty($saved_participant) && $saved_participant != '-1' && !empty($tournament_id)) {
+    } elseif (!empty($saved_participant) && $saved_participant != '-1' && !empty($tournament_id)) {
       // Show a placeholder for the saved participant if teams haven't loaded yet
       /* translators: %s is the saved team name */
       echo '<option value="' . esc_attr($saved_participant) . '" selected>' . esc_html(sprintf(__('Team %s (saved)', 'meinturnierplan'), $saved_participant)) . '</option>';

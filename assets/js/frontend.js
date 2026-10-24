@@ -99,6 +99,7 @@
       if (iframe.contentWindow === event.source) {
         // The embed reported its size, so the fallback is no longer needed
         iframe.removeAttribute('data-mtrn-fallback-pending');
+        iframe.setAttribute('data-mtrn-sized', 'true');
 
         resizeIframe(iframe, {
           width: event.data.width,
@@ -122,7 +123,12 @@
     }
 
     iframe.setAttribute('data-mtrn-armed', 'true');
-    iframe.setAttribute('data-mtrn-fallback-pending', 'true');
+
+    // An embed that already reported its size (it can load faster than the
+    // observer's delay below) does not need the fallback.
+    if (iframe.getAttribute('data-mtrn-sized') !== 'true') {
+      iframe.setAttribute('data-mtrn-fallback-pending', 'true');
+    }
 
     if (!iframe.mtrnErrorHandlerBound) {
       iframe.mtrnErrorHandlerBound = true;
@@ -146,6 +152,7 @@
    */
   function rearmFallback(iframe) {
     iframe.removeAttribute('data-mtrn-armed');
+    iframe.removeAttribute('data-mtrn-sized');
     armFallback(iframe);
   }
 

@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<ruleset name="MeinTurnierplan">
+  <description>Coding standard checks for the MeinTurnierplan WordPress plugin.</description>
+
+  <file>.</file>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/svn/*</exclude-pattern>
+  <exclude-pattern>*/tests/*</exclude-pattern>
+  <exclude-pattern>*/languages/*</exclude-pattern>
+
+  <arg name="extensions" value="php"/>
+  <arg name="colors"/>
+  <arg value="sp"/>
+  <arg name="parallel" value="8"/>
+
+  <!-- Supported PHP and WordPress versions, kept in sync with readme.txt -->
+  <config name="testVersion" value="7.4-"/>
+  <config name="minimum_wp_version" value="6.3"/>
+  <!-- Warnings are reported but only errors fail the run -->
+  <config name="ignore_warnings_on_exit" value="1"/>
+
+  <rule ref="PHPCompatibilityWP"/>
+
+  <rule ref="WordPress-Extra">
+    <!-- The codebase uses 2-space indentation and does not follow the WordPress
+         whitespace conventions. Formatting sniffs are deferred to the refactoring
+         phase; this ruleset enforces the security, database, i18n, naming and PHP
+         sniffs. -->
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+    <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing"/>
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing"/>
+    <exclude name="WordPress.Arrays.ArrayIndentation"/>
+    <exclude name="WordPress.Arrays.MultipleStatementAlignment"/>
+    <exclude name="WordPress.PHP.YodaConditions"/>
+    <exclude name="Generic.Formatting.MultipleStatementAlignment"/>
+    <exclude name="Generic.Functions.FunctionCallArgumentSpacing"/>
+    <exclude name="PEAR.Functions.FunctionCallSignature"/>
+    <exclude name="Squiz.Commenting"/>
+    <exclude name="Generic.Commenting"/>
+    <exclude name="Squiz.ControlStructures.ControlSignature"/>
+    <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing"/>
+    <exclude name="Squiz.Strings.ConcatenationSpacing"/>
+    <exclude name="Squiz.PHP.EmbeddedPhp"/>
+    <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+    <exclude name="Universal.WhiteSpace"/>
+    <exclude name="Universal.ControlStructures.DisallowLonelyIf"/>
+    <exclude name="Universal.Operators.DisallowShortTernary"/>
+    <exclude name="NormalizedArrays.Arrays"/>
+    <exclude name="Modernize.FunctionCalls.Dirname"/>
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
+    <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing"/>
+    <exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
+    <exclude name="Generic.Formatting.SpaceAfterCast"/>
+  </rule>
+
+  <!-- Known technical debt: reported as warnings so it stays visible without failing CI.
+       Each of these is a candidate for the refactoring phase. -->
+  <rule ref="Universal.Operators.StrictComparisons"><type>warning</type></rule>
+  <rule ref="WordPress.PHP.StrictInArray"><type>warning</type></rule>
+  <rule ref="WordPress.PHP.DiscouragedPHPFunctions"><type>warning</type></rule>
+  <rule ref="WordPress.Files.FileName"><type>warning</type></rule>
+  <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"><type>warning</type></rule>
+  <rule ref="Squiz.PHP.CommentedOutCode"><type>warning</type></rule>
+  <rule ref="PSR2.Classes.PropertyDeclaration"><type>warning</type></rule>
+  <rule ref="Universal.NamingConventions.NoReservedKeywordParameterNames"><type>warning</type></rule>
+
+  <rule ref="WordPress.WP.I18n">
+    <properties>
+      <property name="text_domain" type="array">
+        <element value="meinturnierplan"/>
+      </property>
+    </properties>
+  </rule>
+
+  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+    <properties>
+      <property name="prefixes" type="array">
+        <element value="mtrn"/>
+        <element value="MTRN"/>
+      </property>
+    </properties>
+  </rule>
+</ruleset>

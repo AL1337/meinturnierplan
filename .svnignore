@@ -12,3 +12,16 @@ package-lock.json
 .env
 .vscode
 .idea
+vendor
+tests
+test-results
+playwright-report
+.github
+.editorconfig
+.distignore
+.phpunit.result.cache
+composer.json
+composer.lock
+phpcs.xml.dist
+phpunit.xml.dist
+playwright.config.js

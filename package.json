@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "WordPress plugin for managing tournament plans",
   "scripts": {
+    "lint:js": "for f in assets/js/*.js; do node --check \"$f\" || exit 1; done",
+    "test:e2e": "playwright test",
+    "test:e2e:chrome": "PLAYWRIGHT_CHANNEL=chrome playwright test",
     "build:svn": "npm run clean:svn && npm run copy:svn",
     "clean:svn": "rm -rf svn/meinturnierplan/trunk/* && mkdir -p svn/meinturnierplan/trunk",
     "copy:svn": "rsync -av --exclude-from='.svnignore' --exclude='svn/' --exclude='.git/' --exclude='.gitignore' --exclude='node_modules/' --exclude='package.json' --exclude='package-lock.json' --exclude='.svnignore' ./ svn/meinturnierplan/trunk/"
@@ -13,5 +16,9 @@
     "tournament"
   ],
   "author": "Roman Perevala",
-  "license": "GPL-2.0-or-later"
+  "license": "GPL-2.0-or-later",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
 }

@@ -128,7 +128,7 @@ class MTRN_Matches_Renderer {
 
     // Add bm parameter if projector_presentation is enabled
     $projector_presentation = '';
-    if (isset($atts['bm'])) {
+    if (isset($atts['bm']) && $atts['bm'] !== '') {
       $projector_presentation = $atts['bm'];
     } elseif ($matches_id) {
       $projector_presentation = get_post_meta($matches_id, '_mtrn_projector_presentation', true);
@@ -140,7 +140,7 @@ class MTRN_Matches_Renderer {
 
     // Add si parameter if enabled
     $si = '';
-    if (isset($atts['si'])) {
+    if (isset($atts['si']) && $atts['si'] !== '') {
       $si = $atts['si'];
     } elseif ($matches_id) {
       $si = get_post_meta($matches_id, '_mtrn_si', true);
@@ -152,7 +152,7 @@ class MTRN_Matches_Renderer {
 
     // Add sf parameter if enabled (Suppress Court)
     $sf = '';
-    if (isset($atts['sf'])) {
+    if (isset($atts['sf']) && $atts['sf'] !== '') {
       $sf = $atts['sf'];
     } elseif ($matches_id) {
       $sf = get_post_meta($matches_id, '_mtrn_sf', true);
@@ -164,7 +164,7 @@ class MTRN_Matches_Renderer {
 
     // Add st parameter if enabled
     $st = '';
-    if (isset($atts['st'])) {
+    if (isset($atts['st']) && $atts['st'] !== '') {
       $st = $atts['st'];
     } elseif ($matches_id) {
       $st = get_post_meta($matches_id, '_mtrn_st', true);
@@ -176,7 +176,7 @@ class MTRN_Matches_Renderer {
 
     // Add sg parameter if enabled
     $sg = '';
-    if (isset($atts['sg'])) {
+    if (isset($atts['sg']) && $atts['sg'] !== '') {
       $sg = $atts['sg'];
     } elseif ($matches_id) {
       $sg = get_post_meta($matches_id, '_mtrn_sg', true);
@@ -188,7 +188,7 @@ class MTRN_Matches_Renderer {
 
     // Add sr parameter if enabled (Suppress Referee)
     $sr = '';
-    if (isset($atts['sr'])) {
+    if (isset($atts['sr']) && $atts['sr'] !== '') {
       $sr = $atts['sr'];
     } elseif ($matches_id) {
       $sr = get_post_meta($matches_id, '_mtrn_sr', true);
@@ -200,7 +200,7 @@ class MTRN_Matches_Renderer {
 
     // Add se parameter if enabled
     $se = '';
-    if (isset($atts['se'])) {
+    if (isset($atts['se']) && $atts['se'] !== '') {
       $se = $atts['se'];
     } elseif ($matches_id) {
       $se = get_post_meta($matches_id, '_mtrn_se', true);
@@ -212,7 +212,7 @@ class MTRN_Matches_Renderer {
 
     // Add sp parameter if enabled
     $sp = '';
-    if (isset($atts['sp'])) {
+    if (isset($atts['sp']) && $atts['sp'] !== '') {
       $sp = $atts['sp'];
     } elseif ($matches_id) {
       $sp = get_post_meta($matches_id, '_mtrn_sp', true);
@@ -224,7 +224,7 @@ class MTRN_Matches_Renderer {
 
     // Add sh parameter if enabled
     $sh = '';
-    if (isset($atts['sh'])) {
+    if (isset($atts['sh']) && $atts['sh'] !== '') {
       $sh = $atts['sh'];
     } elseif ($matches_id) {
       $sh = get_post_meta($matches_id, '_mtrn_sh', true);

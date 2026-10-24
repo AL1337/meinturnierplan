@@ -166,7 +166,7 @@ class MTRN_Admin_Notices {
    */
   public function handle_dismiss_notice() {
     check_ajax_referer($this->nonce_action, 'nonce');
-    
+
     if (current_user_can('manage_options')) {
       update_option($this->dismissal_option, true);
       wp_send_json_success();
