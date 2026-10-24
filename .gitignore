@@ -7,3 +7,4 @@ playwright-report/
 .phpunit.result.cache
 composer.phar
 *~
+/build
