@@ -128,7 +128,7 @@ class MTRN_Plugin {
     $this->single_content_filter = new MTRN_Single_Content_Filter($this->table_renderer, $this->matches_renderer);
 
     // Initialize widgets
-    add_action('widgets_init', function() {
+    add_action('widgets_init', function () {
       register_widget('MTRN_Table_Widget');
       register_widget('MTRN_Matches_Widget');
     });

@@ -1,2 +1,10 @@
 svn
 .DS_Store
+node_modules/
+vendor/
+test-results/
+playwright-report/
+.phpunit.result.cache
+composer.phar
+*~
+/build

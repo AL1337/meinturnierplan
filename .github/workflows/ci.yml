@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  php-syntax:
+    name: PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint every PHP file
+        run: |
+          set -euo pipefail
+          find . -type f -name '*.php' \
+            -not -path './vendor/*' -not -path './node_modules/*' -not -path './svn/*' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+
+  phpcs:
+    name: Coding standards (PHPCS + PHPCompatibility)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer
+      - uses: ramsey/composer-install@v3
+      - name: Run PHPCS
+        run: vendor/bin/phpcs --report=full --report-summary
+
+  phpunit:
+    name: PHPUnit on PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.1', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer
+      - uses: ramsey/composer-install@v3
+      - name: Run unit tests
+        run: vendor/bin/phpunit
+
+  javascript:
+    name: JavaScript syntax + frontend embed tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Syntax-check every script
+        run: npm run lint:js
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Run frontend embed tests
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
+  plugin-check:
+    name: WordPress Plugin Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Check the release build (the files that ship to WordPress.org), not the
+      # repository checkout: dev files and dotfiles are excluded via .distignore,
+      # exactly as the deploy workflow does.
+      - name: Build the release directory
+        run: |
+          mkdir -p build/meinturnierplan
+          rsync -a --exclude=/build --exclude-from=.distignore ./ build/meinturnierplan/
+          ls -A build/meinturnierplan
+      - uses: WordPress/plugin-check-action@v1
+        with:
+          build-dir: build/meinturnierplan

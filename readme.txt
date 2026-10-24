@@ -295,6 +295,10 @@ Display Options:
 
 == Changelog ==
 
+= 1.3.0 =
+* Fix - Shortcodes that only pass `post_id` now also apply the styling and display options saved on that post (1.2.2 fixed this for the language and the Responsive setting only)
+* Dev - Added automated checks: PHP syntax matrix, WordPress coding-standard sniffs, PHPUnit unit tests, Playwright tests for the embed resize script, Plugin Check and a tag-triggered WordPress.org deploy
+
 = 1.2.2 =
 * Fix - The "Responsive Layout" setting is now included in generated shortcodes and applied by the Tournament Table and Matches widgets
 * Fix - `participant` is now an accepted `[mtrn-matches]` attribute, so copied shortcodes keep their participant filter

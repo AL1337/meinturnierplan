@@ -1,7 +1,7 @@
 <?php
 /**
  * Widget class for Tournament Tables
- * 
+ *
  * @package MeinTurnierplan
  * @since   0.3.0
  * @version 1.2.2

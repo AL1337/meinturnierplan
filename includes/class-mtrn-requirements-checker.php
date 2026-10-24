@@ -72,7 +72,7 @@ class MTRN_Requirements_Checker {
    * @param array $errors Array of error messages (already escaped)
    */
   private static function display_admin_notices($errors) {
-    add_action('admin_notices', function() use ($errors) {
+    add_action('admin_notices', function () use ($errors) {
       foreach ($errors as $error) {
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $error is already escaped via esc_html__() in the check() method
         echo '<div class="notice notice-error"><p><strong>' . esc_html__('MeinTurnierplan Error:', 'meinturnierplan') . '</strong> ' . $error . '</p></div>';
