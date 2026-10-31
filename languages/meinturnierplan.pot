@@ -1105,3 +1105,11 @@ msgstr ""
 #: includes/class-mtrn-matches-renderer.php:72
 msgid "Your browser does not support the tournament widget."
 msgstr ""
+
+#: includes/class-mtrn-options.php:71
+msgid "Select a Tournament Table:"
+msgstr ""
+
+#: includes/class-mtrn-options.php:115
+msgid "Select a Matches Table:"
+msgstr ""

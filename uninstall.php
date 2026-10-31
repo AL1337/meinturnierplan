@@ -25,7 +25,8 @@ if (!defined('MTRN_PLUGIN_PATH')) {
   define('MTRN_PLUGIN_PATH', plugin_dir_path(__FILE__));
 }
 
-// Include the installer class which contains the uninstall method
+// The installer needs the option registry for the post type list
+require_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-options.php';
 require_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-installer.php';
 
 // Run the uninstall process - this will remove all plugin data

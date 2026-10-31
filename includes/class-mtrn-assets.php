@@ -40,9 +40,9 @@ class MTRN_Assets {
    */
   public function enqueue_admin_scripts($hook) {
     // Only load on our post type edit pages
-    if ('post.php' == $hook || 'post-new.php' == $hook) {
+    if ('post.php' === $hook || 'post-new.php' === $hook) {
       global $post;
-      if ($post && ($post->post_type == 'mtrn_table' || $post->post_type == 'mtrn_match_list')) {
+      if ($post && in_array($post->post_type, array_column(MTRN_Options::types(), 'post_type'), true)) {
         // Enqueue WordPress color picker
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');

@@ -209,6 +209,32 @@ marked "change" are deliberate small corrections to make during the refactor.
   preview request no longer carries the separate opacity values, which the
   server never read. Items 5, 9, 11 resolved; item 2 kept.
 
+- **Step 7 (wrap-up):** post types merged into `class-mtrn-post-types.php`;
+  dead helpers removed from the admin utilities (`sanitize_meta_value`,
+  `combine_color_opacity`, `get_bg_color_with_opacity`, `hex_to_rgba`);
+  installer, uninstall and asset loading read the post types from the
+  registry; remaining PHPCS findings fixed (strict comparisons,
+  `rawurlencode`, no `serialize()` in the iframe id); translation template
+  gained the two block select labels; 1.4.0 changelog written.
+
+## Manual regression checklist (before the 1.4.0 release)
+
+On the Local site with one Tournament Table and one Match List post:
+
+1. Open each post in the admin. The settings form, preview and shortcode box
+   render; changing a colour, a checkbox and the group updates the preview;
+   the generated shortcode updates and copies.
+2. Match list: pick a tournament with courts/referees/final round, confirm
+   the conditional rows appear, then one without and confirm they hide.
+3. Save both posts, reload, values persist. Check `debug.log` is empty.
+4. Frontend: a page with both shortcodes, a page with both blocks (block
+   editor shows the two blocks with their post selectors), both widgets in a
+   sidebar, and each post's own single view. All embeds resize and match the
+   admin preview.
+5. A `[mtrn-table post_id="…"]` shortcode without further attributes
+   renders with the post's language, colours, flags and saved size.
+6. Deactivate and reactivate; permalinks of the single views still work.
+
 ## Golden tests
 
 `tests/Unit/GoldenTest.php` renders 12 cases (`tests/golden/cases.php`)

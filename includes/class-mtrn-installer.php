@@ -56,16 +56,13 @@ class MTRN_Installer {
    * Register post types for activation (temporary)
    */
   private static function register_post_type_for_activation() {
-    // Simple registration for activation - the full registration is handled by respective Post Type classes
-    register_post_type('mtrn_table', array(
-      'public' => true,
-      'rewrite' => array('slug' => 'tournament-table'),
-    ));
-
-    register_post_type('mtrn_match_list', array(
-      'public' => true,
-      'rewrite' => array('slug' => 'tournament-match-list'),
-    ));
+    // Minimal registration so flush_rewrite_rules() knows the slugs; MTRN_Post_Types does the full one
+    foreach (MTRN_Options::types() as $config) {
+      register_post_type($config['post_type'], array(
+        'public' => true,
+        'rewrite' => array('slug' => $config['rewrite_slug']),
+      ));
+    }
   }
 
   /**
@@ -107,14 +104,7 @@ class MTRN_Installer {
    * Run database updates
    */
   private static function run_database_updates($from_version) {
-    // Add version-specific updates here as the plugin evolves
-
-    // Example for future versions:
-    // if (version_compare($from_version, '1.1.0', '<')) {
-    //   $this->update_to_1_1_0();
-    // }
-
-    // For now, no specific updates needed
+    // Version-specific data migrations go here (compare $from_version); none needed so far
   }
 
   /**
@@ -158,7 +148,7 @@ class MTRN_Installer {
     delete_option('mtrn_default_settings');
 
     // Remove all posts of our custom post types
-    $post_types = array('mtrn_table', 'mtrn_match_list');
+    $post_types = array_column(MTRN_Options::types(), 'post_type');
 
     foreach ($post_types as $post_type) {
       $posts = get_posts(array(

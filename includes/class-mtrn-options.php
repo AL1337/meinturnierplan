@@ -39,6 +39,8 @@ final class MTRN_Options {
       self::$types = array(
         'table' => array(
           'post_type'      => 'mtrn_table',
+          'rewrite_slug'   => 'tournament-table',
+          'menu_icon'      => 'dashicons-editor-table',
           'shortcode'      => 'mtrn-table',
           'block'          => 'meinturnierplan/tournament-table',
           'widget_id'      => 'mtrn_table_widget',
@@ -78,6 +80,8 @@ final class MTRN_Options {
         ),
         'matches' => array(
           'post_type'      => 'mtrn_match_list',
+          'rewrite_slug'   => 'tournament-match-list',
+          'menu_icon'      => 'dashicons-forms',
           'shortcode'      => 'mtrn-matches',
           'block'          => 'meinturnierplan/matches-table',
           'widget_id'      => 'mtrn_matches_widget',
@@ -577,31 +581,31 @@ final class MTRN_Options {
         case 'style':
         case 'color_opacity':
           if ((string) $values[$key] !== '') {
-            $parts[] = urlencode('s[' . $def['param'] . ']') . '=' . urlencode((string) $values[$key]);
+            $parts[] = rawurlencode('s[' . $def['param'] . ']') . '=' . rawurlencode((string) $values[$key]);
           }
           break;
         case 'wrap':
-          $parts[] = urlencode('s[wrap]') . '=' . ($values[$key] ? 'true' : 'false');
+          $parts[] = rawurlencode('s[wrap]') . '=' . ($values[$key] ? 'true' : 'false');
           break;
         case 'flag':
           if ($values[$key]) {
-            $flags[] = urlencode($def['param']);
+            $flags[] = rawurlencode($def['param']);
           }
           break;
         case 'language':
           if ($values[$key] !== '' && $values[$key] !== 'en') {
-            $filters[] = 'setlang=' . urlencode($values[$key]);
+            $filters[] = 'setlang=' . rawurlencode($values[$key]);
           }
           break;
         case 'group':
         case 'match_number':
           if ((string) $values[$key] !== '') {
-            $filters[] = $def['param'] . '=' . urlencode((string) $values[$key]);
+            $filters[] = $def['param'] . '=' . rawurlencode((string) $values[$key]);
           }
           break;
         case 'participant':
           if ((string) $values[$key] !== '' && (string) $values[$key] !== '-1') {
-            $filters[] = $def['param'] . '=' . urlencode((string) $values[$key]);
+            $filters[] = $def['param'] . '=' . rawurlencode((string) $values[$key]);
           }
           break;
       }

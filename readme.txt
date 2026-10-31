@@ -297,6 +297,12 @@ Display Options:
 
 = 1.4.0 =
 * Fix - The single-post view of a table or match list converts colour opacity exactly like the shortcode, blocks and widgets. On PHP 8.4 it produced slightly different alpha values for some opacities (for example 50 %).
+* Fix - Tables and match lists whose post had no saved colours rendered black row backgrounds in blocks, widgets and `post_id` shortcodes; they now use the documented defaults
+* Tweak - Blocks, widgets and `post_id` shortcodes start at the size saved by the admin preview, so the embed jumps less before it reports its real size
+* Tweak - The generated shortcode lists its attributes in one consistent order, in the editor and in the saved post alike
+* Tweak - Headline font size and paddings, width and height are stored as numbers
+* Tweak - The block editor labels of the two blocks are translatable
+* Dev - Internal restructuring: every option is defined once in `MTRN_Options`. The per-type renderer, shortcode, block, widget, meta box, AJAX and post type classes were replaced by `MTRN_Embed_Renderer`, `MTRN_Shortcodes`, `MTRN_Blocks`, `MTRN_Embed_Widget`, `MTRN_Admin_Meta_Boxes`, `MTRN_Ajax_Handler` and `MTRN_Post_Types`. Shortcodes, attributes, meta keys, block names, widget ids and AJAX actions are unchanged; behaviour is covered by golden tests
 
 = 1.3.0 =
 * Fix - Shortcodes that only pass `post_id` now also apply the styling and display options saved on that post (1.2.2 fixed this for the language and the Responsive setting only)
@@ -354,6 +360,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+* Internal restructuring with behaviour-preserving tests, plus fixes for background colours, saved sizes and PHP 8.4 opacity rounding. Only code that referenced the plugin's PHP classes directly needs attention; see the changelog.
 
 = 1.3.0 =
 * Shortcodes that only pass `post_id` now apply every setting saved on that post. Includes the new automated test and release tooling for the project.

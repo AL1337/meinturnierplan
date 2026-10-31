@@ -37,7 +37,7 @@ class MTRN_Embed_Renderer {
     $iframe_url = $base_url . '/' . $config['endpoint'] . '?' . MTRN_Options::embed_query($type, $values);
 
     // Unique id per embed instance; the resize script matches on the prefix only
-    $iframe_id = $config['id_prefix'] . $values['tournament_id'] . '-' . substr(md5(serialize($values)), 0, 8);
+    $iframe_id = $config['id_prefix'] . $values['tournament_id'] . '-' . substr(md5(wp_json_encode($values)), 0, 8);
 
     $html = sprintf(
       '<iframe id="%s" class="mtrn-embed-frame" src="%s" width="%d" height="%d" allowtransparency="true" frameborder="0">

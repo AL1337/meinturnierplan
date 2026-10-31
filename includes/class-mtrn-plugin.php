@@ -20,14 +20,13 @@ class MTRN_Plugin {
   /**
    * The single instance of the class
    */
-  protected static $_instance = null;
+  protected static $instance = null;
 
   /**
    * Plugin components
    */
   public $renderer;
-  public $table_post_type;
-  public $matches_post_type;
+  public $post_types;
   public $shortcodes;
   public $blocks;
   public $meta_boxes = array();
@@ -41,10 +40,10 @@ class MTRN_Plugin {
    * Main Plugin Instance
    */
   public static function instance() {
-    if (is_null(self::$_instance)) {
-      self::$_instance = new self();
+    if (is_null(self::$instance)) {
+      self::$instance = new self();
     }
-    return self::$_instance;
+    return self::$instance;
   }
 
   /**
@@ -76,8 +75,7 @@ class MTRN_Plugin {
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-embed-renderer.php';
 
     // Post types
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-post-type.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-post-type.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-post-types.php';
 
     // Output channels
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-shortcodes.php';
@@ -98,8 +96,7 @@ class MTRN_Plugin {
   public function init() {
     $this->installer = new MTRN_Installer();
     $this->renderer = new MTRN_Embed_Renderer();
-    $this->table_post_type = new MTRN_Table_Post_Type();
-    $this->matches_post_type = new MTRN_Matches_Post_Type();
+    $this->post_types = new MTRN_Post_Types();
     $this->shortcodes = new MTRN_Shortcodes($this->renderer);
     $this->blocks = new MTRN_Blocks($this->renderer);
     $this->single_content_filter = new MTRN_Single_Content_Filter($this->renderer);
