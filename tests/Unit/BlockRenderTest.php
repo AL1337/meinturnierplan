@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace MTRN\Tests\Unit;
 
-use MTRN_Matches_Gutenberg_Block;
-use MTRN_Matches_Renderer;
-use MTRN_Table_Gutenberg_Block;
-use MTRN_Table_Renderer;
+use MTRN_Blocks;
+use MTRN_Embed_Renderer;
 
 /**
  * The blocks only store a post ID; everything else comes from the post meta.
@@ -16,10 +14,11 @@ use MTRN_Table_Renderer;
 class BlockRenderTest extends TestCase {
 
   public function test_table_block_without_a_post_shows_a_placeholder(): void {
-    $block = new MTRN_Table_Gutenberg_Block(new MTRN_Table_Renderer());
+    $block = new MTRN_Blocks(new MTRN_Embed_Renderer());
 
-    $this->assertStringContainsString('mtrn-block-placeholder', $block->render_block(array()));
-    $this->assertStringContainsString('mtrn-block-placeholder', $block->render_block(array('tableId' => '')));
+    $this->assertStringContainsString('mtrn-block-placeholder', $block->render_block('table', array()));
+    $this->assertStringContainsString('mtrn-block-placeholder', $block->render_block('table', array('tableId' => '')));
+    $this->assertStringContainsString('Please select a Matches Table.', $block->render_block('matches', array('tableId' => '0')));
   }
 
   public function test_table_block_renders_the_saved_settings(): void {
@@ -34,9 +33,9 @@ class BlockRenderTest extends TestCase {
       '_mtrn_head_bg_color' => 'eeeeff',
       '_mtrn_head_bg_opacity' => '50',
     );
-    $block = new MTRN_Table_Gutenberg_Block(new MTRN_Table_Renderer());
+    $block = new MTRN_Blocks(new MTRN_Embed_Renderer());
 
-    $html = $block->render_block(array('tableId' => '42'));
+    $html = $block->render_block('table', array('tableId' => '42'));
     $query = $this->query($html);
 
     $this->assertSame('torneo.es', $this->host($html));
@@ -60,9 +59,9 @@ class BlockRenderTest extends TestCase {
       '_mtrn_st' => '1',
       '_mtrn_ehrsize' => '14',
     );
-    $block = new MTRN_Matches_Gutenberg_Block(new MTRN_Matches_Renderer());
+    $block = new MTRN_Blocks(new MTRN_Embed_Renderer());
 
-    $html = $block->render_block(array('tableId' => '7'));
+    $html = $block->render_block('matches', array('tableId' => '7'));
     $query = $this->query($html);
 
     $this->assertSame('www.meinturnierplan.de', $this->host($html));

@@ -179,12 +179,24 @@ marked "change" are deliberate small corrections to make during the refactor.
     widget and a shortcode for the same post get the same id. The resize
     script only matches the prefix; the golden comparison masks the suffix.
 
+15. **Width and height fallback.** The single-post view applied the size
+    saved by the admin preview, blocks, widgets and `post_id`-only
+    shortcodes did not (they started at 300x200 until the resize message
+    arrived). Change (step 5): the resolver falls back to the saved size for
+    every channel, which reduces the initial layout jump.
+
 ## Refactor log
 
 - **Step 4 (registry):** `includes/class-mtrn-options.php` holds every
   option and both type configurations; `includes/class-mtrn-embed-renderer.php`
   renders both embeds from it. The old renderer classes are thin wrappers
   until their callers are migrated. Items 7, 12, 13, 14 resolved.
+- **Step 5 (channels):** `class-mtrn-shortcodes.php`, `class-mtrn-blocks.php`,
+  `class-mtrn-embed-widget.php` (one class, registered per type) and the
+  rewritten single-post filter all call `MTRN_Embed_Renderer::render()` with
+  their type and post id. Deleted: both shortcode classes, both block
+  classes, both widget classes, both renderer wrappers. Goldens: identical
+  except item 15. Item 8 resolved.
 
 ## Golden tests
 

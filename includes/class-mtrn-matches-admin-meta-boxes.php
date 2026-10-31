@@ -304,7 +304,7 @@ class MTRN_Admin_Matches_Meta_Boxes {
     // Create attributes for preview
     $atts = $this->build_preview_attributes($meta_values);
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already escaped in the renderer class
-    echo $this->matches_renderer->render_matches_html($post->ID, $atts);
+    echo $this->matches_renderer->render('matches', $post->ID, $atts);
 
     echo '</div>';
   }

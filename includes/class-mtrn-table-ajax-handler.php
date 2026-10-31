@@ -121,7 +121,7 @@ class MTRN_Table_Ajax_Handler {
     // Add s-wrap parameter (always send to prevent post meta fallback)
     $atts['s-wrap'] = (!empty($data['responsive']) && $data['responsive'] === '1') ? 'true' : 'false';
 
-    $html = $this->table_renderer->render_table_html($post_id, $atts);
+    $html = $this->table_renderer->render('table', $post_id, $atts);
 
     wp_send_json_success($html);
   }

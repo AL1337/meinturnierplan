@@ -63,6 +63,17 @@ final class MTRN_Options {
           'meta_box_config' => 'mtrnTableMetaBoxConfig',
           'block_config'    => 'mtrnBlock',
           'block_nonce'     => 'mtrn_block_nonce',
+          'block_json'      => 'blocks/tournament-table/block.json',
+          'block_script'    => 'mtrn-tournament-table-block',
+          'block_script_file' => 'assets/js/tournament-table-block.js',
+          'select_placeholder' => __('Please select a Tournament Table.', 'meinturnierplan'),
+          'select_label'    => __('Select a Tournament Table', 'meinturnierplan'),
+          'widget_name'     => __('Tournament Table', 'meinturnierplan'),
+          'widget_description' => __('Display a tournament table.', 'meinturnierplan'),
+          'widget_classname' => 'mtrn-table-widget',
+          'widget_select_label' => __('Select Tournament Table:', 'meinturnierplan'),
+          'widget_select_empty' => __('-- Select Table --', 'meinturnierplan'),
+          'widget_note'     => __('The widget will use all styling settings configured for the selected Tournament Table. Width and height are automatically determined.', 'meinturnierplan'),
         ),
         'matches' => array(
           'post_type'      => 'mtrn_match_list',
@@ -93,6 +104,17 @@ final class MTRN_Options {
           'meta_box_config' => 'mtrnMatchesMetaBoxConfig',
           'block_config'    => 'mtrnMatchesBlock',
           'block_nonce'     => 'mtrn_matches_block_nonce',
+          'block_json'      => 'blocks/tournament-matches/block.json',
+          'block_script'    => 'mtrn-tournament-matches-block',
+          'block_script_file' => 'assets/js/tournament-matches-block.js',
+          'select_placeholder' => __('Please select a Matches Table.', 'meinturnierplan'),
+          'select_label'    => __('Select a Matches Table', 'meinturnierplan'),
+          'widget_name'     => __('Matches Table', 'meinturnierplan'),
+          'widget_description' => __('Display a matches table.', 'meinturnierplan'),
+          'widget_classname' => 'mtrn-matches-widget',
+          'widget_select_label' => __('Select Matches Table:', 'meinturnierplan'),
+          'widget_select_empty' => __('-- Select Matches --', 'meinturnierplan'),
+          'widget_note'     => __('The widget will use all styling settings configured for the selected Matches Table. Width and height are automatically determined.', 'meinturnierplan'),
         ),
       );
     }
@@ -445,7 +467,9 @@ final class MTRN_Options {
    * Effective value of every option for one embed.
    *
    * Precedence: explicit attribute (non-empty, or any '0'/'1' for flags),
-   * then the meta saved on $post_id, then the built-in default.
+   * then the meta saved on $post_id, then the built-in default. Keys with
+   * 'applies' other than $type are not resolved, so a matches embed never
+   * carries table-only options and vice versa.
    *
    * @param string $type    'table' or 'matches'.
    * @param array  $atts    Shortcode / render attributes.
@@ -477,7 +501,9 @@ final class MTRN_Options {
           break;
 
         case 'size':
-          $values[$key] = $attr !== '' ? intval($attr) : intval($def['default']);
+          // Attribute, then the size saved by the admin preview, then the default
+          $size = $attr !== '' ? intval($attr) : intval($meta);
+          $values[$key] = $size > 0 ? $size : intval($def['default']);
           break;
 
         case 'flag':

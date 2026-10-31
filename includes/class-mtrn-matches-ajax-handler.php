@@ -162,7 +162,7 @@ class MTRN_Matches_Ajax_Handler {
     // Add s-wrap parameter (always send to prevent post meta fallback)
     $atts['s-wrap'] = (!empty($data['responsive']) && $data['responsive'] === '1') ? 'true' : 'false';
 
-    $html = $this->matches_renderer->render_matches_html($post_id, $atts);
+    $html = $this->matches_renderer->render('matches', $post_id, $atts);
 
     wp_send_json_success($html);
   }

@@ -223,7 +223,7 @@ class MTRN_Admin_Table_Meta_Boxes {
     // Create attributes for preview
     $atts = $this->build_preview_attributes($meta_values);
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already escaped in the renderer class
-    echo $this->table_renderer->render_table_html($post->ID, $atts);
+    echo $this->table_renderer->render('table', $post->ID, $atts);
 
     echo '</div>';
   }

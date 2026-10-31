@@ -243,19 +243,19 @@ class GoldenTest extends TestCase {
     // Case descriptor for the browser-side golden (tests/e2e/admin-js-golden.spec.js)
     $out['case.json'] = json_encode(array('type' => $case['type'], 'post_id' => $postId, 'tournament_id' => isset($case['meta']['_mtrn_tournament_id']) ? $case['meta']['_mtrn_tournament_id'] : ''), JSON_PRETTY_PRINT) . "\n";
 
-    $renderer = $isTable ? new \MTRN_Table_Renderer() : new \MTRN_Matches_Renderer();
-    $shortcode = $isTable ? new \MTRN_Table_Shortcode($renderer) : new \MTRN_Matches_Shortcode($renderer);
+    $renderer = new \MTRN_Embed_Renderer();
+    $shortcodes = new \MTRN_Shortcodes($renderer);
 
     if (isset($case['atts'])) {
-      $out['shortcode.html'] = $shortcode->shortcode_callback($case['atts']);
+      $out['shortcode.html'] = $shortcodes->render($case['type'], $case['atts']);
     }
 
-    $out['shortcode-post-only.html'] = $shortcode->shortcode_callback(array('post_id' => (string) $postId));
+    $out['shortcode-post-only.html'] = $shortcodes->render($case['type'], array('post_id' => (string) $postId));
 
-    $block = $isTable ? new \MTRN_Table_Gutenberg_Block($renderer) : new \MTRN_Matches_Gutenberg_Block($renderer);
-    $out['block.html'] = $block->render_block(array('tableId' => (string) $postId));
+    $blocks = new \MTRN_Blocks($renderer);
+    $out['block.html'] = $blocks->render_block($case['type'], array('tableId' => (string) $postId));
 
-    $widget = $isTable ? new \MTRN_Table_Widget() : new \MTRN_Matches_Widget();
+    $widget = new \MTRN_Embed_Widget($case['type'], $renderer);
     ob_start();
     $widget->widget(
       array('before_widget' => '<section class="widget">', 'after_widget' => '</section>', 'before_title' => '<h2>', 'after_title' => '</h2>'),
@@ -266,7 +266,7 @@ class GoldenTest extends TestCase {
     $this->currentPostId = $postId;
     $this->currentPostType = $isTable ? 'mtrn_table' : 'mtrn_match_list';
     $GLOBALS['post'] = (object) array('ID' => $postId, 'post_type' => $this->currentPostType);
-    $filter = new \MTRN_Single_Content_Filter(new \MTRN_Table_Renderer(), new \MTRN_Matches_Renderer());
+    $filter = new \MTRN_Single_Content_Filter($renderer);
     $out['single.html'] = $filter->populate_single_cpt_content('<p>Body</p>');
 
     $metaBox = $isTable ? new \MTRN_Admin_Table_Meta_Boxes($renderer) : new \MTRN_Admin_Matches_Meta_Boxes($renderer);
