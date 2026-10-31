@@ -27,3 +27,4 @@ playwright.config.js
 *.bak
 .env
 /build
+/docs

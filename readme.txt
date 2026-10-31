@@ -295,6 +295,9 @@ Display Options:
 
 == Changelog ==
 
+= 1.4.0 =
+* Fix - The single-post view of a table or match list converts colour opacity exactly like the shortcode, blocks and widgets. On PHP 8.4 it produced slightly different alpha values for some opacities (for example 50 %).
+
 = 1.3.0 =
 * Fix - Shortcodes that only pass `post_id` now also apply the styling and display options saved on that post (1.2.2 fixed this for the language and the Responsive setting only)
 * Dev - Added automated checks: PHP syntax matrix, WordPress coding-standard sniffs, PHPUnit unit tests, Playwright tests for the embed resize script, Plugin Check and a tag-triggered WordPress.org deploy
