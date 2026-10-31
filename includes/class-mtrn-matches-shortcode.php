@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.2.0
- * @version 1.2.2
+ * @version 1.3.0
  */
 
 // Prevent direct access

@@ -4,7 +4,7 @@ Tags: tournament, sports, table, matches, standings
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -351,6 +351,9 @@ Display Options:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+* Shortcodes that only pass `post_id` now apply every setting saved on that post. Includes the new automated test and release tooling for the project.
 
 = 1.2.2 =
 * Bug fixes: responsive setting in shortcodes and widgets, `participant` shortcode attribute, embed height jumps when other iframes load, and several admin fixes.
