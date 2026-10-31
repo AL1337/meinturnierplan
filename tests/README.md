@@ -38,6 +38,11 @@ MTRN_UPDATE_GOLDENS=1 PLAYWRIGHT_CHANNEL=chrome npx playwright test tests/e2e/ad
 The JS goldens are built from the PHP-captured admin forms, so the PHP step
 always comes first.
 
+The comparison masks the 8-character suffix of embed iframe ids: it only makes
+an id unique per instance and the resize script matches on the prefix. To
+review a regeneration, compare the embed URLs parameter by parameter rather
+than by text; the parameter order follows the option registry.
+
 Releases: pushing a tag such as `1.3.0` runs `.github/workflows/deploy.yml`,
 which verifies that the tag, the plugin header, `MTRN_PLUGIN_VERSION` and the
 readme `Stable tag` agree and then commits to WordPress.org SVN. The files

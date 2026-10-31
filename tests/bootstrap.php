@@ -31,6 +31,8 @@ require_once __DIR__ . '/stubs/class-wp-widget.php';
 
 foreach (array(
   'class-mtrn-admin-utilities.php',
+  'class-mtrn-options.php',
+  'class-mtrn-embed-renderer.php',
   'class-mtrn-table-renderer.php',
   'class-mtrn-matches-renderer.php',
   'class-mtrn-table-shortcode.php',

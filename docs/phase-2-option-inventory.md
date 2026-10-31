@@ -162,6 +162,30 @@ marked "change" are deliberate small corrections to make during the refactor.
     (`group` after the flags). Shortcode attribute order has no meaning.
     Change: one order, produced by one generator.
 
+12. **Black row backgrounds for posts without saved colours.** When a post
+    had no colour meta (created programmatically or before a field existed),
+    the renderer sent `000000b0` for the even, odd, hover and head
+    backgrounds through `post_id`-only shortcodes, blocks and widgets,
+    while explicit shortcodes and the single-post view sent the documented
+    defaults. Change (done in step 4): the registry falls back to the
+    option default when the meta is empty. Verified against the goldens:
+    only those four parameters changed, only in those three channels.
+13. **URL parameter order.** The embed URL now lists parameters in the
+    registry's order (the admin form order) instead of the old renderer
+    mapping order. The service reads parameters by name; the golden
+    regeneration for step 4 was checked parameter by parameter.
+14. **Iframe id suffix.** The 8-character suffix is now derived from the
+    resolved values instead of the raw attribute array, so a block, a
+    widget and a shortcode for the same post get the same id. The resize
+    script only matches the prefix; the golden comparison masks the suffix.
+
+## Refactor log
+
+- **Step 4 (registry):** `includes/class-mtrn-options.php` holds every
+  option and both type configurations; `includes/class-mtrn-embed-renderer.php`
+  renders both embeds from it. The old renderer classes are thin wrappers
+  until their callers are migrated. Items 7, 12, 13, 14 resolved.
+
 ## Golden tests
 
 `tests/Unit/GoldenTest.php` renders 12 cases (`tests/golden/cases.php`)

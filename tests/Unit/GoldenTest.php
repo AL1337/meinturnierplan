@@ -155,6 +155,16 @@ class GoldenTest extends TestCase {
     return array('response' => array('code' => 500), 'body' => json_encode(array('error' => 'Tournament not found for slug ' . $id)));
   }
 
+  /**
+   * The 8-character suffix of an embed's iframe id only makes the id unique
+   * per instance; the resize script matches on the prefix. It is derived from
+   * the attributes and changes whenever the internal representation does, so
+   * it is masked before comparing.
+   */
+  private static function normalize(string $html): string {
+    return preg_replace('/(id="mtrn-(?:table|matches)-.*?-)[0-9a-f]{8}"/', '$1HASH"', $html);
+  }
+
   private function checkedSelected(string $type, $helper, $current, bool $echo): string {
     $result = ((string) $helper === (string) $current) ? " $type='$type'" : '';
     if ($echo) {
@@ -205,7 +215,7 @@ class GoldenTest extends TestCase {
         continue;
       }
       $this->assertFileExists($file, "Missing golden file for $name/$channel. Run MTRN_UPDATE_GOLDENS=1 vendor/bin/phpunit --filter GoldenTest");
-      $this->assertSame(file_get_contents($file), $output, "Output of channel '$channel' changed for case '$name'");
+      $this->assertSame(self::normalize(file_get_contents($file)), self::normalize($output), "Output of channel '$channel' changed for case '$name'");
     }
 
     if (!$update) {

@@ -74,6 +74,11 @@ class MTRN_Plugin {
    * Include required core files
    */
   public function includes() {
+    // Option registry and the shared embed renderer
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-utilities.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-options.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-embed-renderer.php';
+
     // Core Table classes
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-post-type.php';
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-renderer.php';
