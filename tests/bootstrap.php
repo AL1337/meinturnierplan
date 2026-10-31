@@ -26,6 +26,9 @@ if (!defined('MTRN_PLUGIN_VERSION')) {
   define('MTRN_PLUGIN_VERSION', 'test');
 }
 
+// Stand-ins for WordPress / plugin classes the units under test extend or call
+require_once __DIR__ . '/stubs/class-wp-widget.php';
+
 foreach (array(
   'class-mtrn-admin-utilities.php',
   'class-mtrn-table-renderer.php',
@@ -34,6 +37,15 @@ foreach (array(
   'class-mtrn-matches-shortcode.php',
   'class-mtrn-table-block.php',
   'class-mtrn-matches-block.php',
+  'class-mtrn-table-ajax-handler.php',
+  'class-mtrn-matches-ajax-handler.php',
+  'class-mtrn-table-admin-meta-boxes.php',
+  'class-mtrn-matches-admin-meta-boxes.php',
+  'class-mtrn-table-widget.php',
+  'class-mtrn-matches-widget.php',
+  'class-mtrn-single-content-filter.php',
 ) as $file) {
   require_once MTRN_PLUGIN_PATH . 'includes/' . $file;
 }
+
+require_once __DIR__ . '/stubs/class-mtrn-plugin.php';

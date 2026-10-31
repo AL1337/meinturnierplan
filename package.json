@@ -19,6 +19,7 @@
   "license": "GPL-2.0-or-later",
   "private": true,
   "devDependencies": {
-    "@playwright/test": "^1.64.1"
+    "@playwright/test": "^1.64.1",
+    "jquery": "^4.0.0"
   }
 }
