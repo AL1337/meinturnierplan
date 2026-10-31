@@ -22,44 +22,21 @@ const JQUERY = read(path.join(ROOT, 'node_modules/jquery/dist/jquery.min.js'));
 const STYLE_CSS = read(path.join(ROOT, 'assets/css/style.css'));
 const ADMIN_UTILS = read(path.join(ROOT, 'assets/js/admin-utilities.js'));
 const SHORTCODE_GEN = read(path.join(ROOT, 'assets/js/shortcode-generator.js'));
-const SCRIPTS = {
-  table: { metaBoxes: read(path.join(ROOT, 'assets/js/admin-table-meta-boxes.js')), preview: read(path.join(ROOT, 'assets/js/admin-table-preview.js')) },
-  matches: { metaBoxes: read(path.join(ROOT, 'assets/js/admin-matches-meta-boxes.js')), preview: read(path.join(ROOT, 'assets/js/admin-matches-preview.js')) }
-};
-
-// Mirrors the field list the table meta box localizes for admin-table-preview.js
-const TABLE_FIELD_LIST = [
-  'mtrn_tournament_id', 'mtrn_font_size', 'mtrn_header_font_size',
-  'mtrn_bsizeh', 'mtrn_bsizev', 'mtrn_bsizeoh', 'mtrn_bsizeov', 'mtrn_bbsize',
-  'mtrn_table_padding', 'mtrn_inner_padding', 'mtrn_text_color', 'mtrn_main_color',
-  'mtrn_bg_color', 'mtrn_logo_size', 'mtrn_bg_opacity', 'mtrn_border_color',
-  'mtrn_head_bottom_border_color', 'mtrn_even_bg_color', 'mtrn_even_bg_opacity',
-  'mtrn_odd_bg_color', 'mtrn_odd_bg_opacity', 'mtrn_hover_bg_color', 'mtrn_hover_bg_opacity',
-  'mtrn_head_bg_color', 'mtrn_head_bg_opacity', 'mtrn_suppress_wins', 'mtrn_suppress_logos',
-  'mtrn_suppress_num_matches', 'mtrn_projector_presentation', 'mtrn_navigation_for_groups',
-  'mtrn_responsive', 'mtrn_language', 'mtrn_group'
-];
+const META_BOXES_JS = read(path.join(ROOT, 'assets/js/admin-meta-boxes.js'));
+const PREVIEW_JS = read(path.join(ROOT, 'assets/js/admin-preview.js'));
 
 // Globals WordPress would localize, plus jQuery AJAX stand-ins answering with
 // the fixture tournaments "golden1" (groups A/B, final round, courts, groups,
 // no referees) and "single1" (one group, nothing else).
-function harness(kind, postId) {
-  const groupActions = kind === 'table' ? ['mtrn_get_groups', 'mtrn_refresh_groups'] : ['mtrn_get_matches_groups', 'mtrn_refresh_matches_groups'];
-  const teamActions = kind === 'table' ? ['mtrn_get_teams', 'mtrn_refresh_teams'] : ['mtrn_get_matches_teams', 'mtrn_refresh_matches_teams'];
+function harness(jsConfig) {
   return `
     window.ajaxurl = '/wp-admin/admin-ajax.php';
     window.__mtrnCalls = [];
     window.__mtrnLastPreview = null;
-    window.mtrnAdminUtilsConfig = { fieldPrefix: 'mtrn_', ajaxActions: ${JSON.stringify(groupActions)}, ajaxActionsTeams: ${JSON.stringify(teamActions)}, nonce: 'nonce', i18n: {} };
+    window.mtrnAdminUtilsConfig = Object.assign({ nonce: 'nonce', i18n: {} }, ${JSON.stringify(jsConfig.adminUtils)});
     window.mtrnShortcodeConfig = { fieldId: 'mtrn_shortcode_field', copyButtonId: 'mtrn_copy_shortcode', successMessageId: 'mtrn_copy_success', fieldPrefix: 'mtrn_', updateCallback: 'updateShortcode' };
-    (function () {
-      var w = document.getElementById('mtrn_width'), h = document.getElementById('mtrn_height');
-      var metaBoxConfig = { postId: ${postId}, defaultWidth: w ? w.value : '300', defaultHeight: h ? h.value : '152' };
-      window.mtrnTableMetaBoxConfig = metaBoxConfig;
-      window.mtrnMatchesMetaBoxConfig = metaBoxConfig;
-    })();
-    window.mtrnTablePreviewConfig = { postId: ${postId}, previewNonce: 'nonce', fieldList: ${JSON.stringify(TABLE_FIELD_LIST)} };
-    window.mtrnMatchesPreviewConfig = { postId: ${postId}, checkOptionNonce: 'nonce', previewNonce: 'nonce' };
+    window.mtrnMetaBoxConfig = ${JSON.stringify(jsConfig.metaBox)};
+    window.mtrnPreviewConfig = ${JSON.stringify(jsConfig.preview)};
     (function ($) {
       $.fn.wpColorPicker = function () { return this; };
       function thenable() { var t = { done: function () { return t; }, fail: function () { return t; }, always: function () { return t; } }; return t; }
@@ -90,19 +67,18 @@ function harness(kind, postId) {
   `;
 }
 
-const cases = fs.readdirSync(EXPECTED).filter((d) => fs.existsSync(path.join(EXPECTED, d, 'case.json'))).sort();
+const cases = fs.readdirSync(EXPECTED).filter((d) => fs.existsSync(path.join(EXPECTED, d, 'admin-js-config.json'))).sort();
 
 for (const name of cases) {
   test(`admin scripts golden: ${name}`, async ({ page }) => {
     const dir = path.join(EXPECTED, name);
-    const info = JSON.parse(read(path.join(dir, 'case.json')));
-    const kind = info.type === 'table' ? 'table' : 'matches';
+    const jsConfig = JSON.parse(read(path.join(dir, 'admin-js-config.json')));
     const html = `<!doctype html><html><head><style>${STYLE_CSS}</style></head><body><div id="poststuff">${read(path.join(dir, 'admin-form.html'))}${read(path.join(dir, 'admin-shortcode-box.html'))}</div></body></html>`;
 
     // Nothing external may load: the captured form contains the embed iframe
     await page.route(/^https?:\/\//, (route) => route.abort());
     await page.setContent(html);
-    for (const content of [JQUERY, harness(kind, info.post_id), ADMIN_UTILS, SCRIPTS[kind].metaBoxes, SHORTCODE_GEN, SCRIPTS[kind].preview]) {
+    for (const content of [JQUERY, harness(jsConfig), ADMIN_UTILS, META_BOXES_JS, SHORTCODE_GEN, PREVIEW_JS]) {
       await page.addScriptTag({ content });
     }
     // Let every document-ready handler of the scripts run

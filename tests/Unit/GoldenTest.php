@@ -269,7 +269,7 @@ class GoldenTest extends TestCase {
     $filter = new \MTRN_Single_Content_Filter($renderer);
     $out['single.html'] = $filter->populate_single_cpt_content('<p>Body</p>');
 
-    $metaBox = $isTable ? new \MTRN_Admin_Table_Meta_Boxes($renderer) : new \MTRN_Admin_Matches_Meta_Boxes($renderer);
+    $metaBox = new \MTRN_Admin_Meta_Boxes($case['type'], $renderer);
     $post = (object) array('ID' => $postId, 'post_type' => $this->currentPostType);
     ob_start();
     $metaBox->meta_box_callback($post);
@@ -278,15 +278,19 @@ class GoldenTest extends TestCase {
     $metaBox->shortcode_meta_box_callback($post);
     $out['admin-shortcode-box.html'] = ob_get_clean();
 
+    // What PHP localizes for the admin scripts; input for tests/e2e/admin-js-golden.spec.js (js-* names are reserved for its outputs)
+    $typeConfig = \MTRN_Options::type($case['type']);
+    $utils = array('fieldPrefix' => 'mtrn_', 'ajaxActions' => array($typeConfig['ajax']['groups'], $typeConfig['ajax']['refresh_groups']));
+    if (isset($typeConfig['ajax']['teams'])) {
+      $utils['ajaxActionsTeams'] = array($typeConfig['ajax']['teams'], $typeConfig['ajax']['refresh_teams']);
+    }
+    $out['admin-js-config.json'] = json_encode($metaBox->localized_configs($postId) + array('adminUtils' => $utils), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+
     if (isset($case['preview_post'])) {
-      $ajax = $isTable ? new \MTRN_Table_Ajax_Handler($renderer) : new \MTRN_Matches_Ajax_Handler($renderer);
+      $ajax = new \MTRN_Ajax_Handler($renderer);
       $_POST = $case['preview_post'] + array('nonce' => 'nonce', 'post_id' => (string) $postId);
       $this->json = null;
-      if ($isTable) {
-        $ajax->ajax_preview_table();
-      } else {
-        $ajax->ajax_preview_matches();
-      }
+      $ajax->preview($case['type']);
       $_POST = array();
       $out['preview-ajax.html'] = (string) $this->json;
     }

@@ -233,36 +233,7 @@ class MTRN_Admin_Utilities {
    * @return mixed The sanitized value
    */
   public static function sanitize_meta_value($field, $value) {
-    // Checkbox fields
-    if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups'))) {
-      return $value === '1' ? '1' : '0';
-    }
-
-    // Color fields
-    if (in_array($field, array('text_color', 'main_color', 'bg_color', 'border_color', 'head_bottom_border_color', 'even_bg_color', 'odd_bg_color', 'hover_bg_color', 'head_bg_color'))) {
-      $color = sanitize_hex_color($value);
-      return $color ? ltrim($color, '#') : '';
-    }
-
-    // Opacity fields
-    if (strpos($field, '_opacity') !== false) {
-      $opacity = absint($value);
-      return max(0, min(100, $opacity));
-    }
-
-    // Number fields
-    if (in_array($field, array('font_size', 'header_font_size', 'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize', 'table_padding', 'inner_padding', 'logo_size'))) {
-      return absint($value);
-    }
-
-    // Language field - validate against allowed languages
-    if ($field === 'language') {
-      $allowed_languages = array('en', 'de', 'es', 'fr', 'hr', 'it', 'pl', 'sl', 'tr');
-      return in_array($value, $allowed_languages) ? $value : 'en';
-    }
-
-    // Text fields
-    return sanitize_text_field($value);
+    return MTRN_Options::sanitize($field, $value);
   }
 
   /**
@@ -273,27 +244,7 @@ class MTRN_Admin_Utilities {
    * @return string The combined color value with opacity
    */
   public static function combine_color_opacity($hex_color, $opacity_percent) {
-    // Remove # if present
-    $hex_color = ltrim((string) $hex_color, '#');
-
-    // If color already has alpha (8 characters), return as is
-    if (strlen($hex_color) === 8) {
-      return $hex_color;
-    }
-
-    // If no opacity specified, default to fully opaque
-    if ($opacity_percent === '' || $opacity_percent === null) {
-      $opacity_percent = 100;
-    }
-
-    // Convert the percentage to an alpha byte with integer arithmetic (round
-    // half up). Floating point variants such as round($o * 2.55) give different
-    // results on PHP 8.4, which no longer pre-rounds; this matches the JS
-    // updater (Math.round(o / 100 * 255)) for every value from 0 to 100.
-    $percent = max(0, min(100, (int) round((float) $opacity_percent)));
-    $opacity_hex = str_pad(dechex(intdiv($percent * 255 + 50, 100)), 2, '0', STR_PAD_LEFT);
-
-    return $hex_color . $opacity_hex;
+    return MTRN_Options::combine_color_opacity($hex_color, $opacity_percent);
   }
 
   /**

@@ -4,12 +4,60 @@
         "golden1"
     ],
     [
-        "_mtrn_width",
-        "700"
+        "_mtrn_language",
+        "it"
     ],
     [
-        "_mtrn_height",
-        "900"
+        "_mtrn_group",
+        "90"
+    ],
+    [
+        "_mtrn_participant",
+        "3"
+    ],
+    [
+        "_mtrn_match_number",
+        "2-7"
+    ],
+    [
+        "_mtrn_projector_presentation",
+        "1"
+    ],
+    [
+        "_mtrn_si",
+        "1"
+    ],
+    [
+        "_mtrn_sf",
+        "1"
+    ],
+    [
+        "_mtrn_sg",
+        "0"
+    ],
+    [
+        "_mtrn_sr",
+        "0"
+    ],
+    [
+        "_mtrn_st",
+        "0"
+    ],
+    [
+        "_mtrn_se",
+        "1"
+    ],
+    [
+        "_mtrn_sp",
+        "0"
+    ],
+    [
+        "_mtrn_sh",
+        "1"
+    ],
+    [
+        "_mtrn_responsive",
+        "1"
     ],
     [
         "_mtrn_font_size",
@@ -18,6 +66,26 @@
     [
         "_mtrn_header_font_size",
         14
+    ],
+    [
+        "_mtrn_ehrsize",
+        15
+    ],
+    [
+        "_mtrn_table_padding",
+        3
+    ],
+    [
+        "_mtrn_inner_padding",
+        8
+    ],
+    [
+        "_mtrn_ehrtop",
+        7
+    ],
+    [
+        "_mtrn_ehrbottom",
+        1
     ],
     [
         "_mtrn_bsizeh",
@@ -40,32 +108,20 @@
         4
     ],
     [
-        "_mtrn_ehrsize",
-        "15px"
-    ],
-    [
-        "_mtrn_ehrtop",
-        "7"
-    ],
-    [
-        "_mtrn_ehrbottom",
-        "1"
-    ],
-    [
-        "_mtrn_table_padding",
-        3
-    ],
-    [
-        "_mtrn_inner_padding",
-        8
-    ],
-    [
         "_mtrn_text_color",
         "aaaaaa"
     ],
     [
         "_mtrn_main_color",
         "bbbbb1"
+    ],
+    [
+        "_mtrn_border_color",
+        "cccccc"
+    ],
+    [
+        "_mtrn_head_bottom_border_color",
+        "dddddd"
     ],
     [
         "_mtrn_bg_color",
@@ -76,12 +132,12 @@
         10
     ],
     [
-        "_mtrn_border_color",
-        "cccccc"
+        "_mtrn_head_bg_color",
+        "f1f1f1"
     ],
     [
-        "_mtrn_head_bottom_border_color",
-        "dddddd"
+        "_mtrn_head_bg_opacity",
+        90
     ],
     [
         "_mtrn_even_bg_color",
@@ -108,67 +164,11 @@
         100
     ],
     [
-        "_mtrn_head_bg_color",
-        "f1f1f1"
+        "_mtrn_width",
+        700
     ],
     [
-        "_mtrn_head_bg_opacity",
-        90
-    ],
-    [
-        "_mtrn_projector_presentation",
-        "1"
-    ],
-    [
-        "_mtrn_si",
-        "1"
-    ],
-    [
-        "_mtrn_sf",
-        "1"
-    ],
-    [
-        "_mtrn_st",
-        "0"
-    ],
-    [
-        "_mtrn_sg",
-        "0"
-    ],
-    [
-        "_mtrn_sr",
-        "0"
-    ],
-    [
-        "_mtrn_se",
-        "1"
-    ],
-    [
-        "_mtrn_sp",
-        "0"
-    ],
-    [
-        "_mtrn_sh",
-        "1"
-    ],
-    [
-        "_mtrn_responsive",
-        "1"
-    ],
-    [
-        "_mtrn_language",
-        "it"
-    ],
-    [
-        "_mtrn_group",
-        "90"
-    ],
-    [
-        "_mtrn_participant",
-        "3"
-    ],
-    [
-        "_mtrn_match_number",
-        "2-7"
+        "_mtrn_height",
+        900
     ]
 ]

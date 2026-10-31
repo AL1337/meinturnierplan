@@ -37,10 +37,8 @@ foreach (array(
   'class-mtrn-blocks.php',
   'class-mtrn-embed-widget.php',
   'class-mtrn-single-content-filter.php',
-  'class-mtrn-table-ajax-handler.php',
-  'class-mtrn-matches-ajax-handler.php',
-  'class-mtrn-table-admin-meta-boxes.php',
-  'class-mtrn-matches-admin-meta-boxes.php',
+  'class-mtrn-ajax-handler.php',
+  'class-mtrn-admin-meta-boxes.php',
 ) as $file) {
   require_once MTRN_PLUGIN_PATH . 'includes/' . $file;
 }

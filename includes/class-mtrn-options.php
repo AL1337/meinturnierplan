@@ -64,8 +64,9 @@ final class MTRN_Options {
           'block_config'    => 'mtrnBlock',
           'block_nonce'     => 'mtrn_block_nonce',
           'block_json'      => 'blocks/tournament-table/block.json',
-          'block_script'    => 'mtrn-tournament-table-block',
-          'block_script_file' => 'assets/js/tournament-table-block.js',
+          'block_title'     => __('Tournament Table', 'meinturnierplan'),
+          'block_description' => __('Display a tournament table from your custom post types.', 'meinturnierplan'),
+          'block_select_label' => __('Select a Tournament Table:', 'meinturnierplan'),
           'select_placeholder' => __('Please select a Tournament Table.', 'meinturnierplan'),
           'select_label'    => __('Select a Tournament Table', 'meinturnierplan'),
           'widget_name'     => __('Tournament Table', 'meinturnierplan'),
@@ -105,8 +106,9 @@ final class MTRN_Options {
           'block_config'    => 'mtrnMatchesBlock',
           'block_nonce'     => 'mtrn_matches_block_nonce',
           'block_json'      => 'blocks/tournament-matches/block.json',
-          'block_script'    => 'mtrn-tournament-matches-block',
-          'block_script_file' => 'assets/js/tournament-matches-block.js',
+          'block_title'     => __('Matches', 'meinturnierplan'),
+          'block_description' => __('Display matches from your custom post types.', 'meinturnierplan'),
+          'block_select_label' => __('Select a Matches Table:', 'meinturnierplan'),
           'select_placeholder' => __('Please select a Matches Table.', 'meinturnierplan'),
           'select_label'    => __('Select a Matches Table', 'meinturnierplan'),
           'widget_name'     => __('Matches Table', 'meinturnierplan'),
@@ -623,6 +625,37 @@ final class MTRN_Options {
     }
     $percent = max(0, min(100, (int) round((float) $opacity_percent)));
     return $hex_color . str_pad(dechex(intdiv($percent * 255 + 50, 100)), 2, '0', STR_PAD_LEFT);
+  }
+
+  /**
+   * Option list for the admin scripts (shortcode updater and live preview).
+   *
+   * @return array<int, array>
+   */
+  public static function js_config($type) {
+    $out = array();
+    foreach (self::for_type($type) as $key => $def) {
+      $item = array(
+        'key'     => $key,
+        'kind'    => $def['kind'],
+        'attr'    => $def['attr'],
+        'field'   => self::FIELD_PREFIX . $key,
+        'default' => $def['default'],
+      );
+      if ($def['type'] === 'color') {
+        $item['color'] = true;
+      }
+      if ($def['kind'] === 'color_opacity') {
+        $item['opacityField'] = self::FIELD_PREFIX . $def['opacity_key'];
+        $item['colorDefault'] = $def['color_default'];
+        $item['opacityDefault'] = $def['opacity_default'];
+      }
+      if (!empty($def['condition'])) {
+        $item['condition'] = $def['condition'];
+      }
+      $out[] = $item;
+    }
+    return $out;
   }
 
   /**

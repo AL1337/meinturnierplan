@@ -197,6 +197,17 @@ marked "change" are deliberate small corrections to make during the refactor.
   their type and post id. Deleted: both shortcode classes, both block
   classes, both widget classes, both renderer wrappers. Goldens: identical
   except item 15. Item 8 resolved.
+- **Step 6 (admin):** `class-mtrn-admin-meta-boxes.php` (one class per type:
+  form, preview attributes, generated shortcode and save all from the
+  registry), `class-mtrn-ajax-handler.php` (all actions, names unchanged),
+  `assets/js/admin-meta-boxes.js`, `assets/js/admin-preview.js` and
+  `assets/js/blocks.js` driven by configuration localized from the registry.
+  Deleted: both meta box classes, both AJAX handlers, both preview scripts,
+  both shortcode updaters, both block editor scripts. Goldens: admin form
+  byte-identical; generated shortcodes identical as attribute sets (item 11,
+  one order now); saves identical except item 5 (numeric sanitising); the
+  preview request no longer carries the separate opacity values, which the
+  server never read. Items 5, 9, 11 resolved; item 2 kept.
 
 ## Golden tests
 

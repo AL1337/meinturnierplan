@@ -19,6 +19,8 @@ if (!defined('ABSPATH')) {
  */
 class MTRN_Blocks {
 
+  const EDITOR_SCRIPT = 'mtrn-blocks';
+
   /** @var MTRN_Embed_Renderer */
   private $renderer;
 
@@ -42,20 +44,30 @@ class MTRN_Blocks {
       return;
     }
 
+    $localized = array();
     foreach (MTRN_Options::types() as $type => $config) {
-      wp_register_script(
-        $config['block_script'],
-        MTRN_PLUGIN_URL . $config['block_script_file'],
-        array('wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-data', 'wp-api-fetch'),
-        MTRN_PLUGIN_VERSION,
-        true
+      $localized[$type] = array(
+        'name'        => $config['block'],
+        'title'       => $config['block_title'],
+        'description' => $config['block_description'],
+        'selectLabel' => $config['block_select_label'],
+        'ajaxUrl'     => admin_url('admin-ajax.php'),
+        'action'      => $config['ajax']['list'],
+        'nonce'       => wp_create_nonce($config['block_nonce'])
       );
+    }
 
-      wp_localize_script($config['block_script'], $config['block_config'], array(
-        'ajaxUrl' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce($config['block_nonce'])
-      ));
+    // Both block.json files name this handle as their editorScript
+    wp_register_script(
+      self::EDITOR_SCRIPT,
+      MTRN_PLUGIN_URL . 'assets/js/blocks.js',
+      array('wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor'),
+      MTRN_PLUGIN_VERSION,
+      true
+    );
+    wp_localize_script(self::EDITOR_SCRIPT, 'mtrnBlocks', $localized);
 
+    foreach (MTRN_Options::types() as $type => $config) {
       register_block_type(MTRN_PLUGIN_PATH . $config['block_json'], array(
         'render_callback' => function ($attributes) use ($type) {
           return $this->render_block($type, $attributes);

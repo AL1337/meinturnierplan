@@ -30,10 +30,8 @@ class MTRN_Plugin {
   public $matches_post_type;
   public $shortcodes;
   public $blocks;
-  public $table_admin_meta_boxes;
-  public $matches_admin_meta_boxes;
-  public $table_ajax_handler;
-  public $matches_ajax_handler;
+  public $meta_boxes = array();
+  public $ajax_handler;
   public $assets;
   public $installer;
   public $single_content_filter;
@@ -88,10 +86,8 @@ class MTRN_Plugin {
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-single-content-filter.php';
 
     // Admin
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-admin-meta-boxes.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-admin-meta-boxes.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-ajax-handler.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-ajax-handler.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-meta-boxes.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-ajax-handler.php';
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-assets.php';
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-notices.php';
   }
@@ -107,10 +103,10 @@ class MTRN_Plugin {
     $this->shortcodes = new MTRN_Shortcodes($this->renderer);
     $this->blocks = new MTRN_Blocks($this->renderer);
     $this->single_content_filter = new MTRN_Single_Content_Filter($this->renderer);
-    $this->table_admin_meta_boxes = new MTRN_Admin_Table_Meta_Boxes($this->renderer);
-    $this->matches_admin_meta_boxes = new MTRN_Admin_Matches_Meta_Boxes($this->renderer);
-    $this->table_ajax_handler = new MTRN_Table_Ajax_Handler($this->renderer);
-    $this->matches_ajax_handler = new MTRN_Matches_Ajax_Handler($this->renderer);
+    foreach (array_keys(MTRN_Options::types()) as $type) {
+      $this->meta_boxes[$type] = new MTRN_Admin_Meta_Boxes($type, $this->renderer);
+    }
+    $this->ajax_handler = new MTRN_Ajax_Handler($this->renderer);
     $this->admin_notices = new MTRN_Admin_Notices();
     $this->assets = new MTRN_Assets();
 
