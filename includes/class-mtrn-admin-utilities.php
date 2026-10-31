@@ -274,10 +274,10 @@ class MTRN_Admin_Utilities {
    */
   public static function combine_color_opacity($hex_color, $opacity_percent) {
     // Remove # if present
-    $hex_color = ltrim($hex_color, '#');
+    $hex_color = ltrim((string) $hex_color, '#');
 
     // If color already has alpha (8 characters), return as is
-    if (strlen($hex_color) == 8) {
+    if (strlen($hex_color) === 8) {
       return $hex_color;
     }
 
@@ -286,8 +286,12 @@ class MTRN_Admin_Utilities {
       $opacity_percent = 100;
     }
 
-    // Convert opacity percentage to hex
-    $opacity_hex = str_pad(dechex(round(($opacity_percent / 100) * 255)), 2, '0', STR_PAD_LEFT);
+    // Convert the percentage to an alpha byte with integer arithmetic (round
+    // half up). Floating point variants such as round($o * 2.55) give different
+    // results on PHP 8.4, which no longer pre-rounds; this matches the JS
+    // updater (Math.round(o / 100 * 255)) for every value from 0 to 100.
+    $percent = max(0, min(100, (int) round((float) $opacity_percent)));
+    $opacity_hex = str_pad(dechex(intdiv($percent * 255 + 50, 100)), 2, '0', STR_PAD_LEFT);
 
     return $hex_color . $opacity_hex;
   }

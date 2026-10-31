@@ -204,15 +204,9 @@ class MTRN_Single_Content_Filter {
       return $default;
     }
 
-    // Remove # if present
-    $color = ltrim($color, '#');
-
-    // Convert opacity percentage to hex (0-100 to 00-ff)
-    if ($opacity !== '' && $opacity !== false) {
-      $opacity_hex = str_pad(dechex(round($opacity * 2.55)), 2, '0', STR_PAD_LEFT);
-      return $color . $opacity_hex;
-    }
-
-    return $color . 'ff'; // Default to full opacity
+    // Same conversion as the admin preview, blocks and widgets, so the
+    // single-post view cannot drift from them. (It used to round $opacity * 2.55,
+    // which gives other alpha values than the shared helper on PHP 8.4.)
+    return MTRN_Admin_Utilities::combine_color_opacity($color, $opacity);
   }
 }

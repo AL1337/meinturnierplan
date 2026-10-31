@@ -17,6 +17,22 @@ class ColorHelpersTest extends TestCase {
     $this->assertSame('ff000080', MTRN_Admin_Utilities::combine_color_opacity('ff000080', 10), 'An 8-digit color already carries its alpha');
   }
 
+  public function test_combine_color_opacity_is_exact_for_every_percentage(): void {
+    foreach (range(0, 100) as $percent) {
+      $expected = str_pad(dechex(intdiv($percent * 255 + 50, 100)), 2, '0', STR_PAD_LEFT);
+      $this->assertSame('abcdef' . $expected, MTRN_Admin_Utilities::combine_color_opacity('abcdef', (string) $percent), "opacity $percent%");
+    }
+
+    // The percentages where round($o * 2.55) differs between PHP 8.3 and 8.4
+    $this->assertSame('abcdef80', MTRN_Admin_Utilities::combine_color_opacity('abcdef', 50));
+    $this->assertSame('abcdefe6', MTRN_Admin_Utilities::combine_color_opacity('abcdef', 90));
+    $this->assertSame('abcdefff', MTRN_Admin_Utilities::combine_color_opacity('abcdef', 100));
+
+    // Out-of-range values are clamped instead of producing a broken hex string
+    $this->assertSame('abcdefff', MTRN_Admin_Utilities::combine_color_opacity('abcdef', 150));
+    $this->assertSame('abcdef00', MTRN_Admin_Utilities::combine_color_opacity('abcdef', -5));
+  }
+
   public function test_hex_to_rgba(): void {
     $this->assertSame('rgba(255, 0, 0, 0.5)', MTRN_Admin_Utilities::hex_to_rgba('#ff000080'));
     $this->assertSame('rgb(255, 0, 0)', MTRN_Admin_Utilities::hex_to_rgba('ff0000'));

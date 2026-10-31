@@ -143,8 +143,10 @@ marked "change" are deliberate small corrections to make during the refactor.
    both mean "all". Keep both; the registry documents `''`/`-1` as "all".
 7. **Colour + opacity math** exists three times: `combine_color_opacity`,
    `get_bg_color_with_opacity`, and a private copy in the single-post filter
-   (`round($opacity * 2.55)`). The results are identical for 0-100. Change:
-   one implementation.
+   (`round($opacity * 2.55)`). The results were identical on PHP 8.3 but not
+   on PHP 8.4, where `round()` no longer pre-rounds: 50 % and 90 % came out
+   one step lower in the single-post view. Done during preparation: one
+   implementation with integer arithmetic, pinned for 0-100 by a unit test.
 8. **Matches block** passes neither `participant` nor `gamenumbers` and
    relies on the renderer's meta fallback; the matches widget passes both.
    Keep the result (identical output), one code path.
