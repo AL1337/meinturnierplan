@@ -219,6 +219,8 @@ marked "change" are deliberate small corrections to make during the refactor.
 
 ## Manual regression checklist (before the 1.4.0 release)
 
+The full step-by-step plan is `docs/release-test-plan.md`; the list below is the short form.
+
 On the Local site with one Tournament Table and one Match List post:
 
 1. Open each post in the admin. The settings form, preview and shortcode box
