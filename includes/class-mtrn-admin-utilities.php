@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   1.0.0
- * @version 1.3.0
+ * @version 1.4.0
  */
 
 // Prevent direct access
@@ -226,116 +226,7 @@ class MTRN_Admin_Utilities {
   }
 
   /**
-   * Sanitize meta value based on field type
-   *
-   * @param string $field The field name/type
-   * @param mixed $value The value to sanitize
-   * @return mixed The sanitized value
-   */
-  public static function sanitize_meta_value($field, $value) {
-    // Checkbox fields
-    if (in_array($field, array('suppress_wins', 'suppress_logos', 'suppress_num_matches', 'projector_presentation', 'navigation_for_groups'))) {
-      return $value === '1' ? '1' : '0';
-    }
-
-    // Color fields
-    if (in_array($field, array('text_color', 'main_color', 'bg_color', 'border_color', 'head_bottom_border_color', 'even_bg_color', 'odd_bg_color', 'hover_bg_color', 'head_bg_color'))) {
-      $color = sanitize_hex_color($value);
-      return $color ? ltrim($color, '#') : '';
-    }
-
-    // Opacity fields
-    if (strpos($field, '_opacity') !== false) {
-      $opacity = absint($value);
-      return max(0, min(100, $opacity));
-    }
-
-    // Number fields
-    if (in_array($field, array('font_size', 'header_font_size', 'bsizeh', 'bsizev', 'bsizeoh', 'bsizeov', 'bbsize', 'table_padding', 'inner_padding', 'logo_size'))) {
-      return absint($value);
-    }
-
-    // Language field - validate against allowed languages
-    if ($field === 'language') {
-      $allowed_languages = array('en', 'de', 'es', 'fr', 'hr', 'it', 'pl', 'sl', 'tr');
-      return in_array($value, $allowed_languages) ? $value : 'en';
-    }
-
-    // Text fields
-    return sanitize_text_field($value);
-  }
-
-  /**
-   * Combine hex color and opacity percentage into 8-character hex
-   *
-   * @param string $hex_color The color value (with or without #)
-   * @param int $opacity_percent The opacity value (0-100)
-   * @return string The combined color value with opacity
-   */
-  public static function combine_color_opacity($hex_color, $opacity_percent) {
-    // Remove # if present
-    $hex_color = ltrim((string) $hex_color, '#');
-
-    // If color already has alpha (8 characters), return as is
-    if (strlen($hex_color) === 8) {
-      return $hex_color;
-    }
-
-    // If no opacity specified, default to fully opaque
-    if ($opacity_percent === '' || $opacity_percent === null) {
-      $opacity_percent = 100;
-    }
-
-    // Convert the percentage to an alpha byte with integer arithmetic (round
-    // half up). Floating point variants such as round($o * 2.55) give different
-    // results on PHP 8.4, which no longer pre-rounds; this matches the JS
-    // updater (Math.round(o / 100 * 255)) for every value from 0 to 100.
-    $percent = max(0, min(100, (int) round((float) $opacity_percent)));
-    $opacity_hex = str_pad(dechex(intdiv($percent * 255 + 50, 100)), 2, '0', STR_PAD_LEFT);
-
-    return $hex_color . $opacity_hex;
-  }
-
-  /**
-   * Get background color with opacity from post meta
-   *
-   * @param int $post_id The post ID
-   * @param string $color_meta_key The meta key for the color field
-   * @return string The combined color value with opacity
-   */
-  public static function get_bg_color_with_opacity($post_id, $color_meta_key) {
-    if (!$post_id) {
-      return '00000000'; // Transparent default
-    }
-
-    $bg_color = get_post_meta($post_id, $color_meta_key, true);
-
-    // Determine opacity meta key based on color meta key
-    $opacity_meta_mapping = array(
-      '_mtrn_bg_color' => '_mtrn_bg_opacity',
-      '_mtrn_even_bg_color' => '_mtrn_even_bg_opacity',
-      '_mtrn_odd_bg_color' => '_mtrn_odd_bg_opacity',
-      '_mtrn_hover_bg_color' => '_mtrn_hover_bg_opacity',
-      '_mtrn_head_bg_color' => '_mtrn_head_bg_opacity',
-    );
-
-    $opacity_meta_key = isset($opacity_meta_mapping[$color_meta_key]) ? $opacity_meta_mapping[$color_meta_key] : null;
-    $bg_opacity = $opacity_meta_key ? get_post_meta($post_id, $opacity_meta_key, true) : null;
-
-    // Set defaults
-    if (empty($bg_color)) {
-      $bg_color = '000000'; // Default color
-    }
-
-    if (empty($bg_opacity) && $bg_opacity !== '0') {
-      $bg_opacity = $color_meta_key === '_mtrn_bg_color' ? 0 : 69; // Different defaults for different colors
-    }
-
-    return self::combine_color_opacity($bg_color, $bg_opacity);
-  }
-
-  /**
-   * Get available language options for the plugin
+   * Available language options
    *
    * @return array Array of language code => language name pairs
    */
@@ -351,42 +242,6 @@ class MTRN_Admin_Utilities {
       'sl' => __('Slovenščina / Slovenian', 'meinturnierplan'),
       'tr' => __('Türkçe / Turkish', 'meinturnierplan'),
     );
-  }
-
-  /**
-   * Convert hex color with alpha to rgba
-   *
-   * @param string $hex The hex color value (with or without #)
-   * @return string The converted color in rgba format or 'transparent'
-   */
-  public static function hex_to_rgba($hex) {
-    // Remove # if present
-    $hex = ltrim($hex, '#');
-
-    // Handle 8-character hex (RRGGBBAA)
-    if (strlen($hex) == 8) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      $a = round(hexdec(substr($hex, 6, 2)) / 255, 2);
-      return "rgba($r, $g, $b, $a)";
-    }
-    // Handle 6-character hex (RRGGBB)
-    elseif (strlen($hex) == 6) {
-      $r = hexdec(substr($hex, 0, 2));
-      $g = hexdec(substr($hex, 2, 2));
-      $b = hexdec(substr($hex, 4, 2));
-      return "rgb($r, $g, $b)";
-    }
-    // Handle 3-character hex (RGB)
-    elseif (strlen($hex) == 3) {
-      $r = hexdec(str_repeat(substr($hex, 0, 1), 2));
-      $g = hexdec(str_repeat(substr($hex, 1, 1), 2));
-      $b = hexdec(str_repeat(substr($hex, 2, 1), 2));
-      return "rgb($r, $g, $b)";
-    }
-
-    return 'transparent';
   }
 
   /**
@@ -420,7 +275,7 @@ class MTRN_Admin_Utilities {
 
     // Check if current locale matches any supported language
     foreach ($supported_languages as $lang_code => $locales) {
-      if (in_array($wp_locale, $locales)) {
+      if (in_array($wp_locale, $locales, true)) {
         return $lang_code;
       }
     }
@@ -471,7 +326,7 @@ class MTRN_Admin_Utilities {
    * @return string The full JSON endpoint URL.
    */
   public static function build_tournament_json_url($tournament_id, $language = 'en') {
-    return self::get_api_base_url($language) . '/json/json.php?id=' . urlencode($tournament_id);
+    return self::get_api_base_url($language) . '/json/json.php?id=' . rawurlencode($tournament_id);
   }
 
   /**
@@ -698,8 +553,8 @@ class MTRN_Admin_Utilities {
   public static function render_admin_javascript_utilities($config = array()) {
     $defaults = array(
       'nonce_action' => 'mtrn_preview_nonce',
-      'ajax_actions' => array('mtrn_get_groups', 'mtrn_refresh_groups'),
-      'ajax_actions_teams' => array('mtrn_get_teams', 'mtrn_refresh_teams'),
+      'ajax_actions' => array(MTRN_Options::type('table')['ajax']['groups'], MTRN_Options::type('table')['ajax']['refresh_groups']),
+      'ajax_actions_teams' => array(MTRN_Options::type('matches')['ajax']['teams'], MTRN_Options::type('matches')['ajax']['refresh_teams']),
       'field_prefix' => 'mtrn_'
     );
     $config = array_merge($defaults, $config);
@@ -874,8 +729,8 @@ class MTRN_Admin_Utilities {
 
         if (!empty($saved_group)) {
           // Use saved selection
-          $is_selected = ($saved_group == $group_number);
-        } elseif (!$show_all_option && $index == 0) {
+          $is_selected = ((string) $saved_group === (string) $group_number);
+        } elseif (!$show_all_option && $index === 0) {
           // Auto-select first group as default for tables (when no "All Matches" option)
           $is_selected = true;
         }
@@ -886,7 +741,7 @@ class MTRN_Admin_Utilities {
 
       // Add Final Round option if it exists
       if ($has_final_round) {
-        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $is_final_selected = (!empty($saved_group) && (string) $saved_group === '90');
         echo '<option value="90"' . selected($is_final_selected, true, false) . '>' . esc_html__('Final Round', 'meinturnierplan') . '</option>';
       }
     } elseif (!empty($saved_group) && !empty($tournament_id)) {
@@ -896,7 +751,7 @@ class MTRN_Admin_Utilities {
       }
 
       // Show a placeholder for the saved group if groups haven't loaded yet
-      if ($saved_group == '90') {
+      if ((string) $saved_group === '90') {
         echo '<option value="90" selected>' . esc_html__('Final Round (saved)', 'meinturnierplan') . '</option>';
       } else {
         /* translators: %s is the saved group name */
@@ -913,7 +768,7 @@ class MTRN_Admin_Utilities {
 
       // Check for Final Round only
       if ($has_final_round) {
-        $is_final_selected = (!empty($saved_group) && $saved_group == '90');
+        $is_final_selected = (!empty($saved_group) && (string) $saved_group === '90');
         echo '<option value="90"' . selected($is_final_selected, true, false) . '>' . esc_html__('Final Round', 'meinturnierplan') . '</option>';
       }
     }
@@ -965,7 +820,7 @@ class MTRN_Admin_Utilities {
     echo '<select id="' . esc_attr($participant_field_id) . '" name="' . esc_attr($participant_field_id) . '" class="regular-text">';
 
     // Add "All" option first as default
-    $is_all_selected = ($saved_participant == '-1');
+    $is_all_selected = ((string) $saved_participant === '-1');
     echo '<option value="-1"' . selected($is_all_selected, true, false) . '>' . esc_html__('All', 'meinturnierplan') . '</option>';
 
     if (!empty($teams)) {
@@ -975,11 +830,11 @@ class MTRN_Admin_Utilities {
         $team_name = isset($team['name']) ? $team['name'] : '';
 
         if (!empty($team_id) && !empty($team_name)) {
-          $is_selected = ($saved_participant == $team_id);
+          $is_selected = ((string) $saved_participant === (string) $team_id);
           echo '<option value="' . esc_attr($team_id) . '"' . selected($is_selected, true, false) . '>' . esc_html($team_name) . '</option>';
         }
       }
-    } elseif (!empty($saved_participant) && $saved_participant != '-1' && !empty($tournament_id)) {
+    } elseif (!empty($saved_participant) && (string) $saved_participant !== '-1' && !empty($tournament_id)) {
       // Show a placeholder for the saved participant if teams haven't loaded yet
       /* translators: %s is the saved team name */
       echo '<option value="' . esc_attr($saved_participant) . '" selected>' . esc_html(sprintf(__('Team %s (saved)', 'meinturnierplan'), $saved_participant)) . '</option>';

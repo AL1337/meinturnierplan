@@ -33,7 +33,7 @@ class LanguageDomainTest extends TestCase {
 
   public function test_json_url_uses_the_language_domain_and_encodes_the_id(): void {
     $this->assertSame('https://turniej.pl/json/json.php?id=abc', MTRN_Admin_Utilities::build_tournament_json_url('abc', 'pl'));
-    $this->assertSame('https://www.meinturnierplan.de/json/json.php?id=a%26b+c', MTRN_Admin_Utilities::build_tournament_json_url('a&b c', 'de'));
+    $this->assertSame('https://www.meinturnierplan.de/json/json.php?id=a%26b%20c', MTRN_Admin_Utilities::build_tournament_json_url('a&b c', 'de'));
   }
 
   public function test_default_language_follows_the_site_locale(): void {

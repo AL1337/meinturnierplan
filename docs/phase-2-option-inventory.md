@@ -162,6 +162,81 @@ marked "change" are deliberate small corrections to make during the refactor.
     (`group` after the flags). Shortcode attribute order has no meaning.
     Change: one order, produced by one generator.
 
+12. **Black row backgrounds for posts without saved colours.** When a post
+    had no colour meta (created programmatically or before a field existed),
+    the renderer sent `000000b0` for the even, odd, hover and head
+    backgrounds through `post_id`-only shortcodes, blocks and widgets,
+    while explicit shortcodes and the single-post view sent the documented
+    defaults. Change (done in step 4): the registry falls back to the
+    option default when the meta is empty. Verified against the goldens:
+    only those four parameters changed, only in those three channels.
+13. **URL parameter order.** The embed URL now lists parameters in the
+    registry's order (the admin form order) instead of the old renderer
+    mapping order. The service reads parameters by name; the golden
+    regeneration for step 4 was checked parameter by parameter.
+14. **Iframe id suffix.** The 8-character suffix is now derived from the
+    resolved values instead of the raw attribute array, so a block, a
+    widget and a shortcode for the same post get the same id. The resize
+    script only matches the prefix; the golden comparison masks the suffix.
+
+15. **Width and height fallback.** The single-post view applied the size
+    saved by the admin preview, blocks, widgets and `post_id`-only
+    shortcodes did not (they started at 300x200 until the resize message
+    arrived). Change (step 5): the resolver falls back to the saved size for
+    every channel, which reduces the initial layout jump.
+
+## Refactor log
+
+- **Step 4 (registry):** `includes/class-mtrn-options.php` holds every
+  option and both type configurations; `includes/class-mtrn-embed-renderer.php`
+  renders both embeds from it. The old renderer classes are thin wrappers
+  until their callers are migrated. Items 7, 12, 13, 14 resolved.
+- **Step 5 (channels):** `class-mtrn-shortcodes.php`, `class-mtrn-blocks.php`,
+  `class-mtrn-embed-widget.php` (one class, registered per type) and the
+  rewritten single-post filter all call `MTRN_Embed_Renderer::render()` with
+  their type and post id. Deleted: both shortcode classes, both block
+  classes, both widget classes, both renderer wrappers. Goldens: identical
+  except item 15. Item 8 resolved.
+- **Step 6 (admin):** `class-mtrn-admin-meta-boxes.php` (one class per type:
+  form, preview attributes, generated shortcode and save all from the
+  registry), `class-mtrn-ajax-handler.php` (all actions, names unchanged),
+  `assets/js/admin-meta-boxes.js`, `assets/js/admin-preview.js` and
+  `assets/js/blocks.js` driven by configuration localized from the registry.
+  Deleted: both meta box classes, both AJAX handlers, both preview scripts,
+  both shortcode updaters, both block editor scripts. Goldens: admin form
+  byte-identical; generated shortcodes identical as attribute sets (item 11,
+  one order now); saves identical except item 5 (numeric sanitising); the
+  preview request no longer carries the separate opacity values, which the
+  server never read. Items 5, 9, 11 resolved; item 2 kept.
+
+- **Step 7 (wrap-up):** post types merged into `class-mtrn-post-types.php`;
+  dead helpers removed from the admin utilities (`sanitize_meta_value`,
+  `combine_color_opacity`, `get_bg_color_with_opacity`, `hex_to_rgba`);
+  installer, uninstall and asset loading read the post types from the
+  registry; remaining PHPCS findings fixed (strict comparisons,
+  `rawurlencode`, no `serialize()` in the iframe id); translation template
+  gained the two block select labels; 1.4.0 changelog written.
+
+## Manual regression checklist (before the 1.4.0 release)
+
+The full step-by-step plan is `docs/release-test-plan.md`; the list below is the short form.
+
+On the Local site with one Tournament Table and one Match List post:
+
+1. Open each post in the admin. The settings form, preview and shortcode box
+   render; changing a colour, a checkbox and the group updates the preview;
+   the generated shortcode updates and copies.
+2. Match list: pick a tournament with courts/referees/final round, confirm
+   the conditional rows appear, then one without and confirm they hide.
+3. Save both posts, reload, values persist. Check `debug.log` is empty.
+4. Frontend: a page with both shortcodes, a page with both blocks (block
+   editor shows the two blocks with their post selectors), both widgets in a
+   sidebar, and each post's own single view. All embeds resize and match the
+   admin preview.
+5. A `[mtrn-table post_id="…"]` shortcode without further attributes
+   renders with the post's language, colours, flags and saved size.
+6. Deactivate and reactivate; permalinks of the single views still work.
+
 ## Golden tests
 
 `tests/Unit/GoldenTest.php` renders 12 cases (`tests/golden/cases.php`)

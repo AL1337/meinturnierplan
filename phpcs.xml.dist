@@ -29,6 +29,7 @@
          sniffs. -->
     <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
     <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+    <exclude name="PSR2.ControlStructures.SwitchDeclaration"/>
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
     <exclude name="WordPress.WhiteSpace.OperatorSpacing"/>
     <exclude name="WordPress.Arrays.ArrayDeclarationSpacing"/>

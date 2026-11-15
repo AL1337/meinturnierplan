@@ -36,6 +36,9 @@ abstract class TestCase extends PHPUnitTestCase {
       return htmlspecialchars((string) $value, ENT_QUOTES);
     });
     Functions\when('esc_url')->returnArg();
+    Functions\when('wp_json_encode')->alias(static function ($data) {
+      return json_encode($data);
+    });
     Functions\when('sanitize_text_field')->alias(static function ($value) {
       return trim(strip_tags((string) $value));
     });

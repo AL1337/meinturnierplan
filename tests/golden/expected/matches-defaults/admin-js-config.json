@@ -1,0 +1,625 @@
+{
+    "metaBox": {
+        "type": "matches",
+        "shortcode": "mtrn-matches",
+        "idPrefix": "mtrn-matches-",
+        "postId": 201,
+        "defaultWidth": "300",
+        "defaultHeight": "152",
+        "options": [
+            {
+                "key": "tournament_id",
+                "kind": "source",
+                "attr": "id",
+                "field": "mtrn_tournament_id",
+                "default": ""
+            },
+            {
+                "key": "language",
+                "kind": "language",
+                "attr": "lang",
+                "field": "mtrn_language",
+                "default": "en"
+            },
+            {
+                "key": "group",
+                "kind": "group",
+                "attr": "group",
+                "field": "mtrn_group",
+                "default": ""
+            },
+            {
+                "key": "participant",
+                "kind": "participant",
+                "attr": "participant",
+                "field": "mtrn_participant",
+                "default": ""
+            },
+            {
+                "key": "match_number",
+                "kind": "match_number",
+                "attr": "gamenumbers",
+                "field": "mtrn_match_number",
+                "default": ""
+            },
+            {
+                "key": "projector_presentation",
+                "kind": "flag",
+                "attr": "bm",
+                "field": "mtrn_projector_presentation",
+                "default": "0"
+            },
+            {
+                "key": "si",
+                "kind": "flag",
+                "attr": "si",
+                "field": "mtrn_si",
+                "default": "0"
+            },
+            {
+                "key": "sf",
+                "kind": "flag",
+                "attr": "sf",
+                "field": "mtrn_sf",
+                "default": "0",
+                "condition": "showCourts"
+            },
+            {
+                "key": "sg",
+                "kind": "flag",
+                "attr": "sg",
+                "field": "mtrn_sg",
+                "default": "0",
+                "condition": "showGroups"
+            },
+            {
+                "key": "sr",
+                "kind": "flag",
+                "attr": "sr",
+                "field": "mtrn_sr",
+                "default": "0",
+                "condition": "showReferees"
+            },
+            {
+                "key": "st",
+                "kind": "flag",
+                "attr": "st",
+                "field": "mtrn_st",
+                "default": "0"
+            },
+            {
+                "key": "se",
+                "kind": "flag",
+                "attr": "se",
+                "field": "mtrn_se",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "sp",
+                "kind": "flag",
+                "attr": "sp",
+                "field": "mtrn_sp",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "sh",
+                "kind": "flag",
+                "attr": "sh",
+                "field": "mtrn_sh",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "responsive",
+                "kind": "wrap",
+                "attr": "s-wrap",
+                "field": "mtrn_responsive",
+                "default": "0"
+            },
+            {
+                "key": "font_size",
+                "kind": "style",
+                "attr": "s-size",
+                "field": "mtrn_font_size",
+                "default": "9"
+            },
+            {
+                "key": "header_font_size",
+                "kind": "style",
+                "attr": "s-sizeheader",
+                "field": "mtrn_header_font_size",
+                "default": "10"
+            },
+            {
+                "key": "ehrsize",
+                "kind": "style",
+                "attr": "s-ehrsize",
+                "field": "mtrn_ehrsize",
+                "default": "10"
+            },
+            {
+                "key": "table_padding",
+                "kind": "style",
+                "attr": "s-padding",
+                "field": "mtrn_table_padding",
+                "default": "2"
+            },
+            {
+                "key": "inner_padding",
+                "kind": "style",
+                "attr": "s-innerpadding",
+                "field": "mtrn_inner_padding",
+                "default": "5"
+            },
+            {
+                "key": "ehrtop",
+                "kind": "style",
+                "attr": "s-ehrtop",
+                "field": "mtrn_ehrtop",
+                "default": "9"
+            },
+            {
+                "key": "ehrbottom",
+                "kind": "style",
+                "attr": "s-ehrbottom",
+                "field": "mtrn_ehrbottom",
+                "default": "3"
+            },
+            {
+                "key": "bsizeh",
+                "kind": "style",
+                "attr": "s-bsizeh",
+                "field": "mtrn_bsizeh",
+                "default": "1"
+            },
+            {
+                "key": "bsizev",
+                "kind": "style",
+                "attr": "s-bsizev",
+                "field": "mtrn_bsizev",
+                "default": "1"
+            },
+            {
+                "key": "bsizeoh",
+                "kind": "style",
+                "attr": "s-bsizeoh",
+                "field": "mtrn_bsizeoh",
+                "default": "1"
+            },
+            {
+                "key": "bsizeov",
+                "kind": "style",
+                "attr": "s-bsizeov",
+                "field": "mtrn_bsizeov",
+                "default": "1"
+            },
+            {
+                "key": "bbsize",
+                "kind": "style",
+                "attr": "s-bbsize",
+                "field": "mtrn_bbsize",
+                "default": "2"
+            },
+            {
+                "key": "text_color",
+                "kind": "style",
+                "attr": "s-color",
+                "field": "mtrn_text_color",
+                "default": "000000",
+                "color": true
+            },
+            {
+                "key": "main_color",
+                "kind": "style",
+                "attr": "s-maincolor",
+                "field": "mtrn_main_color",
+                "default": "173f75",
+                "color": true
+            },
+            {
+                "key": "border_color",
+                "kind": "style",
+                "attr": "s-bcolor",
+                "field": "mtrn_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "head_bottom_border_color",
+                "kind": "style",
+                "attr": "s-bbcolor",
+                "field": "mtrn_head_bottom_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgcolor",
+                "field": "mtrn_bg_color",
+                "default": "00000000",
+                "color": true,
+                "opacityField": "mtrn_bg_opacity",
+                "colorDefault": "000000",
+                "opacityDefault": "0"
+            },
+            {
+                "key": "head_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bghead",
+                "field": "mtrn_head_bg_color",
+                "default": "eeeeffff",
+                "color": true,
+                "opacityField": "mtrn_head_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "100"
+            },
+            {
+                "key": "even_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgeven",
+                "field": "mtrn_even_bg_color",
+                "default": "f0f8ffb0",
+                "color": true,
+                "opacityField": "mtrn_even_bg_opacity",
+                "colorDefault": "f0f8ff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "odd_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgodd",
+                "field": "mtrn_odd_bg_color",
+                "default": "ffffffb0",
+                "color": true,
+                "opacityField": "mtrn_odd_bg_opacity",
+                "colorDefault": "ffffff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "hover_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgover",
+                "field": "mtrn_hover_bg_color",
+                "default": "eeeeffb0",
+                "color": true,
+                "opacityField": "mtrn_hover_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "width",
+                "kind": "size",
+                "attr": "width",
+                "field": "mtrn_width",
+                "default": "300"
+            },
+            {
+                "key": "height",
+                "kind": "size",
+                "attr": "height",
+                "field": "mtrn_height",
+                "default": "200"
+            }
+        ]
+    },
+    "preview": {
+        "type": "matches",
+        "postId": 201,
+        "previewAction": "mtrn_preview_matches",
+        "previewNonce": "nonce",
+        "checkOptionAction": "mtrn_check_tournament_option",
+        "checkOptionNonce": "nonce",
+        "options": [
+            {
+                "key": "tournament_id",
+                "kind": "source",
+                "attr": "id",
+                "field": "mtrn_tournament_id",
+                "default": ""
+            },
+            {
+                "key": "language",
+                "kind": "language",
+                "attr": "lang",
+                "field": "mtrn_language",
+                "default": "en"
+            },
+            {
+                "key": "group",
+                "kind": "group",
+                "attr": "group",
+                "field": "mtrn_group",
+                "default": ""
+            },
+            {
+                "key": "participant",
+                "kind": "participant",
+                "attr": "participant",
+                "field": "mtrn_participant",
+                "default": ""
+            },
+            {
+                "key": "match_number",
+                "kind": "match_number",
+                "attr": "gamenumbers",
+                "field": "mtrn_match_number",
+                "default": ""
+            },
+            {
+                "key": "projector_presentation",
+                "kind": "flag",
+                "attr": "bm",
+                "field": "mtrn_projector_presentation",
+                "default": "0"
+            },
+            {
+                "key": "si",
+                "kind": "flag",
+                "attr": "si",
+                "field": "mtrn_si",
+                "default": "0"
+            },
+            {
+                "key": "sf",
+                "kind": "flag",
+                "attr": "sf",
+                "field": "mtrn_sf",
+                "default": "0",
+                "condition": "showCourts"
+            },
+            {
+                "key": "sg",
+                "kind": "flag",
+                "attr": "sg",
+                "field": "mtrn_sg",
+                "default": "0",
+                "condition": "showGroups"
+            },
+            {
+                "key": "sr",
+                "kind": "flag",
+                "attr": "sr",
+                "field": "mtrn_sr",
+                "default": "0",
+                "condition": "showReferees"
+            },
+            {
+                "key": "st",
+                "kind": "flag",
+                "attr": "st",
+                "field": "mtrn_st",
+                "default": "0"
+            },
+            {
+                "key": "se",
+                "kind": "flag",
+                "attr": "se",
+                "field": "mtrn_se",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "sp",
+                "kind": "flag",
+                "attr": "sp",
+                "field": "mtrn_sp",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "sh",
+                "kind": "flag",
+                "attr": "sh",
+                "field": "mtrn_sh",
+                "default": "0",
+                "condition": "finalMatches"
+            },
+            {
+                "key": "responsive",
+                "kind": "wrap",
+                "attr": "s-wrap",
+                "field": "mtrn_responsive",
+                "default": "0"
+            },
+            {
+                "key": "font_size",
+                "kind": "style",
+                "attr": "s-size",
+                "field": "mtrn_font_size",
+                "default": "9"
+            },
+            {
+                "key": "header_font_size",
+                "kind": "style",
+                "attr": "s-sizeheader",
+                "field": "mtrn_header_font_size",
+                "default": "10"
+            },
+            {
+                "key": "ehrsize",
+                "kind": "style",
+                "attr": "s-ehrsize",
+                "field": "mtrn_ehrsize",
+                "default": "10"
+            },
+            {
+                "key": "table_padding",
+                "kind": "style",
+                "attr": "s-padding",
+                "field": "mtrn_table_padding",
+                "default": "2"
+            },
+            {
+                "key": "inner_padding",
+                "kind": "style",
+                "attr": "s-innerpadding",
+                "field": "mtrn_inner_padding",
+                "default": "5"
+            },
+            {
+                "key": "ehrtop",
+                "kind": "style",
+                "attr": "s-ehrtop",
+                "field": "mtrn_ehrtop",
+                "default": "9"
+            },
+            {
+                "key": "ehrbottom",
+                "kind": "style",
+                "attr": "s-ehrbottom",
+                "field": "mtrn_ehrbottom",
+                "default": "3"
+            },
+            {
+                "key": "bsizeh",
+                "kind": "style",
+                "attr": "s-bsizeh",
+                "field": "mtrn_bsizeh",
+                "default": "1"
+            },
+            {
+                "key": "bsizev",
+                "kind": "style",
+                "attr": "s-bsizev",
+                "field": "mtrn_bsizev",
+                "default": "1"
+            },
+            {
+                "key": "bsizeoh",
+                "kind": "style",
+                "attr": "s-bsizeoh",
+                "field": "mtrn_bsizeoh",
+                "default": "1"
+            },
+            {
+                "key": "bsizeov",
+                "kind": "style",
+                "attr": "s-bsizeov",
+                "field": "mtrn_bsizeov",
+                "default": "1"
+            },
+            {
+                "key": "bbsize",
+                "kind": "style",
+                "attr": "s-bbsize",
+                "field": "mtrn_bbsize",
+                "default": "2"
+            },
+            {
+                "key": "text_color",
+                "kind": "style",
+                "attr": "s-color",
+                "field": "mtrn_text_color",
+                "default": "000000",
+                "color": true
+            },
+            {
+                "key": "main_color",
+                "kind": "style",
+                "attr": "s-maincolor",
+                "field": "mtrn_main_color",
+                "default": "173f75",
+                "color": true
+            },
+            {
+                "key": "border_color",
+                "kind": "style",
+                "attr": "s-bcolor",
+                "field": "mtrn_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "head_bottom_border_color",
+                "kind": "style",
+                "attr": "s-bbcolor",
+                "field": "mtrn_head_bottom_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgcolor",
+                "field": "mtrn_bg_color",
+                "default": "00000000",
+                "color": true,
+                "opacityField": "mtrn_bg_opacity",
+                "colorDefault": "000000",
+                "opacityDefault": "0"
+            },
+            {
+                "key": "head_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bghead",
+                "field": "mtrn_head_bg_color",
+                "default": "eeeeffff",
+                "color": true,
+                "opacityField": "mtrn_head_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "100"
+            },
+            {
+                "key": "even_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgeven",
+                "field": "mtrn_even_bg_color",
+                "default": "f0f8ffb0",
+                "color": true,
+                "opacityField": "mtrn_even_bg_opacity",
+                "colorDefault": "f0f8ff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "odd_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgodd",
+                "field": "mtrn_odd_bg_color",
+                "default": "ffffffb0",
+                "color": true,
+                "opacityField": "mtrn_odd_bg_opacity",
+                "colorDefault": "ffffff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "hover_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgover",
+                "field": "mtrn_hover_bg_color",
+                "default": "eeeeffb0",
+                "color": true,
+                "opacityField": "mtrn_hover_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "width",
+                "kind": "size",
+                "attr": "width",
+                "field": "mtrn_width",
+                "default": "300"
+            },
+            {
+                "key": "height",
+                "kind": "size",
+                "attr": "height",
+                "field": "mtrn_height",
+                "default": "200"
+            }
+        ]
+    },
+    "adminUtils": {
+        "fieldPrefix": "mtrn_",
+        "ajaxActions": [
+            "mtrn_get_matches_groups",
+            "mtrn_refresh_matches_groups"
+        ],
+        "ajaxActionsTeams": [
+            "mtrn_get_matches_teams",
+            "mtrn_refresh_matches_teams"
+        ]
+    }
+}

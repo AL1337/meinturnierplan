@@ -155,6 +155,16 @@ class GoldenTest extends TestCase {
     return array('response' => array('code' => 500), 'body' => json_encode(array('error' => 'Tournament not found for slug ' . $id)));
   }
 
+  /**
+   * The 8-character suffix of an embed's iframe id only makes the id unique
+   * per instance; the resize script matches on the prefix. It is derived from
+   * the attributes and changes whenever the internal representation does, so
+   * it is masked before comparing.
+   */
+  private static function normalize(string $html): string {
+    return preg_replace('/(id="mtrn-(?:table|matches)-.*?-)[0-9a-f]{8}"/', '$1HASH"', $html);
+  }
+
   private function checkedSelected(string $type, $helper, $current, bool $echo): string {
     $result = ((string) $helper === (string) $current) ? " $type='$type'" : '';
     if ($echo) {
@@ -205,7 +215,7 @@ class GoldenTest extends TestCase {
         continue;
       }
       $this->assertFileExists($file, "Missing golden file for $name/$channel. Run MTRN_UPDATE_GOLDENS=1 vendor/bin/phpunit --filter GoldenTest");
-      $this->assertSame(file_get_contents($file), $output, "Output of channel '$channel' changed for case '$name'");
+      $this->assertSame(self::normalize(file_get_contents($file)), self::normalize($output), "Output of channel '$channel' changed for case '$name'");
     }
 
     if (!$update) {
@@ -233,19 +243,19 @@ class GoldenTest extends TestCase {
     // Case descriptor for the browser-side golden (tests/e2e/admin-js-golden.spec.js)
     $out['case.json'] = json_encode(array('type' => $case['type'], 'post_id' => $postId, 'tournament_id' => isset($case['meta']['_mtrn_tournament_id']) ? $case['meta']['_mtrn_tournament_id'] : ''), JSON_PRETTY_PRINT) . "\n";
 
-    $renderer = $isTable ? new \MTRN_Table_Renderer() : new \MTRN_Matches_Renderer();
-    $shortcode = $isTable ? new \MTRN_Table_Shortcode($renderer) : new \MTRN_Matches_Shortcode($renderer);
+    $renderer = new \MTRN_Embed_Renderer();
+    $shortcodes = new \MTRN_Shortcodes($renderer);
 
     if (isset($case['atts'])) {
-      $out['shortcode.html'] = $shortcode->shortcode_callback($case['atts']);
+      $out['shortcode.html'] = $shortcodes->render($case['type'], $case['atts']);
     }
 
-    $out['shortcode-post-only.html'] = $shortcode->shortcode_callback(array('post_id' => (string) $postId));
+    $out['shortcode-post-only.html'] = $shortcodes->render($case['type'], array('post_id' => (string) $postId));
 
-    $block = $isTable ? new \MTRN_Table_Gutenberg_Block($renderer) : new \MTRN_Matches_Gutenberg_Block($renderer);
-    $out['block.html'] = $block->render_block(array('tableId' => (string) $postId));
+    $blocks = new \MTRN_Blocks($renderer);
+    $out['block.html'] = $blocks->render_block($case['type'], array('tableId' => (string) $postId));
 
-    $widget = $isTable ? new \MTRN_Table_Widget() : new \MTRN_Matches_Widget();
+    $widget = new \MTRN_Embed_Widget($case['type'], $renderer);
     ob_start();
     $widget->widget(
       array('before_widget' => '<section class="widget">', 'after_widget' => '</section>', 'before_title' => '<h2>', 'after_title' => '</h2>'),
@@ -256,10 +266,10 @@ class GoldenTest extends TestCase {
     $this->currentPostId = $postId;
     $this->currentPostType = $isTable ? 'mtrn_table' : 'mtrn_match_list';
     $GLOBALS['post'] = (object) array('ID' => $postId, 'post_type' => $this->currentPostType);
-    $filter = new \MTRN_Single_Content_Filter(new \MTRN_Table_Renderer(), new \MTRN_Matches_Renderer());
+    $filter = new \MTRN_Single_Content_Filter($renderer);
     $out['single.html'] = $filter->populate_single_cpt_content('<p>Body</p>');
 
-    $metaBox = $isTable ? new \MTRN_Admin_Table_Meta_Boxes($renderer) : new \MTRN_Admin_Matches_Meta_Boxes($renderer);
+    $metaBox = new \MTRN_Admin_Meta_Boxes($case['type'], $renderer);
     $post = (object) array('ID' => $postId, 'post_type' => $this->currentPostType);
     ob_start();
     $metaBox->meta_box_callback($post);
@@ -268,15 +278,19 @@ class GoldenTest extends TestCase {
     $metaBox->shortcode_meta_box_callback($post);
     $out['admin-shortcode-box.html'] = ob_get_clean();
 
+    // What PHP localizes for the admin scripts; input for tests/e2e/admin-js-golden.spec.js (js-* names are reserved for its outputs)
+    $typeConfig = \MTRN_Options::type($case['type']);
+    $utils = array('fieldPrefix' => 'mtrn_', 'ajaxActions' => array($typeConfig['ajax']['groups'], $typeConfig['ajax']['refresh_groups']));
+    if (isset($typeConfig['ajax']['teams'])) {
+      $utils['ajaxActionsTeams'] = array($typeConfig['ajax']['teams'], $typeConfig['ajax']['refresh_teams']);
+    }
+    $out['admin-js-config.json'] = json_encode($metaBox->localized_configs($postId) + array('adminUtils' => $utils), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+
     if (isset($case['preview_post'])) {
-      $ajax = $isTable ? new \MTRN_Table_Ajax_Handler($renderer) : new \MTRN_Matches_Ajax_Handler($renderer);
+      $ajax = new \MTRN_Ajax_Handler($renderer);
       $_POST = $case['preview_post'] + array('nonce' => 'nonce', 'post_id' => (string) $postId);
       $this->json = null;
-      if ($isTable) {
-        $ajax->ajax_preview_table();
-      } else {
-        $ajax->ajax_preview_matches();
-      }
+      $ajax->preview($case['type']);
       $_POST = array();
       $out['preview-ajax.html'] = (string) $this->json;
     }

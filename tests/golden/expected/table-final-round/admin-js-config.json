@@ -1,0 +1,497 @@
+{
+    "metaBox": {
+        "type": "table",
+        "shortcode": "mtrn-table",
+        "idPrefix": "mtrn-table-",
+        "postId": 103,
+        "defaultWidth": "300",
+        "defaultHeight": "152",
+        "options": [
+            {
+                "key": "tournament_id",
+                "kind": "source",
+                "attr": "id",
+                "field": "mtrn_tournament_id",
+                "default": ""
+            },
+            {
+                "key": "language",
+                "kind": "language",
+                "attr": "lang",
+                "field": "mtrn_language",
+                "default": "en"
+            },
+            {
+                "key": "group",
+                "kind": "group",
+                "attr": "group",
+                "field": "mtrn_group",
+                "default": ""
+            },
+            {
+                "key": "suppress_wins",
+                "kind": "flag",
+                "attr": "sw",
+                "field": "mtrn_suppress_wins",
+                "default": "0"
+            },
+            {
+                "key": "suppress_logos",
+                "kind": "flag",
+                "attr": "sl",
+                "field": "mtrn_suppress_logos",
+                "default": "0"
+            },
+            {
+                "key": "suppress_num_matches",
+                "kind": "flag",
+                "attr": "sn",
+                "field": "mtrn_suppress_num_matches",
+                "default": "0"
+            },
+            {
+                "key": "projector_presentation",
+                "kind": "flag",
+                "attr": "bm",
+                "field": "mtrn_projector_presentation",
+                "default": "0"
+            },
+            {
+                "key": "navigation_for_groups",
+                "kind": "flag",
+                "attr": "nav",
+                "field": "mtrn_navigation_for_groups",
+                "default": "0"
+            },
+            {
+                "key": "responsive",
+                "kind": "wrap",
+                "attr": "s-wrap",
+                "field": "mtrn_responsive",
+                "default": "0"
+            },
+            {
+                "key": "font_size",
+                "kind": "style",
+                "attr": "s-size",
+                "field": "mtrn_font_size",
+                "default": "9"
+            },
+            {
+                "key": "header_font_size",
+                "kind": "style",
+                "attr": "s-sizeheader",
+                "field": "mtrn_header_font_size",
+                "default": "10"
+            },
+            {
+                "key": "logo_size",
+                "kind": "style",
+                "attr": "s-logosize",
+                "field": "mtrn_logo_size",
+                "default": "20"
+            },
+            {
+                "key": "table_padding",
+                "kind": "style",
+                "attr": "s-padding",
+                "field": "mtrn_table_padding",
+                "default": "2"
+            },
+            {
+                "key": "inner_padding",
+                "kind": "style",
+                "attr": "s-innerpadding",
+                "field": "mtrn_inner_padding",
+                "default": "5"
+            },
+            {
+                "key": "bsizeh",
+                "kind": "style",
+                "attr": "s-bsizeh",
+                "field": "mtrn_bsizeh",
+                "default": "1"
+            },
+            {
+                "key": "bsizev",
+                "kind": "style",
+                "attr": "s-bsizev",
+                "field": "mtrn_bsizev",
+                "default": "1"
+            },
+            {
+                "key": "bsizeoh",
+                "kind": "style",
+                "attr": "s-bsizeoh",
+                "field": "mtrn_bsizeoh",
+                "default": "1"
+            },
+            {
+                "key": "bsizeov",
+                "kind": "style",
+                "attr": "s-bsizeov",
+                "field": "mtrn_bsizeov",
+                "default": "1"
+            },
+            {
+                "key": "bbsize",
+                "kind": "style",
+                "attr": "s-bbsize",
+                "field": "mtrn_bbsize",
+                "default": "2"
+            },
+            {
+                "key": "text_color",
+                "kind": "style",
+                "attr": "s-color",
+                "field": "mtrn_text_color",
+                "default": "000000",
+                "color": true
+            },
+            {
+                "key": "main_color",
+                "kind": "style",
+                "attr": "s-maincolor",
+                "field": "mtrn_main_color",
+                "default": "173f75",
+                "color": true
+            },
+            {
+                "key": "border_color",
+                "kind": "style",
+                "attr": "s-bcolor",
+                "field": "mtrn_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "head_bottom_border_color",
+                "kind": "style",
+                "attr": "s-bbcolor",
+                "field": "mtrn_head_bottom_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgcolor",
+                "field": "mtrn_bg_color",
+                "default": "00000000",
+                "color": true,
+                "opacityField": "mtrn_bg_opacity",
+                "colorDefault": "000000",
+                "opacityDefault": "0"
+            },
+            {
+                "key": "head_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bghead",
+                "field": "mtrn_head_bg_color",
+                "default": "eeeeffff",
+                "color": true,
+                "opacityField": "mtrn_head_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "100"
+            },
+            {
+                "key": "even_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgeven",
+                "field": "mtrn_even_bg_color",
+                "default": "f0f8ffb0",
+                "color": true,
+                "opacityField": "mtrn_even_bg_opacity",
+                "colorDefault": "f0f8ff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "odd_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgodd",
+                "field": "mtrn_odd_bg_color",
+                "default": "ffffffb0",
+                "color": true,
+                "opacityField": "mtrn_odd_bg_opacity",
+                "colorDefault": "ffffff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "hover_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgover",
+                "field": "mtrn_hover_bg_color",
+                "default": "eeeeffb0",
+                "color": true,
+                "opacityField": "mtrn_hover_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "width",
+                "kind": "size",
+                "attr": "width",
+                "field": "mtrn_width",
+                "default": "300"
+            },
+            {
+                "key": "height",
+                "kind": "size",
+                "attr": "height",
+                "field": "mtrn_height",
+                "default": "200"
+            }
+        ]
+    },
+    "preview": {
+        "type": "table",
+        "postId": 103,
+        "previewAction": "mtrn_preview_table",
+        "previewNonce": "nonce",
+        "checkOptionAction": "",
+        "checkOptionNonce": "nonce",
+        "options": [
+            {
+                "key": "tournament_id",
+                "kind": "source",
+                "attr": "id",
+                "field": "mtrn_tournament_id",
+                "default": ""
+            },
+            {
+                "key": "language",
+                "kind": "language",
+                "attr": "lang",
+                "field": "mtrn_language",
+                "default": "en"
+            },
+            {
+                "key": "group",
+                "kind": "group",
+                "attr": "group",
+                "field": "mtrn_group",
+                "default": ""
+            },
+            {
+                "key": "suppress_wins",
+                "kind": "flag",
+                "attr": "sw",
+                "field": "mtrn_suppress_wins",
+                "default": "0"
+            },
+            {
+                "key": "suppress_logos",
+                "kind": "flag",
+                "attr": "sl",
+                "field": "mtrn_suppress_logos",
+                "default": "0"
+            },
+            {
+                "key": "suppress_num_matches",
+                "kind": "flag",
+                "attr": "sn",
+                "field": "mtrn_suppress_num_matches",
+                "default": "0"
+            },
+            {
+                "key": "projector_presentation",
+                "kind": "flag",
+                "attr": "bm",
+                "field": "mtrn_projector_presentation",
+                "default": "0"
+            },
+            {
+                "key": "navigation_for_groups",
+                "kind": "flag",
+                "attr": "nav",
+                "field": "mtrn_navigation_for_groups",
+                "default": "0"
+            },
+            {
+                "key": "responsive",
+                "kind": "wrap",
+                "attr": "s-wrap",
+                "field": "mtrn_responsive",
+                "default": "0"
+            },
+            {
+                "key": "font_size",
+                "kind": "style",
+                "attr": "s-size",
+                "field": "mtrn_font_size",
+                "default": "9"
+            },
+            {
+                "key": "header_font_size",
+                "kind": "style",
+                "attr": "s-sizeheader",
+                "field": "mtrn_header_font_size",
+                "default": "10"
+            },
+            {
+                "key": "logo_size",
+                "kind": "style",
+                "attr": "s-logosize",
+                "field": "mtrn_logo_size",
+                "default": "20"
+            },
+            {
+                "key": "table_padding",
+                "kind": "style",
+                "attr": "s-padding",
+                "field": "mtrn_table_padding",
+                "default": "2"
+            },
+            {
+                "key": "inner_padding",
+                "kind": "style",
+                "attr": "s-innerpadding",
+                "field": "mtrn_inner_padding",
+                "default": "5"
+            },
+            {
+                "key": "bsizeh",
+                "kind": "style",
+                "attr": "s-bsizeh",
+                "field": "mtrn_bsizeh",
+                "default": "1"
+            },
+            {
+                "key": "bsizev",
+                "kind": "style",
+                "attr": "s-bsizev",
+                "field": "mtrn_bsizev",
+                "default": "1"
+            },
+            {
+                "key": "bsizeoh",
+                "kind": "style",
+                "attr": "s-bsizeoh",
+                "field": "mtrn_bsizeoh",
+                "default": "1"
+            },
+            {
+                "key": "bsizeov",
+                "kind": "style",
+                "attr": "s-bsizeov",
+                "field": "mtrn_bsizeov",
+                "default": "1"
+            },
+            {
+                "key": "bbsize",
+                "kind": "style",
+                "attr": "s-bbsize",
+                "field": "mtrn_bbsize",
+                "default": "2"
+            },
+            {
+                "key": "text_color",
+                "kind": "style",
+                "attr": "s-color",
+                "field": "mtrn_text_color",
+                "default": "000000",
+                "color": true
+            },
+            {
+                "key": "main_color",
+                "kind": "style",
+                "attr": "s-maincolor",
+                "field": "mtrn_main_color",
+                "default": "173f75",
+                "color": true
+            },
+            {
+                "key": "border_color",
+                "kind": "style",
+                "attr": "s-bcolor",
+                "field": "mtrn_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "head_bottom_border_color",
+                "kind": "style",
+                "attr": "s-bbcolor",
+                "field": "mtrn_head_bottom_border_color",
+                "default": "bbbbbb",
+                "color": true
+            },
+            {
+                "key": "bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgcolor",
+                "field": "mtrn_bg_color",
+                "default": "00000000",
+                "color": true,
+                "opacityField": "mtrn_bg_opacity",
+                "colorDefault": "000000",
+                "opacityDefault": "0"
+            },
+            {
+                "key": "head_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bghead",
+                "field": "mtrn_head_bg_color",
+                "default": "eeeeffff",
+                "color": true,
+                "opacityField": "mtrn_head_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "100"
+            },
+            {
+                "key": "even_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgeven",
+                "field": "mtrn_even_bg_color",
+                "default": "f0f8ffb0",
+                "color": true,
+                "opacityField": "mtrn_even_bg_opacity",
+                "colorDefault": "f0f8ff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "odd_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgodd",
+                "field": "mtrn_odd_bg_color",
+                "default": "ffffffb0",
+                "color": true,
+                "opacityField": "mtrn_odd_bg_opacity",
+                "colorDefault": "ffffff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "hover_bg_color",
+                "kind": "color_opacity",
+                "attr": "s-bgover",
+                "field": "mtrn_hover_bg_color",
+                "default": "eeeeffb0",
+                "color": true,
+                "opacityField": "mtrn_hover_bg_opacity",
+                "colorDefault": "eeeeff",
+                "opacityDefault": "69"
+            },
+            {
+                "key": "width",
+                "kind": "size",
+                "attr": "width",
+                "field": "mtrn_width",
+                "default": "300"
+            },
+            {
+                "key": "height",
+                "kind": "size",
+                "attr": "height",
+                "field": "mtrn_height",
+                "default": "200"
+            }
+        ]
+    },
+    "adminUtils": {
+        "fieldPrefix": "mtrn_",
+        "ajaxActions": [
+            "mtrn_get_groups",
+            "mtrn_refresh_groups"
+        ]
+    }
+}

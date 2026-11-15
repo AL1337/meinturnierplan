@@ -4,7 +4,7 @@
  *
  * @package MeinTurnierplan
  * @since   0.1.0
- * @version 1.3.0
+ * @version 1.4.0
  */
 
 // Prevent direct access
@@ -20,35 +20,30 @@ class MTRN_Plugin {
   /**
    * The single instance of the class
    */
-  protected static $_instance = null;
+  protected static $instance = null;
 
   /**
    * Plugin components
    */
-  public $table_post_type;
-  public $matches_post_type;
-  public $table_shortcode;
-  public $matches_shortcode;
-  public $table_admin_meta_boxes;
-  public $matches_admin_meta_boxes;
-  public $table_renderer;
-  public $matches_renderer;
-  public $table_ajax_handler;
-  public $matches_ajax_handler;
+  public $renderer;
+  public $post_types;
+  public $shortcodes;
+  public $blocks;
+  public $meta_boxes = array();
+  public $ajax_handler;
   public $assets;
   public $installer;
-  public $table_gutenberg_block;
-  public $matches_gutenberg_block;
   public $single_content_filter;
   public $admin_notices;
+
   /**
    * Main Plugin Instance
    */
   public static function instance() {
-    if (is_null(self::$_instance)) {
-      self::$_instance = new self();
+    if (is_null(self::$instance)) {
+      self::$instance = new self();
     }
-    return self::$_instance;
+    return self::$instance;
   }
 
   /**
@@ -74,63 +69,49 @@ class MTRN_Plugin {
    * Include required core files
    */
   public function includes() {
-    // Core Table classes
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-post-type.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-renderer.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-shortcode.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-admin-meta-boxes.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-ajax-handler.php';
-
-    // Core Matches classes
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-post-type.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-renderer.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-shortcode.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-admin-meta-boxes.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-ajax-handler.php';
-
-    // Core classes
+    // Option registry and the shared embed renderer
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-utilities.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-options.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-embed-renderer.php';
+
+    // Post types
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-post-types.php';
+
+    // Output channels
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-shortcodes.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-blocks.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-embed-widget.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-single-content-filter.php';
+
+    // Admin
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-meta-boxes.php';
+    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-ajax-handler.php';
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-assets.php';
     include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-admin-notices.php';
-
-    // Widget class
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-widget.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-widget.php';
-
-    // Gutenberg block class
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-table-block.php';
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-matches-block.php';
-
-    // Single content filter
-    include_once MTRN_PLUGIN_PATH . 'includes/class-mtrn-single-content-filter.php';
   }
 
   /**
    * Initialize plugin components
    */
   public function init() {
-    // Initialize components
     $this->installer = new MTRN_Installer();
-    $this->table_renderer = new MTRN_Table_Renderer();
-    $this->matches_renderer = new MTRN_Matches_Renderer();
-    $this->table_post_type = new MTRN_Table_Post_Type();
-    $this->matches_post_type = new MTRN_Matches_Post_Type();
-    $this->table_shortcode = new MTRN_Table_Shortcode($this->table_renderer);
-    $this->matches_shortcode = new MTRN_Matches_Shortcode($this->matches_renderer);
-    $this->table_admin_meta_boxes = new MTRN_Admin_Table_Meta_Boxes($this->table_renderer);
-    $this->matches_admin_meta_boxes = new MTRN_Admin_Matches_Meta_Boxes($this->matches_renderer);
-    $this->table_ajax_handler = new MTRN_Table_Ajax_Handler($this->table_renderer);
-    $this->matches_ajax_handler = new MTRN_Matches_Ajax_Handler($this->matches_renderer);
+    $this->renderer = new MTRN_Embed_Renderer();
+    $this->post_types = new MTRN_Post_Types();
+    $this->shortcodes = new MTRN_Shortcodes($this->renderer);
+    $this->blocks = new MTRN_Blocks($this->renderer);
+    $this->single_content_filter = new MTRN_Single_Content_Filter($this->renderer);
+    foreach (array_keys(MTRN_Options::types()) as $type) {
+      $this->meta_boxes[$type] = new MTRN_Admin_Meta_Boxes($type, $this->renderer);
+    }
+    $this->ajax_handler = new MTRN_Ajax_Handler($this->renderer);
     $this->admin_notices = new MTRN_Admin_Notices();
     $this->assets = new MTRN_Assets();
-    $this->table_gutenberg_block = new MTRN_Table_Gutenberg_Block($this->table_renderer);
-    $this->matches_gutenberg_block = new MTRN_Matches_Gutenberg_Block($this->matches_renderer);
-    $this->single_content_filter = new MTRN_Single_Content_Filter($this->table_renderer, $this->matches_renderer);
 
-    // Initialize widgets
+    // One widget per embed type, each with its own widget id
     add_action('widgets_init', function () {
-      register_widget('MTRN_Table_Widget');
-      register_widget('MTRN_Matches_Widget');
+      foreach (array_keys(MTRN_Options::types()) as $type) {
+        register_widget(new MTRN_Embed_Widget($type, $this->renderer));
+      }
     });
   }
 

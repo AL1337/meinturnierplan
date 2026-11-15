@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MTRN\Tests\Unit;
 
-use MTRN_Matches_Renderer;
-use MTRN_Matches_Shortcode;
+use MTRN_Embed_Renderer;
+use MTRN_Shortcodes;
 
 class MatchesShortcodeTest extends TestCase {
 
   private function render(array $atts): string {
-    $shortcode = new MTRN_Matches_Shortcode(new MTRN_Matches_Renderer());
-    return $shortcode->shortcode_callback($atts);
+    $shortcodes = new MTRN_Shortcodes(new MTRN_Embed_Renderer());
+    return $shortcodes->render('matches', $atts);
   }
 
   public function test_id_only_renders_english_embed_with_defaults(): void {
